@@ -1,0 +1,75 @@
+/* EXOTROPIC – Premium Tropical Style */
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #020617;
+  color: #e5e7eb;
+}
+
+/* Header */
+header {
+  text-align: center;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #064e3b, #022c22);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 3rem;
+  letter-spacing: 3px;
+}
+
+header p {
+  margin-top: 10px;
+  color: #a7f3d0;
+  font-size: 1rem;
+}
+
+/* Products grid */
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 26px;
+  padding: 40px 30px;
+}
+
+/* Product card */
+.card {
+  background: #020617;
+  border-radius: 18px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.55);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+}
+
+.card img {
+  width: 100%;
+  border-radius: 14px;
+}
+
+/* Text */
+.card h2 {
+  margin: 14px 0 6px;
+  font-size: 1.15rem;
+}
+
+.price {
+  color: #22c55e;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
