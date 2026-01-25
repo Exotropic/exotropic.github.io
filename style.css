@@ -1,96 +1,163 @@
-/* EXOTROPIC – Premium Tropical Shop Style */
-
-body {
+/* ===== Global Styles ===== */
+* {
   margin: 0;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background: #020617;
-  color: #e5e7eb;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* HEADER */
-header {
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #e0f7fa; /* light aqua water background */
+  color: #02475e;
+  line-height: 1.6;
   text-align: center;
-  padding: 60px 20px;
-  background: linear-gradient(135deg, #064e3b, #022c22);
+}
+
+/* ===== Header ===== */
+header {
+  background: linear-gradient(135deg, #00c6ff, #0072ff); /* blue water gradient */
+  color: #fff;
+  padding: 35px 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border-bottom: 4px solid #00bcd4;
 }
 
 header h1 {
-  margin: 0;
-  font-size: 3rem;
-  letter-spacing: 3px;
+  font-size: 34px;
+  margin-bottom: 8px;
+  letter-spacing: 1.2px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
 }
 
 header p {
-  margin-top: 10px;
-  color: #a7f3d0;
-  font-size: 1rem;
+  font-size: 16px;
+  opacity: 0.9;
 }
 
-/* PRODUCTS GRID */
+/* ===== Products Grid ===== */
 .products {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 26px;
-  padding: 40px 30px;
+  grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+  gap: 25px;
+  padding: 25px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* PRODUCT CARD */
 .card {
-  background: #020617;
-  border-radius: 18px;
-  padding: 16px;
-  text-align: center;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.55);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  background: #e0f7fa;
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: transform 0.4s, box-shadow 0.4s;
+  border: 2px solid #00bcd4;
 }
 
 .card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.2);
 }
 
 .card img {
   width: 100%;
-  border-radius: 14px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid #00acc1;
 }
 
-/* PRODUCT TEXT */
 .card h2 {
-  margin: 14px 0 6px;
-  font-size: 1.15rem;
+  font-size: 18px;
+  margin: 15px 0;
+  color: #0072ff;
 }
 
-.price {
-  color: #22c55e;
-  font-weight: 600;
-  font-size: 1.2rem;
-}
-
-/* FOOTER */
-footer {
-  text-align: center;
-  padding: 25px;
-  color: #94a3b8;
-  font-size: 0.9rem;
-}
-
-/* FLOATING BUY BUTTON */
-.floating-buy {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #0084ff;
-  color: white;
-  padding: 14px 18px;
-  border-radius: 999px;
-  font-weight: 600;
+.buy-btn {
+  display: inline-block;
+  margin-top: 10px;
   text-decoration: none;
-  box-shadow: 0 12px 25px rgba(0,0,0,0.4);
-  z-index: 1000;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: #00bcd4;
+  color: #fff;
+  padding: 10px 22px;
+  border-radius: 12px;
+  font-weight: bold;
+  transition: background 0.3s, transform 0.3s;
 }
 
-.floating-buy:hover {
+.buy-btn:hover {
+  background: #0072ff;
   transform: scale(1.05);
-  box-shadow: 0 18px 35px rgba(0,0,0,0.55);
+}
+
+/* ===== Contact Section ===== */
+.contact {
+  background: #b2ebf2;
+  margin: 30px auto;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  max-width: 500px;
+  text-align: left;
+}
+
+.contact h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 20px;
+  color: #0072ff;
+}
+
+.contact ul {
+  list-style: disc;
+  padding-left: 25px;
+  font-size: 15px;
+}
+
+.contact li {
+  margin-bottom: 12px;
+}
+
+.contact a {
+  color: #0072ff;
+  text-decoration: none;
+}
+
+.contact a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Footer ===== */
+footer {
+  padding: 15px;
+  font-size: 14px;
+  color: #02475e;
+  background: #b2ebf2;
+}
+
+/* ===== Messenger Button ===== */
+.messenger-btn {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background: #0084ff;
+  color: #fff;
+  padding: 15px 22px;
+  border-radius: 50px;
+  font-weight: bold;
+  text-decoration: none;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  transition: background 0.3s, transform 0.3s;
+  z-index: 100;
+}
+
+.messenger-btn:hover {
+  background: #005bbb;
+  transform: scale(1.1);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 500px) {
+  header h1 { font-size: 26px; }
+  header p { font-size: 14px; }
+  .card img { height: 180px; }
 }
