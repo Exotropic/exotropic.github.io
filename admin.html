@@ -2,97 +2,79 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>EXOTROPIC AQUARIUM SHOP</title>
+<title>EXOTROPIC AQUARIUM ADMIN</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
 <style>
-* { margin:0; padding:0; box-sizing:border-box; font-family:Arial,sans-serif; }
-
-.background {
-  position: fixed; top:0; left:0; width:100%; height:100%;
-  background: linear-gradient(135deg,#a8edea,#fed6e3); z-index:-1;
-}
-
-.hamburger { position: fixed; top:20px; left:20px; width:35px; height:25px; display:flex; flex-direction:column; justify-content:space-between; cursor:pointer; z-index:2000; }
-.hamburger span { display:block; width:100%; height:5px; background:#000; border-radius:2px; transition:0.3s; }
-.hamburger:hover span { background:#333; }
-
-.nav-links { position:fixed; top:0; left:-260px; width:260px; height:100%; background:rgba(0,0,0,0.9); padding:60px 20px; display:flex; flex-direction:column; gap:10px; transition:left 0.3s ease-in-out; z-index:1500; overflow-y:auto; color:white; }
-.nav-links.open { left:0; }
-
-.menu-header { font-weight:bold; font-size:18px; margin-bottom:15px; text-align:center; background:#001f2f; color:#a8edea; padding:10px; border-radius:5px; }
-.menu-content a, .menu-content span { display:block; margin-bottom:5px; padding:8px 12px; background:rgba(0,0,0,0.7); border-radius:5px; text-decoration:none; color:white; cursor:pointer; transition:0.3s; }
-.menu-content a:hover, .menu-content span:hover { background:#001f2f; color:#a8edea; }
-
-.menu-contact { display:none; flex-direction:column; margin-left:10px; padding-left:10px; border-left:2px solid rgba(255,255,255,0.3); }
-.menu-contact.visible { display:flex; }
-
-#overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:1400; }
-#overlay.active { display:block; }
-
-header.hero { text-align:center; padding:100px 20px; color:#001f2f; position:relative; z-index:1; }
-header.hero h1 { font-size:40px; margin-bottom:10px; }
-header.hero p { font-size:18px; }
-
-.shop { padding:60px 20px; color:#001f2f; position:relative; z-index:1; }
-.section-title { text-align:center; margin-bottom:30px; }
-.shop-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:20px; }
-.product-card { background:rgba(0,0,0,0.8); padding:10px; border-radius:10px; text-align:center; color:white; position:relative; }
-.product-card img { width:100%; border-radius:8px; }
-.buy-btn { display:inline-block; margin-top:10px; padding:5px 10px; background:#001f2f; color:#a8edea; border-radius:5px; text-decoration:none; font-weight:bold; transition:0.3s; }
-.buy-btn:hover { background:#003f5c; color:#fff; }
-
-footer { text-align:center; padding:20px; color:white; background:rgba(0,0,0,0.8); position:relative; z-index:1; }
-
-.messenger-btn { position:fixed; bottom:20px; right:20px; background:#001f2f; color:#a8edea; padding:10px 15px; border-radius:5px; text-decoration:none; font-weight:bold; z-index:1050; transition:0.3s; }
-.messenger-btn:hover { background:#003f5c; transform:scale(1.1); }
+body { font-family: Arial, sans-serif; padding: 20px; background: #f0f8ff; }
+h1 { text-align: center; margin-bottom: 20px; color: #001f2f; }
+input[type="file"] { margin-bottom: 10px; }
+button { padding: 10px 20px; background: #001f2f; color: #a8edea; border: none; border-radius: 5px; cursor: pointer; margin-bottom: 20px; }
+button:hover { background: #003f5c; }
+.preview { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.preview img { width: 150px; border-radius: 10px; border: 2px solid #001f2f; }
 </style>
 </head>
 <body>
 
-<div class="background"></div>
+<h1>EXOTROPIC AQUARIUM ADMIN</h1>
 
-<div class="hamburger" id="hamburger">
-  <span></span>
-  <span></span>
-  <span></span>
-</div>
+<input type="file" id="imageInput" multiple accept="image/*">
+<br>
+<button id="addBtn">Add to JSON</button>
+<button id="clearBtn">Clear All</button>
 
-<div class="nav-links" id="nav-links">
-  <div class="menu-content">
-    <div class="menu-header">MENU</div>
-    <a href="#home">Home</a>
-    <a href="#shop">Shop</a>
-    <div class="menu-item" id="contact-toggle">
-      <span id="contact-label">Contact ▼</span>
-      <div class="menu-contact" id="contact-info">
-        <a href="tel:16132554540">📞 Phone: 613-255-4540</a>
-        <a href="mailto:Exotropic1@gmail.com">📧 Email: Exotropic1@gmail.com</a>
-        <a href="https://www.google.com/maps/place/Ottawa,+Ontario" target="_blank">📍 Location: Ottawa, Ontario</a>
-        <a href="https://www.facebook.com/share/1ANqkqmvcR/" target="_blank">📘 Facebook Page: Exo Tropic</a>
-      </div>
-    </div>
-    <a href="https://m.me/ExoTropicAquarium" target="_blank">Messenger</a>
-  </div>
-</div>
+<h2>Preview</h2>
+<div class="preview" id="previewContainer"></div>
 
-<div id="overlay"></div>
+<script>
+// Preview container
+const imageInput = document.getElementById('imageInput');
+const previewContainer = document.getElementById('previewContainer');
+let uploadedImages = []; // Temporary storage
 
-<header id="home" class="hero">
-  <h1>EXOTROPIC AQUARIUM</h1>
-  <p>Premium Aquatic Products • Buy via Messenger</p>
-</header>
+// Preview selected images
+imageInput.addEventListener('change', () => {
+  const files = Array.from(imageInput.files);
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      uploadedImages.push(reader.result);
+      updatePreview();
+    };
+    reader.readAsDataURL(file);
+  });
+  imageInput.value = '';
+});
 
-<section class="shop" id="shop">
-  <h2 class="section-title">🛒 Our Products</h2>
-  <div class="shop-grid" id="shopGrid">
-    <p id="loadingText">Loading products...</p>
-  </div>
-</section>
+function updatePreview() {
+  previewContainer.innerHTML = '';
+  uploadedImages.forEach(url => {
+    const img = document.createElement('img');
+    img.src = url;
+    previewContainer.appendChild(img);
+  });
+}
 
-<footer>© 2026 EXOTROPIC AQUARIUM</footer>
-<a href="https://m.me/ExoTropicAquarium" target="_blank" class="messenger-btn">Buy via Messenger</a>
+// Add to JSON file (simulate JSON storage via localStorage for demo)
+const addBtn = document.getElementById('addBtn');
+addBtn.addEventListener('click', () => {
+  const existingProducts = JSON.parse(localStorage.getItem('productsJSON') || '[]');
+  const newProducts = existingProducts.concat(uploadedImages.map(url => ({ image: url })));
+  localStorage.setItem('productsJSON', JSON.stringify(newProducts));
+  alert('Products saved to JSON!');
+  uploadedImages = [];
+  updatePreview();
+});
 
-<script src="js/main.js"></script>
+// Clear all
+document.getElementById('clearBtn').addEventListener('click', () => {
+  if(confirm('Clear all products?')) {
+    localStorage.removeItem('productsJSON');
+    uploadedImages = [];
+    updatePreview();
+  }
+});
+</script>
+
 </body>
 </html>
