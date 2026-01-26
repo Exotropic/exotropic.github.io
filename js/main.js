@@ -1,4 +1,3 @@
-
 // Hamburger and Overlay
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('nav-links');
@@ -28,14 +27,7 @@ contactToggle.addEventListener('click', () => {
 const shopGrid = document.getElementById('shopGrid');
 const loadingText = document.getElementById('loadingText');
 
-const existingProducts = [
-  'https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449399/jtwtzk0egjizvomclm1w.jpg',
-  'https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449385/nomumjmwxipfh0ril8oc.jpg',
-  'https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449369/ntxanaboykolmf2cxioi.jpg',
-  'https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449352/zfndhypfmvsr7u7gjbdf.jpg',
-  'https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449335/phndllj2guzhcrzujvk4.jpg'
-];
-
+// Render a single product card
 function renderProduct(url) {
   const div = document.createElement('div');
   div.className = 'product-card';
@@ -46,11 +38,26 @@ function renderProduct(url) {
   shopGrid.appendChild(div);
 }
 
-function loadProducts() {
+// Load products from JSON
+async function loadProducts() {
   shopGrid.innerHTML = '';
   loadingText.textContent = 'Loading products...';
-  existingProducts.forEach(url => renderProduct(url));
-  loadingText.textContent = '';
+
+  try {
+    const response = await fetch('data/products.json');
+    const data = await response.json();
+
+    if (data.products && data.products.length > 0) {
+      data.products.forEach(url => renderProduct(url));
+      loadingText.textContent = '';
+    } else {
+      loadingText.textContent = 'No products available.';
+    }
+  } catch (error) {
+    console.error('Error loading products:', error);
+    loadingText.textContent = 'Failed to load products.';
+  }
 }
 
+// Load products on page load
 loadProducts();
