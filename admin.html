@@ -102,14 +102,8 @@ button:hover { background:#555; }
 <a href="https://exotropic.github.io/" id="backHomeBtn">🏠 Home</a>
 
 <script>
-const cloudName = 'dgmg1cubi';
-const unsignedUploadPreset = 'unsigned_products';
-const folderName = 'products';
 const adminUsernameValue = 'EXOTROPIC';
 const adminPasswordValue = 'CANADAEXOTROPIC';
-
-// localStorage will hold uploaded images
-let uploadedImages = JSON.parse(localStorage.getItem('uploadedImages') || '[]');
 
 const passwordInput = document.getElementById('adminPassword');
 const toggleBtn = document.getElementById('togglePassBtn');
@@ -117,6 +111,10 @@ const imagesContainer = document.getElementById('imagesContainer');
 const fileInput = document.getElementById('fileInput');
 const uploadBtn = document.getElementById('uploadBtn');
 
+// LocalStorage will act as our JSON storage
+let uploadedImages = JSON.parse(localStorage.getItem('uploadedImages') || '[]');
+
+// Password check
 function checkPassword() {
   const user = document.getElementById('adminUsername').value;
   const pass = passwordInput.value;
@@ -138,33 +136,40 @@ toggleBtn.addEventListener('click', ()=>{
   }
 });
 
-// Upload image (unsigned)
-uploadBtn.addEventListener('click', ()=>{
+// Upload image to Cloudinary
+uploadBtn.addEventListener('click', async ()=>{
   const file = fileInput.files[0];
   if(!file){ alert('Select a file first'); return; }
+
+  const cloudName = 'dgmg1cubi';
+  const unsignedUploadPreset = 'unsigned_products';
+  const folderName = 'products';
 
   const formData = new FormData();
   formData.append('file', file);
   formData.append('upload_preset', unsignedUploadPreset);
   formData.append('folder', folderName);
 
-  fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
-    method:'POST', body: formData
-  })
-  .then(res => res.json())
-  .then(data=>{
+  try {
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+      method:'POST', body: formData
+    });
+    const data = await res.json();
     if(data.secure_url){
       uploadedImages.push(data.secure_url);
+      // Save as JSON in localStorage
       localStorage.setItem('uploadedImages', JSON.stringify(uploadedImages));
       fileInput.value = '';
       renderImages();
-      alert('Upload successful!');
-    } else alert('Upload failed');
-  })
-  .catch(err => { console.error(err); alert('Upload failed'); });
+      alert('Upload successful! ✅');
+    } else alert('Upload failed ❌');
+  } catch(err){
+    console.error(err);
+    alert('Upload failed ❌');
+  }
 });
 
-// Delete image from localStorage
+// Delete image
 function deleteImage(index){
   if(!confirm('Are you sure you want to delete this image?')) return;
   uploadedImages.splice(index,1);
