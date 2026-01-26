@@ -38,17 +38,17 @@ function renderProduct(url) {
   shopGrid.appendChild(div);
 }
 
-// Load products from JSON
-async function loadProducts() {
+// Load products from admin's localStorage
+function loadProducts() {
   shopGrid.innerHTML = '';
   loadingText.textContent = 'Loading products...';
 
   try {
-    const response = await fetch('data/products.json');
-    const data = await response.json();
+    // Get images from localStorage (same key used in admin page)
+    const uploadedImages = JSON.parse(localStorage.getItem('uploadedImages') || '[]');
 
-    if (data.products && data.products.length > 0) {
-      data.products.forEach(url => renderProduct(url));
+    if (uploadedImages.length > 0) {
+      uploadedImages.forEach(url => renderProduct(url));
       loadingText.textContent = '';
     } else {
       loadingText.textContent = 'No products available.';
