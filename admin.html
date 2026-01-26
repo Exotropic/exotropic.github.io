@@ -27,18 +27,22 @@ button:hover { background: #003f5c; }
 <div class="preview" id="previewContainer"></div>
 
 <script>
-// Preview container
+// DOM elements
 const imageInput = document.getElementById('imageInput');
 const previewContainer = document.getElementById('previewContainer');
-let uploadedImages = []; // Temporary storage
+const addBtn = document.getElementById('addBtn');
+const clearBtn = document.getElementById('clearBtn');
 
-// Preview selected images
+// Temporary array for preview
+let uploadedImages = [];
+
+// Preview images on selection
 imageInput.addEventListener('change', () => {
   const files = Array.from(imageInput.files);
   files.forEach(file => {
     const reader = new FileReader();
     reader.onload = () => {
-      uploadedImages.push(reader.result);
+      uploadedImages.push(reader.result); // store as base64
       updatePreview();
     };
     reader.readAsDataURL(file);
@@ -46,6 +50,7 @@ imageInput.addEventListener('change', () => {
   imageInput.value = '';
 });
 
+// Update preview container
 function updatePreview() {
   previewContainer.innerHTML = '';
   uploadedImages.forEach(url => {
@@ -55,9 +60,13 @@ function updatePreview() {
   });
 }
 
-// Add to JSON file (simulate JSON storage via localStorage for demo)
-const addBtn = document.getElementById('addBtn');
+// Add images to JSON in localStorage
 addBtn.addEventListener('click', () => {
+  if(uploadedImages.length === 0){
+    alert('No images selected!');
+    return;
+  }
+
   const existingProducts = JSON.parse(localStorage.getItem('productsJSON') || '[]');
   const newProducts = existingProducts.concat(uploadedImages.map(url => ({ image: url })));
   localStorage.setItem('productsJSON', JSON.stringify(newProducts));
@@ -66,13 +75,20 @@ addBtn.addEventListener('click', () => {
   updatePreview();
 });
 
-// Clear all
-document.getElementById('clearBtn').addEventListener('click', () => {
+// Clear all products
+clearBtn.addEventListener('click', () => {
   if(confirm('Clear all products?')) {
     localStorage.removeItem('productsJSON');
     uploadedImages = [];
     updatePreview();
   }
+});
+
+// Load preview from existing JSON on page load
+window.addEventListener('load', () => {
+  const existingProducts = JSON.parse(localStorage.getItem('productsJSON') || '[]');
+  uploadedImages = existingProducts.map(p => p.image);
+  updatePreview();
 });
 </script>
 
