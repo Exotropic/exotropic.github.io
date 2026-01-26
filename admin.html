@@ -2,200 +2,97 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>EXOTROPIC AQUARIUM Admin</title>
+<title>EXOTROPIC AQUARIUM SHOP</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
 <style>
-body { 
-  font-family: Arial, sans-serif; 
-  margin:0; padding:0; 
-  background: linear-gradient(135deg, #a8edea, #fed6e3); 
-  min-height:100vh; 
-  display:flex; 
-  justify-content:center; 
-  align-items:flex-start;
-  padding-top:50px;
-}
-h1 { text-align:center; color:#333; }
+* { margin:0; padding:0; box-sizing:border-box; font-family:Arial,sans-serif; }
 
-#passwordPrompt, #adminContent {
-  max-width: 450px; width: 90%; 
-  background: rgba(255,255,255,0.95); 
-  padding: 25px 30px; border-radius: 15px; 
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15); 
-  margin-bottom:30px;
+.background {
+  position: fixed; top:0; left:0; width:100%; height:100%;
+  background: linear-gradient(135deg,#a8edea,#fed6e3); z-index:-1;
 }
 
-input[type=password], input[type=text] { 
-  padding:10px; width:70%; border-radius:5px; 
-  border:1px solid #ccc; margin-right:5px; transition:0.3s;
-}
+.hamburger { position: fixed; top:20px; left:20px; width:35px; height:25px; display:flex; flex-direction:column; justify-content:space-between; cursor:pointer; z-index:2000; }
+.hamburger span { display:block; width:100%; height:5px; background:#000; border-radius:2px; transition:0.3s; }
+.hamburger:hover span { background:#333; }
 
-button { 
-  padding:10px; border:none; border-radius:5px; 
-  cursor:pointer; transition:0.3s; 
-  background:#333; color:#fff; margin-top:5px;
-}
-button:hover { background:#555; }
+.nav-links { position:fixed; top:0; left:-260px; width:260px; height:100%; background:rgba(0,0,0,0.9); padding:60px 20px; display:flex; flex-direction:column; gap:10px; transition:left 0.3s ease-in-out; z-index:1500; overflow-y:auto; color:white; }
+.nav-links.open { left:0; }
 
-#adminContent { display:none; margin-top:20px; }
+.menu-header { font-weight:bold; font-size:18px; margin-bottom:15px; text-align:center; background:#001f2f; color:#a8edea; padding:10px; border-radius:5px; }
+.menu-content a, .menu-content span { display:block; margin-bottom:5px; padding:8px 12px; background:rgba(0,0,0,0.7); border-radius:5px; text-decoration:none; color:white; cursor:pointer; transition:0.3s; }
+.menu-content a:hover, .menu-content span:hover { background:#001f2f; color:#a8edea; }
 
-.image-card { 
-  display:inline-block; margin:10px; border:1px solid #ccc; 
-  padding:10px; background: #f9f9f9; border-radius:6px; transition:0.3s; 
-  position: relative;
-}
-.image-card:hover { transform: scale(1.05); }
-.image-card img { width:150px; height:150px; object-fit:cover; display:block; margin-bottom:5px; border-radius:5px; }
+.menu-contact { display:none; flex-direction:column; margin-left:10px; padding-left:10px; border-left:2px solid rgba(255,255,255,0.3); }
+.menu-contact.visible { display:flex; }
 
-.url { font-size:12px; word-break:break-all; }
+#overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:1400; }
+#overlay.active { display:block; }
 
-.deleteBtn {
-  position: absolute;
-  top:5px;
-  right:5px;
-  background:#ff4d4d;
-  border:none;
-  color:white;
-  padding:2px 6px;
-  border-radius:4px;
-  cursor:pointer;
-  font-size:12px;
-}
+header.hero { text-align:center; padding:100px 20px; color:#001f2f; position:relative; z-index:1; }
+header.hero h1 { font-size:40px; margin-bottom:10px; }
+header.hero p { font-size:18px; }
 
-.deleteBtn:hover { background:#ff1a1a; }
+.shop { padding:60px 20px; color:#001f2f; position:relative; z-index:1; }
+.section-title { text-align:center; margin-bottom:30px; }
+.shop-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:20px; }
+.product-card { background:rgba(0,0,0,0.8); padding:10px; border-radius:10px; text-align:center; color:white; position:relative; }
+.product-card img { width:100%; border-radius:8px; }
+.buy-btn { display:inline-block; margin-top:10px; padding:5px 10px; background:#001f2f; color:#a8edea; border-radius:5px; text-decoration:none; font-weight:bold; transition:0.3s; }
+.buy-btn:hover { background:#003f5c; color:#fff; }
 
-#togglePassBtn { width:25%; }
+footer { text-align:center; padding:20px; color:white; background:rgba(0,0,0,0.8); position:relative; z-index:1; }
 
-/* Back to Home Button */
-#backHomeBtn {
-  position: fixed; bottom: 20px; right: 20px; 
-  background: #333; color: #fff; padding: 10px 15px; 
-  border-radius: 50px; text-decoration: none; font-weight: bold; 
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: 0.3s; z-index: 1000;
-}
-#backHomeBtn:hover { background: #555; transform: scale(1.1); }
+.messenger-btn { position:fixed; bottom:20px; right:20px; background:#001f2f; color:#a8edea; padding:10px 15px; border-radius:5px; text-decoration:none; font-weight:bold; z-index:1050; transition:0.3s; }
+.messenger-btn:hover { background:#003f5c; transform:scale(1.1); }
 </style>
 </head>
 <body>
 
-<div id="passwordPrompt">
-  <h1>EXOTROPIC AQUARIUM Admin</h1>
-  <label>Admin Username:</label><br>
-  <input type="text" id="adminUsername" placeholder="Enter Username"><br><br>
+<div class="background"></div>
 
-  <label>Admin Password:</label><br>
-  <input type="password" id="adminPassword">
-  <button type="button" id="togglePassBtn">Show Password</button><br><br>
-
-  <button onclick="checkPassword()">Login</button>
+<div class="hamburger" id="hamburger">
+  <span></span>
+  <span></span>
+  <span></span>
 </div>
 
-<div id="adminContent">
-<h2>Upload Product Image</h2>
-<input type="file" id="fileInput">
-<button id="uploadBtn">Upload</button>
-
-<h2>Uploaded Images</h2>
-<div id="imagesContainer">No images yet.</div>
+<div class="nav-links" id="nav-links">
+  <div class="menu-content">
+    <div class="menu-header">MENU</div>
+    <a href="#home">Home</a>
+    <a href="#shop">Shop</a>
+    <div class="menu-item" id="contact-toggle">
+      <span id="contact-label">Contact ▼</span>
+      <div class="menu-contact" id="contact-info">
+        <a href="tel:16132554540">📞 Phone: 613-255-4540</a>
+        <a href="mailto:Exotropic1@gmail.com">📧 Email: Exotropic1@gmail.com</a>
+        <a href="https://www.google.com/maps/place/Ottawa,+Ontario" target="_blank">📍 Location: Ottawa, Ontario</a>
+        <a href="https://www.facebook.com/share/1ANqkqmvcR/" target="_blank">📘 Facebook Page: Exo Tropic</a>
+      </div>
+    </div>
+    <a href="https://m.me/ExoTropicAquarium" target="_blank">Messenger</a>
+  </div>
 </div>
 
-<a href="https://exotropic.github.io/" id="backHomeBtn">🏠 Home</a>
+<div id="overlay"></div>
 
-<script>
-const adminUsernameValue = 'EXOTROPIC';
-const adminPasswordValue = 'CANADAEXOTROPIC';
+<header id="home" class="hero">
+  <h1>EXOTROPIC AQUARIUM</h1>
+  <p>Premium Aquatic Products • Buy via Messenger</p>
+</header>
 
-const passwordInput = document.getElementById('adminPassword');
-const toggleBtn = document.getElementById('togglePassBtn');
-const imagesContainer = document.getElementById('imagesContainer');
-const fileInput = document.getElementById('fileInput');
-const uploadBtn = document.getElementById('uploadBtn');
+<section class="shop" id="shop">
+  <h2 class="section-title">🛒 Our Products</h2>
+  <div class="shop-grid" id="shopGrid">
+    <p id="loadingText">Loading products...</p>
+  </div>
+</section>
 
-// LocalStorage will act as our JSON storage
-let uploadedImages = JSON.parse(localStorage.getItem('uploadedImages') || '[]');
+<footer>© 2026 EXOTROPIC AQUARIUM</footer>
+<a href="https://m.me/ExoTropicAquarium" target="_blank" class="messenger-btn">Buy via Messenger</a>
 
-// Password check
-function checkPassword() {
-  const user = document.getElementById('adminUsername').value;
-  const pass = passwordInput.value;
-  if(user === adminUsernameValue && pass === adminPasswordValue) {
-    document.getElementById('passwordPrompt').style.display = 'none';
-    document.getElementById('adminContent').style.display = 'block';
-    renderImages();
-  } else alert('Wrong username or password');
-}
-
-// Show/hide password
-toggleBtn.addEventListener('click', ()=>{
-  if(passwordInput.type === 'password'){
-    passwordInput.type = 'text';
-    toggleBtn.textContent = 'Hide Password';
-  } else {
-    passwordInput.type = 'password';
-    toggleBtn.textContent = 'Show Password';
-  }
-});
-
-// Upload image to Cloudinary
-uploadBtn.addEventListener('click', async ()=>{
-  const file = fileInput.files[0];
-  if(!file){ alert('Select a file first'); return; }
-
-  const cloudName = 'dgmg1cubi';
-  const unsignedUploadPreset = 'unsigned_products';
-  const folderName = 'products';
-
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('upload_preset', unsignedUploadPreset);
-  formData.append('folder', folderName);
-
-  try {
-    const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
-      method:'POST', body: formData
-    });
-    const data = await res.json();
-    if(data.secure_url){
-      uploadedImages.push(data.secure_url);
-      // Save as JSON in localStorage
-      localStorage.setItem('uploadedImages', JSON.stringify(uploadedImages));
-      fileInput.value = '';
-      renderImages();
-      alert('Upload successful! ✅');
-    } else alert('Upload failed ❌');
-  } catch(err){
-    console.error(err);
-    alert('Upload failed ❌');
-  }
-});
-
-// Delete image
-function deleteImage(index){
-  if(!confirm('Are you sure you want to delete this image?')) return;
-  uploadedImages.splice(index,1);
-  localStorage.setItem('uploadedImages', JSON.stringify(uploadedImages));
-  renderImages();
-}
-
-// Render images from localStorage
-function renderImages(){
-  imagesContainer.innerHTML = '';
-  if(uploadedImages.length === 0){
-    imagesContainer.innerHTML = 'No images yet.';
-    return;
-  }
-  uploadedImages.forEach((url, index)=>{
-    const div = document.createElement('div');
-    div.className = 'image-card';
-    div.innerHTML = `
-      <img src="${url}" alt="">
-      <div class="url">${url}</div>
-      <button class="deleteBtn" onclick="deleteImage(${index})">Delete</button>
-    `;
-    imagesContainer.appendChild(div);
-  });
-}
-</script>
-
+<script src="js/main.js"></script>
 </body>
 </html>
