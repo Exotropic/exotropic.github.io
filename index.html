@@ -2,62 +2,233 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>EXOTROPIC AQUARIUM</title>
+  <title>EXOTROPIC AQUARIUM SHOP</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Link to external CSS -->
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Reset */
+    * { margin:0; padding:0; box-sizing:border-box; font-family:Arial,sans-serif; }
+
+    /* Background */
+    .background {
+      position: fixed; top:0; left:0; width:100%; height:100%;
+      background: linear-gradient(135deg,#a8edea,#fed6e3);
+      z-index:-1;
+    }
+
+    /* Hamburger */
+    .hamburger {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 35px;
+      height: 25px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      z-index: 2000; /* always on top */
+    }
+    .hamburger span {
+      display: block;
+      width: 100%;
+      height: 5px; /* thicker for visibility */
+      background: #000;
+      border-radius: 2px;
+      transition: 0.3s;
+    }
+    .hamburger:hover span { background: #333; }
+
+    /* Sliding menu */
+    .nav-links {
+      position: fixed;
+      top: 0; left: -260px;
+      width: 260px;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      padding: 60px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: left 0.3s ease-in-out;
+      z-index: 1500; /* below hamburger */
+      overflow-y: auto;
+      color: white;
+    }
+    .nav-links.open { left: 0; }
+
+    .menu-header {
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 15px;
+      text-align: center;
+      background: #001f2f;
+      color: #a8edea;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .menu-content a, .menu-content span {
+      display: block;
+      margin-bottom: 5px;
+      padding: 8px 12px;
+      background: rgba(0,0,0,0.7);
+      border-radius: 5px;
+      text-decoration: none;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .menu-content a:hover, .menu-content span:hover { background: #001f2f; color: #a8edea; }
+
+    .menu-contact { display: none; flex-direction: column; margin-left:10px; padding-left:10px; border-left:2px solid rgba(255,255,255,0.3);}
+    .menu-contact.visible { display: flex; }
+
+    /* Overlay */
+    #overlay {
+      display: none;
+      position: fixed; top:0; left:0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.3);
+      z-index: 1400; /* below hamburger but above page */
+    }
+    #overlay.active { display: block; }
+
+    /* Hero */
+    header.hero { text-align: center; padding: 100px 20px; color:#001f2f; position: relative; z-index:1; }
+    header.hero h1 { font-size: 40px; margin-bottom: 10px; }
+    header.hero p { font-size: 18px; }
+
+    /* Shop section */
+    .shop { padding:60px 20px; color:#001f2f; position: relative; z-index:1; }
+    .section-title { text-align:center; margin-bottom:30px; }
+    .shop-grid { display:grid; grid-template-columns: repeat(auto-fill,minmax(150px,1fr)); gap:20px; }
+    .product-card {
+      background: rgba(0,0,0,0.8);
+      padding:10px; border-radius:10px;
+      text-align:center; color:white; position:relative;
+    }
+    .product-card img { width:100%; border-radius:8px; }
+    .buy-btn {
+      display:inline-block; margin-top:10px;
+      padding:5px 10px; background:#001f2f;
+      color:#a8edea; border-radius:5px; text-decoration:none; font-weight:bold;
+      transition:0.3s;
+    }
+    .buy-btn:hover { background:#003f5c; color:#fff; }
+
+    /* Footer */
+    footer { text-align:center; padding:20px; color:white; background: rgba(0,0,0,0.8); position:relative; z-index:1; }
+
+    /* Messenger button */
+    .messenger-btn { position:fixed; bottom:20px; right:20px; background:#001f2f; color:#a8edea; padding:10px 15px; border-radius:5px; text-decoration:none; font-weight:bold; z-index:1050; transition:0.3s; }
+    .messenger-btn:hover { background:#003f5c; transform:scale(1.1); }
+  </style>
 </head>
 <body>
 
-<header>
+<div class="background"></div>
+
+<!-- Hamburger menu -->
+<div class="hamburger" id="hamburger">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+
+<!-- Sliding Menu -->
+<div class="nav-links" id="nav-links">
+  <div class="menu-content">
+    <div class="menu-header">MENU</div>
+    <a href="#home">Home</a>
+    <a href="#shop">Shop</a>
+
+    <div class="menu-item" id="contact-toggle">
+      <span id="contact-label">Contact ▼</span>
+      <div class="menu-contact" id="contact-info">
+        <a href="tel:16132554540">📞 Phone: 613-255-4540</a>
+        <a href="mailto:Exotropic1@gmail.com">📧 Email: Exotropic1@gmail.com</a>
+        <a href="https://www.google.com/maps/place/Ottawa,+Ontario" target="_blank">📍 Location: Ottawa, Ontario</a>
+        <a href="https://www.facebook.com/share/1ANqkqmvcR/" target="_blank">📘 Facebook Page: Exo Tropic</a>
+      </div>
+    </div>
+
+    <a href="https://m.me/ExoTropicAquarium" target="_blank">Messenger</a>
+  </div>
+</div>
+
+<!-- Overlay -->
+<div id="overlay"></div>
+
+<!-- Hero -->
+<header id="home" class="hero">
   <h1>EXOTROPIC AQUARIUM</h1>
-  <p>Buy via Messenger</p>
+  <p>Premium Aquatic Products • Buy via Messenger</p>
 </header>
 
-<section class="products">
-  <div class="card">
-    <img src="images/product1.jpg" alt="Product 1">
-    <h2>Product 1</h2>
-    <a class="buy-btn" href="https://www.facebook.com/share/1Aia9hxqAa/" target="_blank">Buy via Messenger</a>
-  </div>
-  <div class="card">
-    <img src="images/product2.jpg" alt="Product 2">
-    <h2>Product 2</h2>
-    <a class="buy-btn" href="https://www.facebook.com/share/1Aia9hxqAa/" target="_blank">Buy via Messenger</a>
-  </div>
-  <div class="card">
-    <img src="images/product3.jpg" alt="Product 3">
-    <h2>Product 3</h2>
-    <a class="buy-btn" href="https://www.facebook.com/share/1Aia9hxqAa/" target="_blank">Buy via Messenger</a>
-  </div>
-  <div class="card">
-    <img src="images/product4.jpg" alt="Product 4">
-    <h2>Product 4</h2>
-    <a class="buy-btn" href="https://www.facebook.com/share/1Aia9hxqAa/" target="_blank">Buy via Messenger</a>
-  </div>
-  <div class="card">
-    <img src="images/product5.jpg" alt="Product 5">
-    <h2>Product 5</h2>
-    <a class="buy-btn" href="https://www.facebook.com/share/1Aia9hxqAa/" target="_blank">Buy via Messenger</a>
+<!-- Shop -->
+<section class="shop" id="shop">
+  <h2 class="section-title">🛒 Our Products</h2>
+  <div class="shop-grid" id="shopGrid">
+    <p id="loadingText">Loading products...</p>
   </div>
 </section>
 
-<section class="contact">
-  <h3>📌 Contact Information</h3>
-  <ul>
-    <li>📞 Phone: <a href="tel:16132554540">613-255-4540</a></li>
-    <li>📧 Email: <a href="mailto:Exotropic1@gmail.com">Exotropic1@gmail.com</a></li>
-    <li>📍 Location: Ottawa, Ontario</li>
-    <li>📘 Facebook: <a href="https://www.facebook.com/share/1Aia9hxqAa/" target="_blank">EXOTROPIC AQUARIUM</a></li>
-  </ul>
-</section>
+<!-- Footer -->
+<footer>© 2026 EXOTROPIC AQUARIUM</footer>
 
-<footer>
-  © 2026 EXOTROPIC AQUARIUM
-</footer>
+<!-- Messenger -->
+<a href="https://m.me/ExoTropicAquarium" target="_blank" class="messenger-btn">Buy via Messenger</a>
 
-<!-- Floating Messenger Button -->
-<a href="https://www.facebook.com/share/1Aia9hxqAa/" target="_blank" class="messenger-btn">Buy on Messenger</a>
+<script>
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('nav-links');
+const overlay = document.getElementById('overlay');
+const contactToggle = document.getElementById('contact-toggle');
+const contactInfo = document.getElementById('contact-info');
+const contactLabel = document.getElementById('contact-label');
+const shopGrid = document.getElementById('shopGrid');
+const loadingText = document.getElementById('loadingText');
+
+// Hamburger toggle
+hamburger.addEventListener('click', () => {
+  navLinks.classList.toggle('open');
+  overlay.classList.toggle('active');
+});
+overlay.addEventListener('click', () => {
+  navLinks.classList.remove('open');
+  overlay.classList.remove('active');
+});
+
+// Contact toggle
+contactToggle.addEventListener('click', () => {
+  contactInfo.classList.toggle('visible');
+  contactLabel.textContent = contactInfo.classList.contains('visible') ? "Contact ▲" : "Contact ▼";
+});
+
+// Products
+const existingProducts = [
+  'https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449399/jtwtzk0egjizvomclm1w.jpg',
+  'https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449385/nomumjmwxipfh0ril8oc.jpg',
+  'https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449369/ntxanaboykolmf2cxioi.jpg',
+  'https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449352/zfndhypfmvsr7u7gjbdf.jpg',
+  'https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449335/phndllj2guzhcrzujvk4.jpg'
+];
+function renderProduct(url) {
+  const div = document.createElement('div');
+  div.className = 'product-card';
+  div.innerHTML = `<img src="${url}" alt="Product">
+  <a href="https://m.me/ExoTropicAquarium" target="_blank" class="buy-btn">Buy via Messenger</a>`;
+  shopGrid.appendChild(div);
+}
+function loadProducts() {
+  shopGrid.innerHTML = '';
+  loadingText.textContent = 'Loading products...';
+  existingProducts.forEach(url => renderProduct(url));
+  loadingText.textContent = '';
+}
+loadProducts();
+</script>
 
 </body>
 </html>
