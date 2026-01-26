@@ -1,4 +1,4 @@
-// Hamburger & Overlay
+// Hamburger and Overlay
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('nav-links');
 const overlay = document.getElementById('overlay');
@@ -7,7 +7,6 @@ hamburger.addEventListener('click', () => {
   navLinks.classList.toggle('open');
   overlay.classList.toggle('active');
 });
-
 overlay.addEventListener('click', () => {
   navLinks.classList.remove('open');
   overlay.classList.remove('active');
@@ -27,7 +26,6 @@ contactToggle.addEventListener('click', () => {
 const shopGrid = document.getElementById('shopGrid');
 const loadingText = document.getElementById('loadingText');
 
-// Render a product card
 function renderProduct(url) {
   const div = document.createElement('div');
   div.className = 'product-card';
@@ -38,14 +36,11 @@ function renderProduct(url) {
   shopGrid.appendChild(div);
 }
 
-// Load all uploaded images from admin localStorage
 function loadProducts() {
   shopGrid.innerHTML = '';
   loadingText.textContent = 'Loading products...';
-
   try {
     const uploadedImages = JSON.parse(localStorage.getItem('uploadedImages') || '[]');
-
     if (uploadedImages.length > 0) {
       uploadedImages.forEach(url => renderProduct(url));
       loadingText.textContent = '';
@@ -59,4 +54,4 @@ function loadProducts() {
 }
 
 // Load products on page load
-loadProducts();
+window.addEventListener('DOMContentLoaded', loadProducts);
