@@ -64,10 +64,10 @@ const PASSWORD = "CANADAEXOTROPIC";
 
 // --- Cloudinary Settings ---
 const CLOUD_NAME = "dgmg1cubi";
-const UPLOAD_PRESET = "unsigned_products";     
-const JSON_UPLOAD_PRESET = "unsigned_json";    
-const JSON_PUBLIC_ID = "catalog/products";      // FIXED public ID
-const JSON_FILENAME = "products.json";          // Name of catalog file
+const UPLOAD_PRESET = "unsigned_products";      // images
+const JSON_UPLOAD_PRESET = "unsigned_json";     // catalog JSON
+const JSON_FILENAME = "products";               // public_id for JSON
+const JSON_EXTENSION = "json";                  // file type
 
 // --- Elements ---
 const usernameInput = document.getElementById("username");
@@ -81,7 +81,7 @@ const imageInput = document.getElementById("imageInput");
 const previewContainer = document.getElementById("previewContainer");
 const addBtn = document.getElementById("addBtn");
 
-// --- Store all uploaded images ---
+// --- Store uploaded images ---
 let uploadedImages = [];
 
 // --- Show/Hide Password ---
@@ -95,7 +95,7 @@ function showAdmin() {
   loginForm.style.display = "none";
   adminSettings.style.display = "block";
   logoutBtn.style.display = "inline-block";
-  loadCatalog(); 
+  loadCatalog();
 }
 
 loginBtn.addEventListener("click", () => {
@@ -112,16 +112,22 @@ logoutBtn.addEventListener("click", () => {
   location.reload();
 });
 
-// --- Load existing catalog JSON from Cloudinary ---
+// --- Load catalog JSON from Cloudinary ---
 async function loadCatalog() {
   try {
-    const res = await fetch(`https://res.cloudinary.com/${CLOUD_NAME}/raw/upload/${JSON_PUBLIC_ID}.json`);
-    const data = await res.json();
-    uploadedImages = data;
+    const url = `https://res.cloudinary.com/${CLOUD_NAME}/raw/upload/${JSON_FILENAME}.${JSON_EXTENSION}?t=${Date.now()}`;
+    const res = await fetch(url);
+    if(res.ok){
+      const data = await res.json();
+      uploadedImages = data;
+    } else {
+      uploadedImages = [];
+    }
     updatePreview();
-  } catch(err) {
+  } catch(err){
     console.warn("No existing catalog found. Starting fresh.");
     uploadedImages = [];
+    updatePreview();
   }
 }
 
@@ -141,15 +147,15 @@ function updatePreview() {
       const idx = btn.getAttribute("data-index");
       uploadedImages.splice(idx, 1);
       updatePreview();
-      uploadCatalogJSON(); 
+      uploadCatalogJSON();
     });
   });
 }
 
-// --- Upload Images to Cloudinary ---
+// --- Upload images to Cloudinary ---
 imageInput.addEventListener("change", async () => {
   const files = Array.from(imageInput.files);
-  if(files.length > 10){ alert("Max 10 images at a time"); imageInput.value = ""; return; }
+  if(files.length > 10){ alert("Max 10 images"); imageInput.value = ""; return; }
 
   for(const file of files){
     const formData = new FormData();
@@ -163,26 +169,22 @@ imageInput.addEventListener("change", async () => {
       const data = await res.json();
       uploadedImages.push(data.secure_url);
       updatePreview();
-    } catch(err) { console.error("Upload error:", err); }
+    } catch(err){ console.error("Upload error:", err); }
   }
-
-  uploadCatalogJSON(); 
   imageInput.value = "";
 });
 
-// --- Manual "Add to Website" Button ---
-addBtn.addEventListener("click", () => {
-  uploadCatalogJSON();
-  alert("Catalog updated!");
-});
+// --- Add to Website (upload catalog JSON) ---
+addBtn.addEventListener("click", uploadCatalogJSON);
 
-// --- Upload Catalog JSON to Cloudinary with FIXED public_id ---
+// --- Upload catalog JSON to Cloudinary ---
 async function uploadCatalogJSON() {
   const blob = new Blob([JSON.stringify(uploadedImages, null, 2)], { type: "application/json" });
   const formData = new FormData();
-  formData.append("file", blob, JSON_FILENAME);
+  formData.append("file", blob, `${JSON_FILENAME}.${JSON_EXTENSION}`);
   formData.append("upload_preset", JSON_UPLOAD_PRESET);
-  formData.append("public_id", JSON_PUBLIC_ID); // ✅ fixed public ID
+  formData.append("public_id", JSON_FILENAME); // same public_id to overwrite
+  formData.append("overwrite", "true");        // important!
 
   try {
     const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`, {
@@ -190,9 +192,9 @@ async function uploadCatalogJSON() {
     });
     const data = await res.json();
     console.log("Catalog JSON updated:", data.secure_url);
-  } catch(err) { console.error("Failed to upload catalog JSON:", err); }
+    alert("Catalog updated successfully!");
+  } catch(err){ console.error("Failed to upload catalog JSON:", err); }
 }
 </script>
-
 </body>
 </html>
