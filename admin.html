@@ -48,6 +48,7 @@ button:hover { background: #003f5c; }
 <div id="adminSettings">
   <label>Upload Images (Max 10 at a time)</label>
   <input type="file" id="imageInput" multiple accept="image/*">
+  <button id="addBtn">Add to Website</button>
 
   <h2>Preview</h2>
   <div class="preview" id="previewContainer"></div>
@@ -77,6 +78,7 @@ const adminSettings = document.getElementById("adminSettings");
 const logoutBtn = document.getElementById("logoutBtn");
 const imageInput = document.getElementById("imageInput");
 const previewContainer = document.getElementById("previewContainer");
+const addBtn = document.getElementById("addBtn");
 
 // --- Store all uploaded images ---
 let uploadedImages = [];
@@ -112,7 +114,7 @@ logoutBtn.addEventListener("click", () => {
 // --- Load existing catalog JSON from Cloudinary ---
 async function loadCatalog() {
   try {
-    const res = await fetch(`https://res.cloudinary.com/${CLOUD_NAME}/raw/upload/v1/${JSON_FILENAME}`);
+    const res = await fetch(`https://res.cloudinary.com/${CLOUD_NAME}/raw/upload/${JSON_FILENAME}`);
     const data = await res.json();
     uploadedImages = data;
     updatePreview();
@@ -165,6 +167,12 @@ imageInput.addEventListener("change", async () => {
 
   uploadCatalogJSON(); // Update JSON after uploads
   imageInput.value = "";
+});
+
+// --- Manual "Add to Website" Button ---
+addBtn.addEventListener("click", () => {
+  uploadCatalogJSON();
+  alert("Catalog updated!");
 });
 
 // --- Upload Catalog JSON to Cloudinary ---
