@@ -34,6 +34,10 @@ const defaultProducts = [
   "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449335/phndllj2guzhcrzujvk4.jpg"
 ];
 
+// Replace with your actual Cloudinary JSON URL
+const catalogJSON = "https://res.cloudinary.com/dgmg1cubi/raw/upload/v1/products.json";
+
+// Render a single product
 function renderProduct(url){
   const div = document.createElement('div');
   div.className = 'product-card';
@@ -42,23 +46,35 @@ function renderProduct(url){
   shopGrid.appendChild(div);
 }
 
-function loadProducts(){
+// Load products from Cloudinary JSON + default products
+async function loadProducts(){
   shopGrid.innerHTML = '';
   loadingText.textContent = 'Loading products...';
 
   try {
-    let uploadedImages = JSON.parse(localStorage.getItem("uploadedImages") || "[]");
+    const res = await fetch(catalogJSON + '?t=' + new Date().getTime()); // cache-buster
+    let uploadedImages = [];
+    if(res.ok){
+      uploadedImages = await res.json();
+    }
+
     const allProducts = [...defaultProducts, ...uploadedImages];
     const uniqueProducts = [...new Set(allProducts)];
 
     if(uniqueProducts.length > 0){
       uniqueProducts.forEach(url => renderProduct(url));
       loadingText.textContent = '';
-    } else loadingText.textContent = 'No products available.';
+    } else {
+      loadingText.textContent = 'No products available.';
+    }
   } catch(err){
     console.error("Error loading products:", err);
     loadingText.textContent = 'Failed to load products.';
   }
 }
+
+// Optional: refresh every X seconds to reflect admin changes instantly
+const REFRESH_INTERVAL = 15000; // 15 seconds
+setInterval(loadProducts, REFRESH_INTERVAL);
 
 window.addEventListener('DOMContentLoaded', loadProducts);
