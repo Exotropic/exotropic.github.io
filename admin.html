@@ -80,21 +80,16 @@ const logoutBtn = document.getElementById("logoutBtn");
 
 // Show/hide password
 togglePassword.addEventListener("click", () => {
-  if(passwordInput.type === "password") {
-    passwordInput.type = "text";
-    togglePassword.textContent = "Hide Password";
-  } else {
-    passwordInput.type = "password";
-    togglePassword.textContent = "Show Password";
-  }
+  passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+  togglePassword.textContent = passwordInput.type === "password" ? "Show Password" : "Hide Password";
 });
 
-// Remember login
+// Show admin panel
 function showAdmin() {
   loginForm.style.display = "none";
   adminSettings.style.display = "block";
   logoutBtn.style.display = "inline-block";
-  updatePreview();
+  loadUploadedImages();
 }
 
 // Logout
@@ -103,10 +98,8 @@ logoutBtn.addEventListener("click", () => {
   location.reload();
 });
 
-// Check if already logged in
-if(localStorage.getItem("isLoggedIn") === "true") {
-  showAdmin();
-}
+// Check login
+if(localStorage.getItem("isLoggedIn") === "true") showAdmin();
 
 // Login functionality
 loginBtn.addEventListener("click", () => {
@@ -114,9 +107,7 @@ loginBtn.addEventListener("click", () => {
     localStorage.setItem("isLoggedIn", "true");
     showAdmin();
     alert("Login successful!");
-  } else {
-    alert("Incorrect username or password!");
-  }
+  } else alert("Incorrect username or password!");
 });
 
 // Image upload & preview
@@ -124,12 +115,16 @@ const imageInput = document.getElementById("imageInput");
 const previewContainer = document.getElementById("previewContainer");
 let uploadedImages = JSON.parse(localStorage.getItem("uploadedImages") || "[]");
 
+function loadUploadedImages() {
+  updatePreview();
+}
+
 imageInput.addEventListener("change", () => {
   const files = Array.from(imageInput.files);
   files.forEach(file => {
     const reader = new FileReader();
     reader.onload = () => {
-      uploadedImages.push(reader.result);
+      uploadedImages.push(reader.result); // keeps old images
       updatePreview();
     };
     reader.readAsDataURL(file);
