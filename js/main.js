@@ -26,6 +26,7 @@ contactToggle.addEventListener('click', () => {
 const shopGrid = document.getElementById('shopGrid');
 const loadingText = document.getElementById('loadingText');
 
+// Default products
 const defaultProducts = [
   "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449399/jtwtzk0egjizvomclm1w.jpg",
   "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449385/nomumjmwxipfh0ril8oc.jpg",
@@ -34,7 +35,7 @@ const defaultProducts = [
   "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449335/phndllj2guzhcrzujvk4.jpg"
 ];
 
-// Replace with your actual Cloudinary JSON URL
+// Cloudinary JSON catalog URL
 const catalogJSON = "https://res.cloudinary.com/dgmg1cubi/raw/upload/v1/products.json";
 
 // Render a single product
