@@ -5,44 +5,138 @@
 <title>EXOTROPIC AQUARIUM ADMIN</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body { font-family: Arial, sans-serif; padding: 20px; background: #f0f8ff; }
-h1 { text-align: center; margin-bottom: 20px; color: #001f2f; }
-input[type="file"] { margin-bottom: 10px; }
-button { padding: 10px 20px; background: #001f2f; color: #a8edea; border: none; border-radius: 5px; cursor: pointer; margin-bottom: 20px; }
-button:hover { background: #003f5c; }
-.preview { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
-.preview img { width: 150px; border-radius: 10px; border: 2px solid #001f2f; }
+body { font-family: Arial, sans-serif; padding:20px; background:#f0f8ff; }
+h1 { text-align:center; margin-bottom:20px; color:#001f2f; }
+
+/* Login form */
+#loginContainer { max-width:400px; margin:0 auto; padding:20px; background:#fff; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.2); }
+#loginContainer input { width:100%; padding:10px; margin-bottom:10px; border:1px solid #001f2f; border-radius:5px; }
+#loginContainer button { width:100%; padding:10px; background:#001f2f; color:#a8edea; border:none; border-radius:5px; cursor:pointer; }
+#loginContainer button:hover { background:#003f5c; }
+#passwordWrapper { position: relative; }
+#togglePassword {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #001f2f;
+  font-weight: bold;
+  user-select: none;
+}
+
+/* Admin container */
+#adminContainer { display:none; max-width:600px; margin:0 auto; }
+
+/* Admin styles */
+input[type="file"] { margin-bottom:10px; padding:8px; width:100%; max-width:300px; }
+button { padding:10px 20px; background:#001f2f; color:#a8edea; border:none; border-radius:5px; cursor:pointer; margin-bottom:10px; }
+button:hover { background:#003f5c; }
+.preview { display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }
+.preview img { width:150px; border-radius:10px; border:2px solid #001f2f; }
+
+/* Floating shop button */
+.floating-btn {
+  position:fixed; bottom:20px; right:20px; background:#001f2f; color:#a8edea; padding:12px 18px;
+  border-radius:50%; text-decoration:none; font-weight:bold; font-size:18px; box-shadow:0 4px 8px rgba(0,0,0,0.3); z-index:1000; transition:0.3s;
+}
+.floating-btn:hover { background:#003f5c; transform:scale(1.1); }
 </style>
 </head>
 <body>
 
 <h1>EXOTROPIC AQUARIUM ADMIN</h1>
 
-<input type="file" id="imageInput" multiple accept="image/*">
-<br>
-<button id="addBtn">Add to JSON</button>
-<button id="clearBtn">Clear All</button>
+<!-- Login form -->
+<div id="loginContainer">
+  <input type="text" id="username" placeholder="Username">
+  <div id="passwordWrapper">
+    <input type="password" id="password" placeholder="Password">
+    <span id="togglePassword">Show</span>
+  </div>
+  <button id="loginBtn">Login</button>
+</div>
 
-<h2>Preview</h2>
-<div class="preview" id="previewContainer"></div>
+<!-- Admin features -->
+<div id="adminContainer">
+  <input type="file" id="imageInput" multiple accept="image/*"><br>
+  <button id="addBtn">Add to Shop</button>
+  <button id="clearBtn">Clear All Products</button>
+  <button id="logoutBtn">Logout</button>
+
+  <h2>Preview</h2>
+  <div class="preview" id="previewContainer"></div>
+
+  <!-- Floating button to shop -->
+  <a href="index.html" class="floating-btn" title="Go to Shop">🏠</a>
+</div>
 
 <script>
-// DOM elements
+const loginContainer = document.getElementById('loginContainer');
+const adminContainer = document.getElementById('adminContainer');
+const loginBtn = document.getElementById('loginBtn');
+const usernameInput = document.getElementById('username');
+const passwordInput = document.getElementById('password');
+const togglePassword = document.getElementById('togglePassword');
+
 const imageInput = document.getElementById('imageInput');
 const previewContainer = document.getElementById('previewContainer');
 const addBtn = document.getElementById('addBtn');
 const clearBtn = document.getElementById('clearBtn');
+const logoutBtn = document.getElementById('logoutBtn');
 
-// Temporary array for preview
 let uploadedImages = [];
 
-// Preview images on selection
+// Show/hide password
+togglePassword.addEventListener('click', () => {
+  if(passwordInput.type === 'password'){
+    passwordInput.type = 'text';
+    togglePassword.textContent = 'Hide';
+  } else {
+    passwordInput.type = 'password';
+    togglePassword.textContent = 'Show';
+  }
+});
+
+// Login check
+function login() {
+  const username = usernameInput.value.trim();
+  const password = passwordInput.value.trim();
+  if(username === 'EXOTROPIC' && password === 'CANADAEXOTROPIC'){
+    localStorage.setItem('adminLoggedIn', 'true');
+    loginContainer.style.display = 'none';
+    adminContainer.style.display = 'block';
+    loadExistingImages();
+  } else {
+    alert('Incorrect username or password!');
+  }
+}
+
+loginBtn.addEventListener('click', login);
+
+// Logout
+logoutBtn.addEventListener('click', () => {
+  localStorage.removeItem('adminLoggedIn');
+  adminContainer.style.display = 'none';
+  loginContainer.style.display = 'block';
+  usernameInput.value = '';
+  passwordInput.value = '';
+});
+
+// Check if already logged in
+if(localStorage.getItem('adminLoggedIn') === 'true'){
+  loginContainer.style.display = 'none';
+  adminContainer.style.display = 'block';
+  loadExistingImages();
+}
+
+// Preview images
 imageInput.addEventListener('change', () => {
   const files = Array.from(imageInput.files);
   files.forEach(file => {
     const reader = new FileReader();
     reader.onload = () => {
-      uploadedImages.push(reader.result); // store as base64
+      uploadedImages.push(reader.result);
       updatePreview();
     };
     reader.readAsDataURL(file);
@@ -50,7 +144,6 @@ imageInput.addEventListener('change', () => {
   imageInput.value = '';
 });
 
-// Update preview container
 function updatePreview() {
   previewContainer.innerHTML = '';
   uploadedImages.forEach(url => {
@@ -60,36 +153,30 @@ function updatePreview() {
   });
 }
 
-// Add images to JSON in localStorage
+// Save to localStorage
 addBtn.addEventListener('click', () => {
   if(uploadedImages.length === 0){
     alert('No images selected!');
     return;
   }
-
-  const existingProducts = JSON.parse(localStorage.getItem('productsJSON') || '[]');
-  const newProducts = existingProducts.concat(uploadedImages.map(url => ({ image: url })));
-  localStorage.setItem('productsJSON', JSON.stringify(newProducts));
-  alert('Products saved to JSON!');
-  uploadedImages = [];
-  updatePreview();
+  localStorage.setItem('uploadedImages', JSON.stringify(uploadedImages));
+  alert('Products saved!');
 });
 
-// Clear all products
+// Clear all
 clearBtn.addEventListener('click', () => {
   if(confirm('Clear all products?')) {
-    localStorage.removeItem('productsJSON');
+    localStorage.removeItem('uploadedImages');
     uploadedImages = [];
     updatePreview();
   }
 });
 
-// Load preview from existing JSON on page load
-window.addEventListener('load', () => {
-  const existingProducts = JSON.parse(localStorage.getItem('productsJSON') || '[]');
-  uploadedImages = existingProducts.map(p => p.image);
+// Load existing images
+function loadExistingImages() {
+  uploadedImages = JSON.parse(localStorage.getItem('uploadedImages') || '[]');
   updatePreview();
-});
+}
 </script>
 
 </body>
