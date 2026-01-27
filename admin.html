@@ -64,9 +64,10 @@ const PASSWORD = "CANADAEXOTROPIC";
 
 // --- Cloudinary Settings ---
 const CLOUD_NAME = "dgmg1cubi";
-const UPLOAD_PRESET = "unsigned_products";     // For images
-const JSON_UPLOAD_PRESET = "unsigned_json";    // For catalog JSON
-const JSON_FILENAME = "products.json";         // Name of catalog file
+const UPLOAD_PRESET = "unsigned_products";     
+const JSON_UPLOAD_PRESET = "unsigned_json";    
+const JSON_PUBLIC_ID = "catalog/products";      // FIXED public ID
+const JSON_FILENAME = "products.json";          // Name of catalog file
 
 // --- Elements ---
 const usernameInput = document.getElementById("username");
@@ -94,7 +95,7 @@ function showAdmin() {
   loginForm.style.display = "none";
   adminSettings.style.display = "block";
   logoutBtn.style.display = "inline-block";
-  loadCatalog(); // Load existing images
+  loadCatalog(); 
 }
 
 loginBtn.addEventListener("click", () => {
@@ -114,7 +115,7 @@ logoutBtn.addEventListener("click", () => {
 // --- Load existing catalog JSON from Cloudinary ---
 async function loadCatalog() {
   try {
-    const res = await fetch(`https://res.cloudinary.com/${CLOUD_NAME}/raw/upload/${JSON_FILENAME}`);
+    const res = await fetch(`https://res.cloudinary.com/${CLOUD_NAME}/raw/upload/${JSON_PUBLIC_ID}.json`);
     const data = await res.json();
     uploadedImages = data;
     updatePreview();
@@ -140,7 +141,7 @@ function updatePreview() {
       const idx = btn.getAttribute("data-index");
       uploadedImages.splice(idx, 1);
       updatePreview();
-      uploadCatalogJSON(); // Update JSON after deletion
+      uploadCatalogJSON(); 
     });
   });
 }
@@ -165,7 +166,7 @@ imageInput.addEventListener("change", async () => {
     } catch(err) { console.error("Upload error:", err); }
   }
 
-  uploadCatalogJSON(); // Update JSON after uploads
+  uploadCatalogJSON(); 
   imageInput.value = "";
 });
 
@@ -175,12 +176,13 @@ addBtn.addEventListener("click", () => {
   alert("Catalog updated!");
 });
 
-// --- Upload Catalog JSON to Cloudinary ---
+// --- Upload Catalog JSON to Cloudinary with FIXED public_id ---
 async function uploadCatalogJSON() {
   const blob = new Blob([JSON.stringify(uploadedImages, null, 2)], { type: "application/json" });
   const formData = new FormData();
   formData.append("file", blob, JSON_FILENAME);
   formData.append("upload_preset", JSON_UPLOAD_PRESET);
+  formData.append("public_id", JSON_PUBLIC_ID); // ✅ fixed public ID
 
   try {
     const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`, {
