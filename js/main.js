@@ -1,6 +1,4 @@
-// =====================
-// Hamburger & Overlay
-// =====================
+// ================= MENU =================
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('nav-links');
 const overlay = document.getElementById('overlay');
@@ -15,23 +13,18 @@ overlay.addEventListener('click', () => {
   overlay.classList.remove('active');
 });
 
-// =====================
-// Contact Toggle
-// =====================
+// Contact toggle
 const contactToggle = document.getElementById('contact-toggle');
 const contactInfo = document.getElementById('contact-info');
 const contactLabel = document.getElementById('contact-label');
 
 contactToggle.addEventListener('click', () => {
   contactInfo.classList.toggle('visible');
-  contactLabel.textContent = contactInfo.classList.contains('visible')
-    ? 'Contact ▲'
-    : 'Contact ▼';
+  contactLabel.textContent =
+    contactInfo.classList.contains('visible') ? 'Contact ▲' : 'Contact ▼';
 });
 
-// =====================
-// Products from JSON
-// =====================
+// ================= PRODUCTS =================
 const shopGrid = document.getElementById('shopGrid');
 
 function renderProduct(url) {
@@ -46,26 +39,20 @@ function renderProduct(url) {
   shopGrid.appendChild(card);
 }
 
-async function loadProducts() {
-  shopGrid.innerHTML = '<p>Loading products...</p>';
-
-  try {
-    const response = await fetch('data/products.json');
-    const data = await response.json();
-
+fetch('products.json')
+  .then(response => {
+    if (!response.ok) throw new Error('JSON not found');
+    return response.json();
+  })
+  .then(data => {
     shopGrid.innerHTML = '';
-
     if (!data.products || data.products.length === 0) {
       shopGrid.innerHTML = '<p>No products available.</p>';
       return;
     }
-
     data.products.forEach(url => renderProduct(url));
-
-  } catch (error) {
-    console.error('Product load error:', error);
+  })
+  .catch(error => {
+    console.error(error);
     shopGrid.innerHTML = '<p>Failed to load products.</p>';
-  }
-}
-
-window.addEventListener('DOMContentLoaded', loadProducts);
+  });
