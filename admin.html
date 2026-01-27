@@ -7,12 +7,13 @@
 <style>
 body { font-family: Arial, sans-serif; padding: 20px; background: #f0f8ff; }
 h1 { text-align: center; color: #001f2f; margin-bottom: 20px; }
-label { display: block; margin-top: 10px; }
+
 input[type="text"], input[type="password"], input[type="file"] {
   width: 100%; padding: 8px; margin-top: 5px; border-radius: 5px; border: 1px solid #001f2f;
 }
 button { padding: 8px 12px; background: #001f2f; color: #a8edea; border: none; border-radius: 5px; cursor: pointer; margin-top: 5px; }
 button:hover { background: #003f5c; }
+
 .preview { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
 .preview-item { position: relative; }
 .preview-item img { width: 150px; border-radius: 10px; border: 2px solid #001f2f; }
@@ -28,29 +29,38 @@ button:hover { background: #003f5c; }
   transition: 0.3s;
 }
 .floating-home:hover { background: #003f5c; transform: scale(1.05); }
-.show-hide {
-  margin-top: 5px; cursor: pointer; color: #001f2f; font-size: 14px;
-  display: inline-block;
-}
+.show-hide { margin-top: 5px; cursor: pointer; color: #001f2f; font-size: 14px; display: inline-block; }
+
+/* Hidden by default */
+#adminSettings { display: none; }
+#logoutBtn { display: none; margin-top: 10px; }
 </style>
 </head>
 <body>
 
 <h1>EXOTROPIC AQUARIUM ADMIN</h1>
 
-<label>Username</label>
-<input type="text" id="username" placeholder="Enter username">
+<div id="loginForm">
+  <label>Username</label>
+  <input type="text" id="username" placeholder="Enter username">
 
-<label>Password</label>
-<input type="password" id="password" placeholder="Enter password">
-<span class="show-hide" id="togglePassword">Show Password</span>
+  <label>Password</label>
+  <input type="password" id="password" placeholder="Enter password">
+  <span class="show-hide" id="togglePassword">Show Password</span>
 
-<label>Upload Images</label>
-<input type="file" id="imageInput" multiple accept="image/*">
-<button id="addBtn">Add to Website</button>
+  <button id="loginBtn">Login</button>
+</div>
 
-<h2>Preview</h2>
-<div class="preview" id="previewContainer"></div>
+<div id="adminSettings">
+  <label>Upload Images</label>
+  <input type="file" id="imageInput" multiple accept="image/*">
+  <button id="addBtn">Add to Website</button>
+
+  <h2>Preview</h2>
+  <div class="preview" id="previewContainer"></div>
+</div>
+
+<button id="logoutBtn">Logout</button>
 
 <a href="index.html" class="floating-home" target="_blank">Go to Website</a>
 
@@ -59,11 +69,16 @@ button:hover { background: #003f5c; }
 const USERNAME = "EXOTROPIC";
 const PASSWORD = "CANADAEXOTROPIC";
 
-// Login validation & show/hide password
+// Elements
 const usernameInput = document.getElementById("username");
 const passwordInput = document.getElementById("password");
+const loginBtn = document.getElementById("loginBtn");
 const togglePassword = document.getElementById("togglePassword");
+const loginForm = document.getElementById("loginForm");
+const adminSettings = document.getElementById("adminSettings");
+const logoutBtn = document.getElementById("logoutBtn");
 
+// Show/hide password
 togglePassword.addEventListener("click", () => {
   if(passwordInput.type === "password") {
     passwordInput.type = "text";
@@ -74,11 +89,40 @@ togglePassword.addEventListener("click", () => {
   }
 });
 
+// Remember login
+function showAdmin() {
+  loginForm.style.display = "none";
+  adminSettings.style.display = "block";
+  logoutBtn.style.display = "inline-block";
+  updatePreview();
+}
+
+// Logout
+logoutBtn.addEventListener("click", () => {
+  localStorage.removeItem("isLoggedIn");
+  location.reload();
+});
+
+// Check if already logged in
+if(localStorage.getItem("isLoggedIn") === "true") {
+  showAdmin();
+}
+
+// Login functionality
+loginBtn.addEventListener("click", () => {
+  if(usernameInput.value === USERNAME && passwordInput.value === PASSWORD) {
+    localStorage.setItem("isLoggedIn", "true");
+    showAdmin();
+    alert("Login successful!");
+  } else {
+    alert("Incorrect username or password!");
+  }
+});
+
 // Image upload & preview
 const imageInput = document.getElementById("imageInput");
 const previewContainer = document.getElementById("previewContainer");
 let uploadedImages = JSON.parse(localStorage.getItem("uploadedImages") || "[]");
-updatePreview();
 
 imageInput.addEventListener("change", () => {
   const files = Array.from(imageInput.files);
@@ -105,7 +149,6 @@ function updatePreview() {
     previewContainer.appendChild(div);
   });
 
-  // Add delete functionality
   document.querySelectorAll('.delete-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const idx = btn.getAttribute('data-index');
@@ -116,12 +159,8 @@ function updatePreview() {
   });
 }
 
-// Add images to localStorage after login
+// Add images to localStorage
 document.getElementById("addBtn").addEventListener("click", () => {
-  if(usernameInput.value !== USERNAME || passwordInput.value !== PASSWORD) {
-    alert("Incorrect username or password!");
-    return;
-  }
   localStorage.setItem("uploadedImages", JSON.stringify(uploadedImages));
   alert("Images saved! They will appear on your website.");
 });
