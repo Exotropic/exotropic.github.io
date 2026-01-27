@@ -50,12 +50,19 @@ function loadProducts() {
   loadingText.textContent = 'Loading products...';
 
   try {
+    // Load previously uploaded images from localStorage
     let uploadedImages = JSON.parse(localStorage.getItem('uploadedImages') || '[]');
 
-    const productsToShow = uploadedImages.length > 0 ? uploadedImages : defaultProducts;
+    // Load previously saved products from 'products.json' if you have one
+    let savedProducts = JSON.parse(localStorage.getItem('savedProducts') || '[]');
 
-    if (productsToShow.length > 0) {
-      productsToShow.forEach(url => renderProduct(url));
+    // Combine defaultProducts + previously saved + newly uploaded
+    const allProducts = [...defaultProducts, ...savedProducts, ...uploadedImages];
+
+    if (allProducts.length > 0) {
+      // Remove duplicates just in case
+      const uniqueProducts = [...new Set(allProducts)];
+      uniqueProducts.forEach(url => renderProduct(url));
       loadingText.textContent = '';
     } else {
       loadingText.textContent = 'No products available.';
