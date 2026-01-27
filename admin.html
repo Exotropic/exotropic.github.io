@@ -48,6 +48,7 @@ button:hover { background: #003f5c; }
 <div id="adminSettings">
   <label>Upload Images (Max 10 at a time)</label>
   <input type="file" id="imageInput" multiple accept="image/*">
+  <button id="addBtn">Add to Website</button>
 
   <h2>Preview</h2>
   <div class="preview" id="previewContainer"></div>
@@ -65,7 +66,7 @@ const PASSWORD = "CANADAEXOTROPIC";
 const CLOUD_NAME = "dgmg1cubi";
 const UPLOAD_PRESET = "unsigned_products";     // For images
 const JSON_UPLOAD_PRESET = "unsigned_json";    // For catalog JSON
-const JSON_FILENAME = "products.json";
+const JSON_FILENAME = "products.json";         // Name of catalog file
 
 // --- Elements ---
 const usernameInput = document.getElementById("username");
@@ -77,8 +78,9 @@ const adminSettings = document.getElementById("adminSettings");
 const logoutBtn = document.getElementById("logoutBtn");
 const imageInput = document.getElementById("imageInput");
 const previewContainer = document.getElementById("previewContainer");
+const addBtn = document.getElementById("addBtn");
 
-// --- Store uploaded images ---
+// --- Store all uploaded images ---
 let uploadedImages = [];
 
 // --- Show/Hide Password ---
@@ -92,7 +94,7 @@ function showAdmin() {
   loginForm.style.display = "none";
   adminSettings.style.display = "block";
   logoutBtn.style.display = "inline-block";
-  loadCatalog(); // Load existing images from JSON
+  loadCatalog(); // Load existing images
 }
 
 loginBtn.addEventListener("click", () => {
@@ -112,21 +114,21 @@ logoutBtn.addEventListener("click", () => {
 // --- Load existing catalog JSON from Cloudinary ---
 async function loadCatalog() {
   try {
-    const res = await fetch(`https://res.cloudinary.com/${CLOUD_NAME}/raw/upload/${JSON_FILENAME}?t=${Date.now()}`);
+    const res = await fetch(`https://res.cloudinary.com/${CLOUD_NAME}/raw/upload/${JSON_FILENAME}?t=${new Date().getTime()}`);
     if(res.ok){
-      uploadedImages = await res.json();
+      const data = await res.json();
+      uploadedImages = data;
     } else {
       uploadedImages = [];
     }
     updatePreview();
   } catch(err) {
-    console.warn("No catalog found. Starting fresh.");
+    console.warn("No existing catalog found. Starting fresh.");
     uploadedImages = [];
-    updatePreview();
   }
 }
 
-// --- Update preview ---
+// --- Update preview with delete confirmation ---
 function updatePreview() {
   previewContainer.innerHTML = "";
   uploadedImages.forEach((url, index) => {
@@ -138,11 +140,14 @@ function updatePreview() {
   });
 
   document.querySelectorAll(".delete-btn").forEach(btn => {
-    btn.addEventListener("click", async () => {
+    btn.addEventListener("click", () => {
       const idx = btn.getAttribute("data-index");
-      uploadedImages.splice(idx, 1);
-      updatePreview();
-      await uploadCatalogJSON();
+      const confirmDelete = confirm("Are you sure you want to delete this image?");
+      if (confirmDelete) {
+        uploadedImages.splice(idx, 1);
+        updatePreview();
+        uploadCatalogJSON();
+      }
     });
   });
 }
@@ -164,10 +169,17 @@ imageInput.addEventListener("change", async () => {
       const data = await res.json();
       uploadedImages.push(data.secure_url);
       updatePreview();
-      await uploadCatalogJSON(); // Immediately update catalog
-    } catch(err){ console.error("Upload error:", err); }
+    } catch(err) { console.error("Upload error:", err); }
   }
+
+  uploadCatalogJSON(); // Update JSON automatically
   imageInput.value = "";
+});
+
+// --- Manual "Add to Website" Button ---
+addBtn.addEventListener("click", () => {
+  uploadCatalogJSON();
+  alert("Catalog updated!");
 });
 
 // --- Upload Catalog JSON to Cloudinary ---
