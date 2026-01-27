@@ -28,31 +28,24 @@ contactToggle.addEventListener('click', () => {
 const shopGrid = document.getElementById('shopGrid');
 
 function renderProduct(url) {
-  const card = document.createElement('div');
-  card.className = 'product-card';
-  card.innerHTML = `
+  const div = document.createElement('div');
+  div.className = 'product-card';
+  div.innerHTML = `
     <img src="${url}" alt="Product">
     <a href="https://m.me/ExoTropicAquarium" target="_blank" class="buy-btn">
       Buy via Messenger
     </a>
   `;
-  shopGrid.appendChild(card);
+  shopGrid.appendChild(div);
 }
 
-fetch('products.json')
-  .then(response => {
-    if (!response.ok) throw new Error('JSON not found');
-    return response.json();
-  })
+fetch('./products.json')
+  .then(res => res.json())
   .then(data => {
     shopGrid.innerHTML = '';
-    if (!data.products || data.products.length === 0) {
-      shopGrid.innerHTML = '<p>No products available.</p>';
-      return;
-    }
-    data.products.forEach(url => renderProduct(url));
+    data.products.forEach(renderProduct);
   })
-  .catch(error => {
-    console.error(error);
-    shopGrid.innerHTML = '<p>Failed to load products.</p>';
+  .catch(err => {
+    console.error(err);
+    shopGrid.innerHTML = '<p>Products failed to load</p>';
   });
