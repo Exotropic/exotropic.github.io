@@ -7,13 +7,11 @@
 <style>
 body { font-family: Arial, sans-serif; padding: 20px; background: #f0f8ff; }
 h1 { text-align: center; color: #001f2f; margin-bottom: 20px; }
-
 input[type="text"], input[type="password"], input[type="file"] {
   width: 100%; padding: 8px; margin-top: 5px; border-radius: 5px; border: 1px solid #001f2f;
 }
 button { padding: 8px 12px; background: #001f2f; color: #a8edea; border: none; border-radius: 5px; cursor: pointer; margin-top: 5px; }
 button:hover { background: #003f5c; }
-
 .preview { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
 .preview-item { position: relative; }
 .preview-item img { width: 150px; border-radius: 10px; border: 2px solid #001f2f; }
@@ -30,8 +28,6 @@ button:hover { background: #003f5c; }
 }
 .floating-home:hover { background: #003f5c; transform: scale(1.05); }
 .show-hide { margin-top: 5px; cursor: pointer; color: #001f2f; font-size: 14px; display: inline-block; }
-
-/* Hidden by default */
 #adminSettings { display: none; }
 #logoutBtn { display: none; margin-top: 10px; }
 </style>
@@ -43,11 +39,9 @@ button:hover { background: #003f5c; }
 <div id="loginForm">
   <label>Username</label>
   <input type="text" id="username" placeholder="Enter username">
-
   <label>Password</label>
   <input type="password" id="password" placeholder="Enter password">
   <span class="show-hide" id="togglePassword">Show Password</span>
-
   <button id="loginBtn">Login</button>
 </div>
 
@@ -61,13 +55,16 @@ button:hover { background: #003f5c; }
 </div>
 
 <button id="logoutBtn">Logout</button>
-
 <a href="index.html" class="floating-home" target="_blank">Go to Website</a>
 
 <script>
-// Credentials
+// Admin credentials
 const USERNAME = "EXOTROPIC";
 const PASSWORD = "CANADAEXOTROPIC";
+
+// Cloudinary settings
+const CLOUD_NAME = "dgmg1cubi";
+const UPLOAD_PRESET = "unsigned_products";
 
 // Elements
 const usernameInput = document.getElementById("username");
@@ -78,19 +75,34 @@ const loginForm = document.getElementById("loginForm");
 const adminSettings = document.getElementById("adminSettings");
 const logoutBtn = document.getElementById("logoutBtn");
 
+const imageInput = document.getElementById("imageInput");
+const previewContainer = document.getElementById("previewContainer");
+
+let uploadedImages = JSON.parse(localStorage.getItem("uploadedImages") || "[]");
+
 // Show/hide password
 togglePassword.addEventListener("click", () => {
   passwordInput.type = passwordInput.type === "password" ? "text" : "password";
   togglePassword.textContent = passwordInput.type === "password" ? "Show Password" : "Hide Password";
 });
 
-// Show admin panel
+// Login
 function showAdmin() {
   loginForm.style.display = "none";
   adminSettings.style.display = "block";
   logoutBtn.style.display = "inline-block";
-  loadUploadedImages();
+  updatePreview();
 }
+
+loginBtn.addEventListener("click", () => {
+  if(usernameInput.value === USERNAME && passwordInput.value === PASSWORD){
+    localStorage.setItem("isLoggedIn", "true");
+    showAdmin();
+  } else alert("Incorrect username or password!");
+});
+
+// Auto login if already logged in
+if(localStorage.getItem("isLoggedIn") === "true") showAdmin();
 
 // Logout
 logoutBtn.addEventListener("click", () => {
@@ -98,55 +110,19 @@ logoutBtn.addEventListener("click", () => {
   location.reload();
 });
 
-// Check login
-if(localStorage.getItem("isLoggedIn") === "true") showAdmin();
-
-// Login functionality
-loginBtn.addEventListener("click", () => {
-  if(usernameInput.value === USERNAME && passwordInput.value === PASSWORD) {
-    localStorage.setItem("isLoggedIn", "true");
-    showAdmin();
-    alert("Login successful!");
-  } else alert("Incorrect username or password!");
-});
-
-// Image upload & preview
-const imageInput = document.getElementById("imageInput");
-const previewContainer = document.getElementById("previewContainer");
-let uploadedImages = JSON.parse(localStorage.getItem("uploadedImages") || "[]");
-
-function loadUploadedImages() {
-  updatePreview();
-}
-
-imageInput.addEventListener("change", () => {
-  const files = Array.from(imageInput.files);
-  files.forEach(file => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      uploadedImages.push(reader.result); // keeps old images
-      updatePreview();
-    };
-    reader.readAsDataURL(file);
-  });
-  imageInput.value = '';
-});
-
-function updatePreview() {
-  previewContainer.innerHTML = '';
+// Preview and delete
+function updatePreview(){
+  previewContainer.innerHTML = "";
   uploadedImages.forEach((url, index) => {
-    const div = document.createElement('div');
-    div.className = 'preview-item';
-    div.innerHTML = `
-      <img src="${url}" alt="Product">
-      <button class="delete-btn" data-index="${index}">&times;</button>
-    `;
+    const div = document.createElement("div");
+    div.className = "preview-item";
+    div.innerHTML = `<img src="${url}" alt="Product"><button class="delete-btn" data-index="${index}">&times;</button>`;
     previewContainer.appendChild(div);
   });
 
-  document.querySelectorAll('.delete-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const idx = btn.getAttribute('data-index');
+  document.querySelectorAll(".delete-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const idx = btn.getAttribute("data-index");
       uploadedImages.splice(idx, 1);
       localStorage.setItem("uploadedImages", JSON.stringify(uploadedImages));
       updatePreview();
@@ -154,12 +130,33 @@ function updatePreview() {
   });
 }
 
-// Add images to localStorage
+// Upload images to Cloudinary
+imageInput.addEventListener("change", () => {
+  const files = Array.from(imageInput.files);
+  files.forEach(file => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", UPLOAD_PRESET);
+
+    fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`, {
+      method: "POST",
+      body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+      uploadedImages.push(data.secure_url);
+      updatePreview();
+    })
+    .catch(err => console.error("Upload error:", err));
+  });
+  imageInput.value = "";
+});
+
+// Save images to localStorage
 document.getElementById("addBtn").addEventListener("click", () => {
   localStorage.setItem("uploadedImages", JSON.stringify(uploadedImages));
   alert("Images saved! They will appear on your website.");
 });
 </script>
-
 </body>
 </html>
