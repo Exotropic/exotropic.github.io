@@ -35,7 +35,7 @@ const defaultProducts = [
   "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449335/phndllj2guzhcrzujvk4.jpg"
 ];
 
-// Cloudinary JSON catalog URL
+// Cloudinary JSON catalog URL (make sure this is publicly accessible)
 const catalogJSON = "https://res.cloudinary.com/dgmg1cubi/raw/upload/v1/products.json";
 
 // Render a single product
@@ -53,12 +53,13 @@ async function loadProducts(){
   loadingText.textContent = 'Loading products...';
 
   try {
-    const res = await fetch(catalogJSON + '?t=' + new Date().getTime()); // cache-buster
     let uploadedImages = [];
+    const res = await fetch(catalogJSON + '?t=' + new Date().getTime()); // cache-buster
     if(res.ok){
       uploadedImages = await res.json();
     }
 
+    // Merge default products + admin-uploaded products
     const allProducts = [...defaultProducts, ...uploadedImages];
     const uniqueProducts = [...new Set(allProducts)];
 
@@ -74,7 +75,7 @@ async function loadProducts(){
   }
 }
 
-// Optional: refresh every X seconds to reflect admin changes instantly
+// Refresh every X seconds to reflect admin changes automatically
 const REFRESH_INTERVAL = 15000; // 15 seconds
 setInterval(loadProducts, REFRESH_INTERVAL);
 
