@@ -26,7 +26,6 @@ contactToggle.addEventListener('click', () => {
 const shopGrid = document.getElementById('shopGrid');
 const loadingText = document.getElementById('loadingText');
 
-// Default products (in case nothing uploaded yet)
 const defaultProducts = [
   "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449399/jtwtzk0egjizvomclm1w.jpg",
   "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449385/nomumjmwxipfh0ril8oc.jpg",
@@ -35,40 +34,29 @@ const defaultProducts = [
   "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449335/phndllj2guzhcrzujvk4.jpg"
 ];
 
-function renderProduct(url) {
+function renderProduct(url){
   const div = document.createElement('div');
   div.className = 'product-card';
-  div.innerHTML = `
-    <img src="${url}" alt="Product">
-    <a href="https://m.me/ExoTropicAquarium" target="_blank" class="buy-btn">Buy via Messenger</a>
-  `;
+  div.innerHTML = `<img src="${url}" alt="Product">
+                   <a href="https://m.me/ExoTropicAquarium" target="_blank" class="buy-btn">Buy via Messenger</a>`;
   shopGrid.appendChild(div);
 }
 
-function loadProducts() {
+function loadProducts(){
   shopGrid.innerHTML = '';
   loadingText.textContent = 'Loading products...';
 
   try {
-    // Load previously uploaded images from localStorage
-    let uploadedImages = JSON.parse(localStorage.getItem('uploadedImages') || '[]');
+    let uploadedImages = JSON.parse(localStorage.getItem("uploadedImages") || "[]");
+    const allProducts = [...defaultProducts, ...uploadedImages];
+    const uniqueProducts = [...new Set(allProducts)];
 
-    // Load previously saved products from 'products.json' if you have one
-    let savedProducts = JSON.parse(localStorage.getItem('savedProducts') || '[]');
-
-    // Combine defaultProducts + previously saved + newly uploaded
-    const allProducts = [...defaultProducts, ...savedProducts, ...uploadedImages];
-
-    if (allProducts.length > 0) {
-      // Remove duplicates just in case
-      const uniqueProducts = [...new Set(allProducts)];
+    if(uniqueProducts.length > 0){
       uniqueProducts.forEach(url => renderProduct(url));
       loadingText.textContent = '';
-    } else {
-      loadingText.textContent = 'No products available.';
-    }
-  } catch (error) {
-    console.error('Error loading products:', error);
+    } else loadingText.textContent = 'No products available.';
+  } catch(err){
+    console.error("Error loading products:", err);
     loadingText.textContent = 'Failed to load products.';
   }
 }
