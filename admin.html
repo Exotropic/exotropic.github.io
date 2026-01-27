@@ -48,7 +48,6 @@ button:hover { background: #003f5c; }
 <div id="adminSettings">
   <label>Upload Images (Max 10 at a time)</label>
   <input type="file" id="imageInput" multiple accept="image/*">
-  <button id="addBtn">Add to Website</button>
 
   <h2>Preview</h2>
   <div class="preview" id="previewContainer"></div>
@@ -58,15 +57,17 @@ button:hover { background: #003f5c; }
 <a href="index.html" class="floating-home" target="_blank">Go to Website</a>
 
 <script>
-// Admin credentials
+// --- Admin Credentials ---
 const USERNAME = "EXOTROPIC";
 const PASSWORD = "CANADAEXOTROPIC";
 
-// Cloudinary settings
+// --- Cloudinary Settings ---
 const CLOUD_NAME = "dgmg1cubi";
-const UPLOAD_PRESET = "unsigned_products";
+const UPLOAD_PRESET = "unsigned_products";     // For images
+const JSON_UPLOAD_PRESET = "unsigned_json";    // For catalog JSON
+const JSON_FILENAME = "products.json";         // Name of catalog file
 
-// Elements
+// --- Elements ---
 const usernameInput = document.getElementById("username");
 const passwordInput = document.getElementById("password");
 const loginBtn = document.getElementById("loginBtn");
@@ -77,21 +78,21 @@ const logoutBtn = document.getElementById("logoutBtn");
 const imageInput = document.getElementById("imageInput");
 const previewContainer = document.getElementById("previewContainer");
 
-// Load previously uploaded images from localStorage
-let uploadedImages = JSON.parse(localStorage.getItem("uploadedImages") || "[]");
+// --- Store all uploaded images ---
+let uploadedImages = [];
 
-// Show/hide password
+// --- Show/Hide Password ---
 togglePassword.addEventListener("click", () => {
   passwordInput.type = passwordInput.type === "password" ? "text" : "password";
   togglePassword.textContent = passwordInput.type === "password" ? "Show Password" : "Hide Password";
 });
 
-// Login functions
+// --- Login ---
 function showAdmin() {
   loginForm.style.display = "none";
   adminSettings.style.display = "block";
   logoutBtn.style.display = "inline-block";
-  updatePreview();
+  loadCatalog(); // Load existing images
 }
 
 loginBtn.addEventListener("click", () => {
@@ -108,65 +109,79 @@ logoutBtn.addEventListener("click", () => {
   location.reload();
 });
 
-// Update preview function
+// --- Load existing catalog JSON from Cloudinary ---
+async function loadCatalog() {
+  try {
+    const res = await fetch(`https://res.cloudinary.com/${CLOUD_NAME}/raw/upload/v1/${JSON_FILENAME}`);
+    const data = await res.json();
+    uploadedImages = data;
+    updatePreview();
+  } catch(err) {
+    console.warn("No existing catalog found. Starting fresh.");
+    uploadedImages = [];
+  }
+}
+
+// --- Update preview ---
 function updatePreview() {
   previewContainer.innerHTML = "";
   uploadedImages.forEach((url, index) => {
     const div = document.createElement("div");
     div.className = "preview-item";
-    div.innerHTML = `<img src="${url}" alt="Product"><button class="delete-btn" data-index="${index}">&times;</button>`;
+    div.innerHTML = `<img src="${url}" alt="Product">
+                     <button class="delete-btn" data-index="${index}">&times;</button>`;
     previewContainer.appendChild(div);
   });
 
   document.querySelectorAll(".delete-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       const idx = btn.getAttribute("data-index");
-      uploadedImages.splice(idx, 1); // Remove from array
-      localStorage.setItem("uploadedImages", JSON.stringify(uploadedImages)); // Save updated array
-      updatePreview(); // Refresh preview
+      uploadedImages.splice(idx, 1);
+      updatePreview();
+      uploadCatalogJSON(); // Update JSON after deletion
     });
   });
 }
 
-// Upload images to Cloudinary with a max of 10 at a time
-imageInput.addEventListener("change", () => {
+// --- Upload Images to Cloudinary ---
+imageInput.addEventListener("change", async () => {
   const files = Array.from(imageInput.files);
+  if(files.length > 10){ alert("Max 10 images at a time"); imageInput.value = ""; return; }
 
-  if(files.length > 10){
-    alert("You can only upload up to 10 images at a time.");
-    imageInput.value = "";
-    return;
-  }
-
-  files.forEach(file => {
+  for(const file of files){
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", UPLOAD_PRESET);
 
-    fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`, {
-      method: "POST",
-      body: formData
-    })
-    .then(res => res.json())
-    .then(data => {
-      uploadedImages.push(data.secure_url); // Add to array
-      localStorage.setItem("uploadedImages", JSON.stringify(uploadedImages)); // Persist
-      updatePreview(); // Show immediately
-    })
-    .catch(err => console.error("Upload error:", err));
-  });
+    try {
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`, {
+        method: "POST", body: formData
+      });
+      const data = await res.json();
+      uploadedImages.push(data.secure_url);
+      updatePreview();
+    } catch(err) { console.error("Upload error:", err); }
+  }
 
-  imageInput.value = ""; // Clear file input
+  uploadCatalogJSON(); // Update JSON after uploads
+  imageInput.value = "";
 });
 
-// Initial render on page load
-updatePreview();
+// --- Upload Catalog JSON to Cloudinary ---
+async function uploadCatalogJSON() {
+  const blob = new Blob([JSON.stringify(uploadedImages, null, 2)], { type: "application/json" });
+  const formData = new FormData();
+  formData.append("file", blob, JSON_FILENAME);
+  formData.append("upload_preset", JSON_UPLOAD_PRESET);
 
-// Save button ensures persistent storage
-document.getElementById("addBtn").addEventListener("click", () => {
-  localStorage.setItem("uploadedImages", JSON.stringify(uploadedImages));
-  alert("All uploaded images saved. You can delete any image anytime using the preview delete button.");
-});
+  try {
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`, {
+      method: "POST", body: formData
+    });
+    const data = await res.json();
+    console.log("Catalog JSON updated:", data.secure_url);
+  } catch(err) { console.error("Failed to upload catalog JSON:", err); }
+}
 </script>
 
 </body>
