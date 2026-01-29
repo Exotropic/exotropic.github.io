@@ -17,7 +17,7 @@
   z-index: -1;
 }
 
-/* Hero Section */
+/* Hero */
 .hero {
   padding: 100px 20px;
   text-align: center;
@@ -28,7 +28,6 @@
 
 .hero-logo {
   width: 225px;
-  height: auto;
   margin-bottom: 20px;
   filter: drop-shadow(0 0 10px #FFD700);
   animation: fadeUp 1s ease-out forwards, floatLogo 4s ease-in-out infinite;
