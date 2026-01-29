@@ -8,60 +8,63 @@
 </head>
 <body>
 
-<!-- Background -->
-<div class="background"></div>
+  <!-- Background -->
+  <div class="background"></div>
 
-<!-- Hamburger menu -->
-<div class="hamburger" id="hamburger">
-  <span></span><span></span><span></span>
-</div>
+  <!-- Hamburger menu -->
+  <div class="hamburger" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 
-<!-- Sliding menu -->
-<nav class="nav-links" id="nav-links">
-  <div class="menu-content">
-    <div class="menu-header">MENU</div>
-    <a href="#home">Home</a>
-    <a href="#shop">Shop</a>
+  <!-- Sliding menu -->
+  <nav class="nav-links" id="nav-links">
+    <div class="menu-content">
+      <div class="menu-header">MENU</div>
+      <a href="#home">Home</a>
+      <a href="#shop">Shop</a>
 
-    <div class="menu-item" id="contact-toggle">
-      <span id="contact-label">Contact ▼</span>
-      <div class="menu-contact" id="contact-info">
-        <a href="tel:16132554540">📞 Phone: 613-255-4540</a>
-        <a href="mailto:Exotropic1@gmail.com">📧 Email: Exotropic1@gmail.com</a>
-        <a href="https://www.google.com/maps/place/Ottawa,+Ontario" target="_blank">📍 Location: Ottawa, Ontario</a>
-        <a href="https://www.facebook.com/share/1ANqkqmvcR/" target="_blank">📘 Facebook Page: Exo Tropic</a>
+      <div class="menu-item" id="contact-toggle">
+        <span id="contact-label">Contact ▼</span>
+        <div class="menu-contact" id="contact-info">
+          <a href="tel:16132554540">📞 Phone: 613-255-4540</a>
+          <a href="mailto:Exotropic1@gmail.com">📧 Email: Exotropic1@gmail.com</a>
+          <a href="https://www.google.com/maps/place/Ottawa,+Ontario" target="_blank">📍 Location: Ottawa, Ontario</a>
+          <a href="https://www.facebook.com/share/1ANqkqmvcR/" target="_blank">📘 Facebook Page: Exo Tropic</a>
+        </div>
       </div>
+
+      <a href="https://m.me/ExoTropicAquarium" target="_blank">Messenger</a>
     </div>
+  </nav>
 
-    <a href="https://m.me/ExoTropicAquarium" target="_blank">Messenger</a>
-  </div>
-</nav>
+  <!-- Overlay -->
+  <div id="overlay"></div>
 
-<!-- Overlay -->
-<div id="overlay"></div>
+  <!-- Hero Section -->
+  <header id="home" class="hero">
+    <img src="images/exotropic-logo.png" alt="Exotropic Logo" class="hero-logo">
+    <h1>EXOTROPIC AQUARIUM</h1>
+    <p>Premium Aquatic Products • Buy via Messenger</p>
+    <button id="shopBtn" class="buy-btn" type="button">Shop Now</button>
+  </header>
 
-<!-- Hero -->
-<header id="home" class="hero">
-  <img src="images/exotropic-logo.png" alt="Exotropic Logo" class="hero-logo">
-  <h1>EXOTROPIC AQUARIUM</h1>
-  <p>Premium Aquatic Products • Buy via Messenger</p>
-  <button id="shopBtn" class="buy-btn">Shop Now</button>
-</header>
+  <!-- Shop Section (hidden initially) -->
+  <section class="shop" id="shop">
+    <h2 class="section-title">🛒 Our Products</h2>
+    <div class="shop-grid" id="shopGrid">
+      <p id="loadingText">Loading products...</p>
+    </div>
+  </section>
 
-<!-- Shop section (hidden initially) -->
-<section class="shop" id="shop">
-  <h2 class="section-title">🛒 Our Products</h2>
-  <div class="shop-grid" id="shopGrid">
-    <p id="loadingText">Loading products...</p>
-  </div>
-</section>
+  <!-- Footer -->
+  <footer>© 2026 EXOTROPIC AQUARIUM</footer>
 
-<!-- Footer -->
-<footer>© 2026 EXOTROPIC AQUARIUM</footer>
+  <!-- Messenger Button -->
+  <a href="https://m.me/ExoTropicAquarium" target="_blank" class="messenger-btn">Buy via Messenger</a>
 
-<!-- Messenger button -->
-<a href="https://m.me/ExoTropicAquarium" target="_blank" class="messenger-btn">Buy via Messenger</a>
-
-<script src="js/main.js"></script>
+  <!-- JS -->
+  <script src="js/main.js"></script>
 </body>
 </html>
