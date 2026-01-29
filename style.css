@@ -60,29 +60,17 @@
 }
 
 @keyframes fadeUp {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes floatLogo {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-  100% {
-    transform: translateY(0);
-  }
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
 }
 
-/* Hamburger Menu */
+/* Hamburger */
 .hamburger {
   position: fixed;
   top: 15px;
@@ -127,9 +115,7 @@
   color: #FFD700;
 }
 
-.nav-links.open {
-  left: 0;
-}
+.nav-links.open { left: 0; }
 
 .menu-header {
   font-weight: bold;
@@ -170,9 +156,7 @@
   border-left: 2px solid rgba(255, 215, 0, 0.3);
 }
 
-.menu-contact.visible {
-  display: flex;
-}
+.menu-contact.visible { display: flex; }
 
 /* Overlay */
 #overlay {
@@ -186,11 +170,9 @@
   z-index: 3400;
 }
 
-#overlay.active {
-  display: block;
-}
+#overlay.active { display: block; }
 
-/* Shop Section (hidden initially) */
+/* Shop Section */
 .shop {
   padding: 60px 20px;
   color: #FFD700;
@@ -198,15 +180,17 @@
   z-index: 1;
   opacity: 0;
   transform: translateY(20px);
+  display: none; /* hidden initially */
   transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
 .shop.visible {
+  display: block;
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Section Title */
+/* Section title */
 .section-title {
   text-align: center;
   margin-bottom: 30px;
@@ -222,7 +206,7 @@
   color: #FFF8DC;
 }
 
-/* Shop Grid and Product Cards */
+/* Products Grid */
 .shop-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -241,10 +225,7 @@
   transition: 0.5s;
 }
 
-.product-card img {
-  width: 100%;
-  border-radius: 8px;
-}
+.product-card img { width: 100%; border-radius: 8px; }
 
 .buy-btn {
   display: inline-block;
@@ -295,16 +276,8 @@ footer {
 
 /* Responsive */
 @media screen and (max-width: 480px) {
-  .hero-logo {
-    width: 180px;
-  }
-  .hero h1 {
-    font-size: 36px;
-  }
-  .hero p {
-    font-size: 16px;
-  }
-  .section-title {
-    font-size: 24px;
-  }
+  .hero-logo { width: 180px; }
+  .hero h1 { font-size: 36px; }
+  .hero p { font-size: 16px; }
+  .section-title { font-size: 24px; }
 }
