@@ -16,6 +16,26 @@
       z-index:-1;
     }
 
+    /* Top-left logo */
+    .logo {
+      width:100px; /* adjust size */
+      height:auto;
+      display:block;
+    }
+    .logo-link {
+      position: fixed;
+      top:15px;
+      left:15px;
+      z-index:2500; /* above hamburger */
+    }
+
+    /* Homepage hero logo */
+    .hero-logo {
+      width:150px;
+      height:auto;
+      margin-bottom:20px;
+    }
+
     /* Hamburger */
     .hamburger {
       position: fixed; top: 20px; left: 20px;
@@ -62,8 +82,8 @@
     /* Shop section */
     .shop { padding:60px 20px; color:#001f2f; position: relative; z-index:1; }
     .section-title { text-align:center; margin-bottom:30px; }
-    .shop-grid { display:grid; grid-template-columns: repeat(auto-fill,minmax(150px,1fr)); gap:20px; }
-    .product-card { background: rgba(0,0,0,0.8); padding:10px; border-radius:10px; text-align:center; color:white; position:relative; }
+    .shop-grid { display:grid; grid-template-columns: repeat(auto-fill,minmax(150px,1fr)); gap:20px; position:relative; z-index:1; }
+    .product-card { background: rgba(0,0,0,0.8); padding:10px; border-radius:10px; text-align:center; color:white; position:relative; z-index:1; }
     .product-card img { width:100%; border-radius:8px; }
     .buy-btn { display:inline-block; margin-top:10px; padding:5px 10px; background:#001f2f; color:#a8edea; border-radius:5px; text-decoration:none; font-weight:bold; transition:0.3s; }
     .buy-btn:hover { background:#003f5c; color:#fff; }
@@ -79,6 +99,11 @@
 <body>
 
 <div class="background"></div>
+
+<!-- Top-left logo -->
+<a href="index.html" class="logo-link">
+  <img src="images/exotropic-logo.png" alt="Exotropic Aquarium Logo" class="logo">
+</a>
 
 <!-- Hamburger menu -->
 <div class="hamburger" id="hamburger">
@@ -109,13 +134,16 @@
 <!-- Overlay -->
 <div id="overlay"></div>
 
-<!-- Hero -->
+<!-- Hero Section with homepage logo -->
 <header id="home" class="hero">
+  <a href="index.html">
+    <img src="images/exotropic-logo.png" alt="Exotropic Aquarium Logo" class="hero-logo">
+  </a>
   <h1>EXOTROPIC AQUARIUM</h1>
   <p>Premium Aquatic Products • Buy via Messenger</p>
 </header>
 
-<!-- Shop -->
+<!-- Shop Section -->
 <section class="shop" id="shop">
   <h2 class="section-title">🛒 Our Products</h2>
   <div class="shop-grid" id="shopGrid">
@@ -126,7 +154,7 @@
 <!-- Footer -->
 <footer>© 2026 EXOTROPIC AQUARIUM</footer>
 
-<!-- Messenger -->
+<!-- Messenger Button -->
 <a href="https://m.me/ExoTropicAquarium" target="_blank" class="messenger-btn">Buy via Messenger</a>
 
 <script src="js/main.js"></script>
