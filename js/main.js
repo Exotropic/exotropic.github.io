@@ -22,11 +22,15 @@ contactToggle.addEventListener('click', () => {
   contactLabel.textContent = contactInfo.classList.contains('visible') ? "Contact ▲" : "Contact ▼";
 });
 
-// Shop elements
+// Sections
 const shopBtn = document.getElementById('shopBtn');
 const shopSection = document.getElementById('shop');
 const shopGrid = document.getElementById('shopGrid');
 const loadingText = document.getElementById('loadingText');
+const homeSection = document.getElementById('home');
+const backBtn = document.getElementById('backBtn');
+const shopMenu = document.getElementById('shopMenu');
+const homeMenu = document.getElementById('homeMenu');
 
 // Products
 const defaultProducts = [
@@ -76,10 +80,34 @@ function fadeInProducts(){
   });
 }
 
-// Show shop on button click
-shopBtn.addEventListener('click', async () => {
-  shopSection.classList.add('visible'); // show section
-  shopSection.scrollIntoView({ behavior: 'smooth' });
-  await loadProducts(); // load products dynamically
-  fadeInProducts(); // fade-in animation
+// Show shop section
+async function showShop(){
+  homeSection.style.display='none';
+  shopSection.classList.add('visible');
+  shopSection.scrollIntoView({behavior:'smooth'});
+  await loadProducts();
+  fadeInProducts();
+}
+
+// Show home section
+function showHome(){
+  shopSection.classList.remove('visible');
+  homeSection.style.display='block';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// Button events
+shopBtn.addEventListener('click', showShop);
+backBtn.addEventListener('click', showHome);
+
+// Hamburger menu events
+shopMenu.addEventListener('click', () => {
+  navLinks.classList.remove('open');
+  overlay.classList.remove('active');
+  showShop();
+});
+homeMenu.addEventListener('click', () => {
+  navLinks.classList.remove('open');
+  overlay.classList.remove('active');
+  showHome();
 });
