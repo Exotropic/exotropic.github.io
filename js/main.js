@@ -7,6 +7,7 @@ hamburger.addEventListener('click', () => {
   navLinks.classList.toggle('open');
   overlay.classList.toggle('active');
 });
+
 overlay.addEventListener('click', () => {
   navLinks.classList.remove('open');
   overlay.classList.remove('active');
@@ -26,7 +27,6 @@ contactToggle.addEventListener('click', () => {
 const shopGrid = document.getElementById('shopGrid');
 const loadingText = document.getElementById('loadingText');
 
-// Default products
 const defaultProducts = [
   "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449399/jtwtzk0egjizvomclm1w.jpg",
   "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449385/nomumjmwxipfh0ril8oc.jpg",
@@ -35,10 +35,8 @@ const defaultProducts = [
   "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449335/phndllj2guzhcrzujvk4.jpg"
 ];
 
-// Cloudinary JSON catalog URL (make sure this is publicly accessible)
 const catalogJSON = "https://res.cloudinary.com/dgmg1cubi/raw/upload/v1/products.json";
 
-// Render a single product
 function renderProduct(url){
   const div = document.createElement('div');
   div.className = 'product-card';
@@ -47,19 +45,15 @@ function renderProduct(url){
   shopGrid.appendChild(div);
 }
 
-// Load products from Cloudinary JSON + default products
 async function loadProducts(){
-  shopGrid.innerHTML = '';
   loadingText.textContent = 'Loading products...';
+  shopGrid.innerHTML = '';
 
   try {
     let uploadedImages = [];
-    const res = await fetch(catalogJSON + '?t=' + new Date().getTime()); // cache-buster
-    if(res.ok){
-      uploadedImages = await res.json();
-    }
+    const res = await fetch(catalogJSON + '?t=' + new Date().getTime());
+    if(res.ok) uploadedImages = await res.json();
 
-    // Merge default products + admin-uploaded products
     const allProducts = [...defaultProducts, ...uploadedImages];
     const uniqueProducts = [...new Set(allProducts)];
 
@@ -75,8 +69,7 @@ async function loadProducts(){
   }
 }
 
-// Refresh every X seconds to reflect admin changes automatically
-const REFRESH_INTERVAL = 15000; // 15 seconds
+const REFRESH_INTERVAL = 15000;
 setInterval(loadProducts, REFRESH_INTERVAL);
 
 window.addEventListener('DOMContentLoaded', loadProducts);
