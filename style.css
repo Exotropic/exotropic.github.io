@@ -190,6 +190,24 @@
   transform: translateY(0);
 }
 
+/* Back button */
+#backBtn {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 5px 10px;
+  background: #FF0000;
+  color: #FFD700;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#backBtn:hover {
+  background: #FFD700;
+  color: #FF0000;
+}
+
 /* Section title */
 .section-title {
   text-align: center;
