@@ -22,25 +22,11 @@ contactToggle.addEventListener('click', () => {
   contactLabel.textContent = contactInfo.classList.contains('visible') ? "Contact ▲" : "Contact ▼";
 });
 
-// Shop reveal on "Shop Now" button
+// Shop elements
 const shopBtn = document.getElementById('shopBtn');
 const shopSection = document.getElementById('shop');
 const shopGrid = document.getElementById('shopGrid');
 const loadingText = document.getElementById('loadingText');
-
-shopBtn.addEventListener('click', () => {
-  shopSection.classList.add('visible');
-  shopSection.scrollIntoView({ behavior: 'smooth' });
-
-  // Fade in products one by one
-  const productCards = shopGrid.querySelectorAll('.product-card');
-  productCards.forEach((card,index)=>{
-    setTimeout(()=>{
-      card.style.opacity='1';
-      card.style.transform='translateY(0)';
-    }, index*150);
-  });
-});
 
 // Products
 const defaultProducts = [
@@ -52,15 +38,17 @@ const defaultProducts = [
 ];
 const catalogJSON = "https://res.cloudinary.com/dgmg1cubi/raw/upload/v1/products.json";
 
-function renderProduct(url,index){
+// Render product
+function renderProduct(url, index){
   const div = document.createElement('div');
   div.className='product-card';
-  div.style.transitionDelay = `${index*0.2}s`;
+  div.style.transitionDelay = `${index*0.15}s`;
   div.innerHTML = `<img src="${url}" alt="Product" loading="lazy">
                    <a href="https://m.me/ExoTropicAquarium" target="_blank" class="buy-btn">Buy via Messenger</a>`;
   shopGrid.appendChild(div);
 }
 
+// Load products
 async function loadProducts(){
   shopGrid.innerHTML='';
   loadingText.textContent='Loading products...';
@@ -77,4 +65,25 @@ async function loadProducts(){
   }
 }
 
-window.addEventListener('DOMContentLoaded', loadProducts);
+// Fade-in products after shop section is visible
+function fadeInProducts(){
+  const productCards = shopGrid.querySelectorAll('.product-card');
+  productCards.forEach((card,index)=>{
+    setTimeout(()=>{
+      card.style.opacity='1';
+      card.style.transform='translateY(0)';
+    }, index*150);
+  });
+}
+
+// Wait for DOM + products to load
+window.addEventListener('DOMContentLoaded', async () => {
+  await loadProducts();
+
+  // Show shop when clicking button
+  shopBtn.addEventListener('click', () => {
+    shopSection.classList.add('visible');
+    shopSection.scrollIntoView({ behavior: 'smooth' });
+    fadeInProducts();
+  });
+});
