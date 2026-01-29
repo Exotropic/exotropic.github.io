@@ -39,7 +39,7 @@ const defaultProducts = [
 const catalogJSON = "https://res.cloudinary.com/dgmg1cubi/raw/upload/v1/products.json";
 
 // Render product
-function renderProduct(url, index){
+function renderProduct(url,index){
   const div = document.createElement('div');
   div.className='product-card';
   div.style.transitionDelay = `${index*0.15}s`;
@@ -65,7 +65,7 @@ async function loadProducts(){
   }
 }
 
-// Fade-in products after shop section is visible
+// Fade-in products
 function fadeInProducts(){
   const productCards = shopGrid.querySelectorAll('.product-card');
   productCards.forEach((card,index)=>{
@@ -76,14 +76,10 @@ function fadeInProducts(){
   });
 }
 
-// Wait for DOM + products to load
-window.addEventListener('DOMContentLoaded', async () => {
-  await loadProducts();
-
-  // Show shop when clicking button
-  shopBtn.addEventListener('click', () => {
-    shopSection.classList.add('visible');
-    shopSection.scrollIntoView({ behavior: 'smooth' });
-    fadeInProducts();
-  });
+// Show shop on button click
+shopBtn.addEventListener('click', async () => {
+  shopSection.classList.add('visible'); // show section
+  shopSection.scrollIntoView({ behavior: 'smooth' });
+  await loadProducts(); // load products dynamically
+  fadeInProducts(); // fade-in animation
 });
