@@ -80,19 +80,24 @@ function fadeInProducts(){
   });
 }
 
-// Show shop section
+// Show shop section with fade
 async function showShop(){
+  homeSection.classList.add('hidden');
+  await new Promise(resolve => setTimeout(resolve, 500));
   homeSection.style.display='none';
+
   shopSection.classList.add('visible');
   shopSection.scrollIntoView({behavior:'smooth'});
+
   await loadProducts();
   fadeInProducts();
 }
 
-// Show home section
+// Show home section with fade
 function showHome(){
   shopSection.classList.remove('visible');
   homeSection.style.display='block';
+  setTimeout(()=> homeSection.classList.remove('hidden'), 50);
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
