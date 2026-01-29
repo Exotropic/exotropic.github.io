@@ -13,7 +13,9 @@
 
 <!-- Hamburger menu -->
 <div class="hamburger" id="hamburger">
-  <span></span><span></span><span></span>
+  <span></span>
+  <span></span>
+  <span></span>
 </div>
 
 <!-- Sliding Menu -->
@@ -40,7 +42,7 @@
 <!-- Overlay -->
 <div id="overlay"></div>
 
-<!-- Hero Section with clickable center logo -->
+<!-- Hero Section -->
 <header id="home" class="hero">
   <a href="index.html">
     <img src="images/exotropic-logo.png" alt="Exotropic Aquarium Logo" class="hero-logo">
@@ -63,6 +65,31 @@
 <!-- Messenger Button -->
 <a href="https://m.me/ExoTropicAquarium" target="_blank" class="messenger-btn">Buy via Messenger</a>
 
-<script src="js/main.js"></script>
+<script>
+  // Hamburger toggle script
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('nav-links');
+  const overlay = document.getElementById('overlay');
+  const contactToggle = document.getElementById('contact-toggle');
+  const contactInfo = document.getElementById('contact-info');
+
+  // Open/close menu
+  hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+    overlay.classList.toggle('active');
+  });
+
+  // Close menu when clicking overlay
+  overlay.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    overlay.classList.remove('active');
+  });
+
+  // Toggle contact submenu
+  contactToggle.addEventListener('click', () => {
+    contactInfo.classList.toggle('visible');
+  });
+</script>
+
 </body>
 </html>
