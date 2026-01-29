@@ -7,7 +7,6 @@ hamburger.addEventListener('click', () => {
   navLinks.classList.toggle('open');
   overlay.classList.toggle('active');
 });
-
 overlay.addEventListener('click', () => {
   navLinks.classList.remove('open');
   overlay.classList.remove('active');
@@ -23,10 +22,18 @@ contactToggle.addEventListener('click', () => {
   contactLabel.textContent = contactInfo.classList.contains('visible') ? "Contact ▲" : "Contact ▼";
 });
 
-// Products
+// Shop button reveal
+const shopBtn = document.getElementById('shopBtn');
+const shopSection = document.getElementById('shop');
 const shopGrid = document.getElementById('shopGrid');
 const loadingText = document.getElementById('loadingText');
 
+shopBtn.addEventListener('click', () => {
+  shopSection.classList.add('visible');
+  shopSection.scrollIntoView({ behavior: 'smooth' });
+});
+
+// Products
 const defaultProducts = [
   "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449399/jtwtzk0egjizvomclm1w.jpg",
   "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449385/nomumjmwxipfh0ril8oc.jpg",
@@ -37,28 +44,31 @@ const defaultProducts = [
 
 const catalogJSON = "https://res.cloudinary.com/dgmg1cubi/raw/upload/v1/products.json";
 
-function renderProduct(url){
+function renderProduct(url, index){
   const div = document.createElement('div');
   div.className = 'product-card';
-  div.innerHTML = `<img src="${url}" alt="Product">
-                   <a href="https://m.me/ExoTropicAquarium" target="_blank" class="buy-btn">Buy via Messenger</a>`;
+  div.style.animationDelay = `${index * 0.2}s`; // stagger
+  div.innerHTML = `
+    <img src="${url}" alt="Product" loading="lazy">
+    <a href="https://m.me/ExoTropicAquarium" target="_blank" class="buy-btn">Buy via Messenger</a>
+  `;
   shopGrid.appendChild(div);
 }
 
 async function loadProducts(){
-  loadingText.textContent = 'Loading products...';
   shopGrid.innerHTML = '';
+  loadingText.textContent = 'Loading products...';
 
   try {
     let uploadedImages = [];
     const res = await fetch(catalogJSON + '?t=' + new Date().getTime());
-    if(res.ok) uploadedImages = await res.json();
+    if(res.ok){ uploadedImages = await res.json(); }
 
     const allProducts = [...defaultProducts, ...uploadedImages];
     const uniqueProducts = [...new Set(allProducts)];
 
     if(uniqueProducts.length > 0){
-      uniqueProducts.forEach(url => renderProduct(url));
+      uniqueProducts.forEach((url, index) => renderProduct(url, index));
       loadingText.textContent = '';
     } else {
       loadingText.textContent = 'No products available.';
