@@ -77,6 +77,19 @@
   100% { transform: translateY(0); }
 }
 
+/* Shop Section Logo */
+.shop-logo {
+  width: 225px;
+  display: block;
+  margin: 0 auto 20px auto;
+  filter: drop-shadow(0 0 10px #FFD700);
+  animation: floatLogo 4s ease-in-out infinite;
+}
+
+.shop-logo:hover {
+  filter: drop-shadow(0 0 20px #FFD700) drop-shadow(0 0 10px #FF0000);
+}
+
 /* Hamburger Menu */
 .hamburger {
   position: fixed;
@@ -100,9 +113,7 @@
   transition: 0.3s;
 }
 
-.hamburger:hover span {
-  background: #FFD700;
-}
+.hamburger:hover span { background: #FFD700; }
 
 /* Sliding Menu */
 .nav-links {
