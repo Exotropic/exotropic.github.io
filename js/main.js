@@ -1,41 +1,45 @@
-// ===== HAMBURGER MENU & OVERLAY =====
+// ===== ELEMENTS =====
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('nav-links');
 const overlay = document.getElementById('overlay');
-
-hamburger.addEventListener('click', () => {
-  navLinks.classList.toggle('open');
-  overlay.classList.toggle('active');
-});
-
-overlay.addEventListener('click', () => {
-  navLinks.classList.remove('open');
-  overlay.classList.remove('active');
-  // Close contact submenu if open
-  contactInfo.classList.remove('visible');
-  contactLabel.textContent = "Contact ▼";
-});
-
-// ===== CONTACT SUBMENU =====
 const contactToggle = document.getElementById('contact-toggle');
 const contactInfo = document.getElementById('contact-info');
 const contactLabel = document.getElementById('contact-label');
 
-contactToggle.addEventListener('click', (e) => {
-  e.stopPropagation(); // Prevent overlay click from triggering
-  const isOpen = contactInfo.classList.toggle('visible');
-  contactLabel.textContent = isOpen ? "Contact ▲" : "Contact ▼";
-});
-
-// ===== SECTIONS =====
 const shopBtn = document.getElementById('shopBtn');
+const backBtn = document.getElementById('backBtn');
 const shopSection = document.getElementById('shop');
 const shopGrid = document.getElementById('shopGrid');
 const loadingText = document.getElementById('loadingText');
 const homeSection = document.getElementById('home');
-const backBtn = document.getElementById('backBtn');
 const shopMenu = document.getElementById('shopMenu');
 const homeMenu = document.getElementById('homeMenu');
+
+// ===== HAMBURGER MENU =====
+function closeMenu() {
+  navLinks.classList.remove('open');
+  overlay.classList.remove('active');
+  contactInfo.classList.remove('visible');
+  contactLabel.textContent = "Contact ▼";
+}
+
+hamburger.addEventListener('click', () => {
+  const isOpen = navLinks.classList.toggle('open');
+  overlay.classList.toggle('active', isOpen);
+  if (!isOpen) {
+    contactInfo.classList.remove('visible');
+    contactLabel.textContent = "Contact ▼";
+  }
+});
+
+overlay.addEventListener('click', closeMenu);
+
+// ===== CONTACT SUBMENU =====
+contactToggle.addEventListener('click', (e) => {
+  e.stopPropagation(); // prevent overlay closing
+  const isVisible = contactInfo.classList.toggle('visible');
+  contactLabel.textContent = isVisible ? "Contact ▲" : "Contact ▼";
+});
 
 // ===== PRODUCTS =====
 const defaultProducts = [
@@ -47,7 +51,6 @@ const defaultProducts = [
 ];
 const catalogJSON = "https://res.cloudinary.com/dgmg1cubi/raw/upload/v1/products.json";
 
-// ===== RENDER PRODUCTS =====
 function renderProduct(url,index){
   const div = document.createElement('div');
   div.className='product-card';
@@ -57,7 +60,6 @@ function renderProduct(url,index){
   shopGrid.appendChild(div);
 }
 
-// ===== LOAD PRODUCTS =====
 async function loadProducts(){
   shopGrid.innerHTML='';
   loadingText.textContent='Loading products...';
@@ -74,7 +76,6 @@ async function loadProducts(){
   }
 }
 
-// ===== FADE-IN PRODUCTS =====
 function fadeInProducts(){
   const productCards = shopGrid.querySelectorAll('.product-card');
   productCards.forEach((card,index)=>{
@@ -110,12 +111,10 @@ function showHome(){
 shopBtn.addEventListener('click', showShop);
 backBtn.addEventListener('click', showHome);
 shopMenu.addEventListener('click', () => {
-  navLinks.classList.remove('open');
-  overlay.classList.remove('active');
+  closeMenu();
   showShop();
 });
 homeMenu.addEventListener('click', () => {
-  navLinks.classList.remove('open');
-  overlay.classList.remove('active');
+  closeMenu();
   showHome();
 });
