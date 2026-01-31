@@ -1,4 +1,4 @@
-/* ================= RESET ================= */
+/* RESET */
 * {
   margin: 0;
   padding: 0;
@@ -6,7 +6,7 @@
   font-family: Arial, sans-serif;
 }
 
-/* Full height layout for footer */
+/* Layout for sticky footer */
 html, body {
   height: 100%;
 }
@@ -21,7 +21,7 @@ main {
   flex: 1;
 }
 
-/* ================= BACKGROUND ================= */
+/* BACKGROUND */
 .background {
   position: fixed;
   inset: 0;
@@ -30,12 +30,7 @@ main {
   filter: brightness(1.35);
 }
 
-/* ================= HERO ================= */
-.hero,
-.shop {
-  transition: opacity 0.3s ease;
-}
-
+/* HERO */
 .hero {
   padding: 120px 20px 80px;
   text-align: center;
@@ -62,7 +57,80 @@ main {
   -webkit-text-fill-color: transparent;
 }
 
-/* ================= HAMBURGER ================= */
+/* SHOP */
+.shop {
+  display: none; /* hidden by default */
+  padding: 60px 20px;
+  color: #E0F7FA;
+}
+
+.shop-logo {
+  width: 225px;
+  display: block;
+  margin: 0 auto 20px;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 30px;
+}
+
+/* SHOP GRID */
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+}
+
+/* PRODUCT CARD */
+.product-card {
+  background: rgba(0,40,70,0.65);
+  border: 1px solid #B2EBF2;
+  border-radius: 10px;
+  padding: 10px;
+  color: #D0F0FD;
+}
+
+.product-card img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.product-card .buy-btn {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px 0;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #00FFE0, #26C6DA);
+  color: #003040;
+  text-decoration: none;
+}
+
+/* BUTTONS */
+.buy-btn,
+.messenger-btn {
+  padding: 14px 28px;
+  font-weight: bold;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, #00BFA5, #26C6DA);
+  color: #003040;
+}
+
+/* MESSENGER BUTTON */
+.messenger-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+/* HAMBURGER */
 .hamburger {
   position: fixed;
   top: 15px;
@@ -82,7 +150,7 @@ main {
   border-radius: 3px;
 }
 
-/* ================= MENU ================= */
+/* NAV LINKS */
 .nav-links {
   position: fixed;
   top: 0;
@@ -111,70 +179,28 @@ main {
   text-decoration: none;
 }
 
-/* ================= CONTACT ================= */
+/* CONTACT MENU */
 .menu-contact { display: none; }
+.menu-contact.visible { display: flex; flex-direction: column; margin-left:10px; border-left:2px solid #B2EBF2; padding-left:10px; }
 
-.menu-contact.visible {
-  display: flex;
-  flex-direction: column;
-  margin-left: 10px;
-  border-left: 2px solid #B2EBF2;
-  padding-left: 10px;
-}
+/* OVERLAY */
+#overlay { display: none; position: fixed; inset:0; background: rgba(0,0,0,0.35); z-index:800; }
+#overlay.active { display:block; }
 
-/* ================= OVERLAY ================= */
-#overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.35);
-}
-
-#overlay.active { display: block; }
-
-/* ================= SHOP ================= */
-.shop-logo {
-  width: 225px;
-  display: block;
-  margin: 0 auto 20px;
-}
-
-/* ================= BUTTONS ================= */
-.buy-btn,
-.messenger-btn {
-  padding: 14px 28px;
-  font-weight: bold;
-  border-radius: 12px;
-  border: none;
-  cursor: pointer;
-  background: linear-gradient(135deg, #00BFA5, #26C6DA);
-  color: #003040;
-}
-
-/* ================= MESSENGER ================= */
-.messenger-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 1000;
-}
-
-/* ================= SMALL FOOTER ================= */
+/* SMALL FOOTER */
 .site-credits {
   width: 100%;
   text-align: center;
   font-size: 10px;
   letter-spacing: 0.5px;
-  color: rgba(224, 247, 250, 0.75);
-  background: rgba(0, 40, 70, 0.25);
+  color: rgba(224,247,250,0.75);
+  background: rgba(0,40,70,0.25);
   padding: 4px 6px;
   backdrop-filter: blur(3px);
-  z-index: 10;
 }
 
-/* ================= RESPONSIVE ================= */
+/* RESPONSIVE */
 @media (max-width: 480px) {
-  .hero h1 { font-size: 36px; }
-  .hero-logo,
-  .shop-logo { width: 180px; }
+  .hero h1 { font-size:36px; }
+  .hero-logo, .shop-logo { width:180px; }
 }
