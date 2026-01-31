@@ -9,46 +9,20 @@
 /* ================= AQUARIUM BACKGROUND ================= */
 .background {
   position: fixed;
-  inset: 0;
-  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
   background: url('images/IMG_20260131_204502.png') center center / cover no-repeat;
-}
-
-/* ================= BUBBLES ================= */
-.background::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.bubbles span {
-  position: absolute;
-  bottom: -20px;
-  width: 6px;
-  height: 6px;
-  background: rgba(255,255,255,0.3);
-  border-radius: 50%;
-  animation: bubbleRise 25s infinite ease-in;
-}
-
-.bubbles span:nth-child(1) { left: 20%; animation-delay: 0s; }
-.bubbles span:nth-child(2) { left: 40%; animation-delay: 5s; }
-.bubbles span:nth-child(3) { left: 60%; animation-delay: 10s; }
-.bubbles span:nth-child(4) { left: 80%; animation-delay: 15s; }
-
-@keyframes bubbleRise {
-  0% { transform: translateY(0); opacity: 0; }
-  20% { opacity: 0.5; }
-  100% { transform: translateY(-110vh); opacity: 0; }
 }
 
 /* ================= HERO + SHOP GLASS EFFECT ================= */
 .hero,
 .shop,
 .menu-content {
-  background: rgba(0,30,40,0.5);
-  backdrop-filter: blur(4px);
+  background: rgba(0,30,40,0.55);
+  backdrop-filter: blur(6px);
   border-radius: 14px;
 }
 
@@ -57,8 +31,8 @@
   padding: 100px 20px;
   text-align: center;
   color: #FFD700;
-  z-index: 1000;
   position: relative;
+  z-index: 10;
 }
 
 .hero-logo {
@@ -116,9 +90,7 @@
   transition: 0.3s;
 }
 
-.hamburger:hover span {
-  background: #FFD700;
-}
+.hamburger:hover span { background: #FFD700; }
 
 /* ================= MENU ================= */
 .nav-links {
@@ -166,10 +138,7 @@
 
 .menu-content a:hover,
 .menu-content span:hover,
-.menu-contact a:hover {
-  background: #FF0000;
-  color: #FFD700;
-}
+.menu-contact a:hover { background: #FF0000; color: #FFD700; }
 
 .menu-contact {
   display: none;
@@ -186,7 +155,7 @@
   padding: 60px 20px;
   color: #FFD700;
   position: relative;
-  z-index: 1;
+  z-index: 10;
   opacity: 0;
   transform: translateY(20px);
   display: none;
@@ -224,24 +193,11 @@
   transition: 0.3s;
 }
 
-#backBtn:hover {
-  background: #FFD700;
-  color: #FF0000;
-}
+#backBtn:hover { background: #FFD700; color: #FF0000; }
 
-.section-title {
-  text-align: center;
-  margin-bottom: 30px;
-  font-size: 28px;
-  color: #FFD700;
-}
+.section-title { text-align: center; margin-bottom: 30px; font-size: 28px; color: #FFD700; }
 
-#loadingText {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 16px;
-  color: #FFF8DC;
-}
+#loadingText { text-align: center; margin-bottom: 20px; font-size: 16px; color: #FFF8DC; }
 
 .shop-grid {
   display: grid;
@@ -275,19 +231,10 @@
   transition: 0.3s;
 }
 
-.buy-btn:hover {
-  background: #FFD700;
-  color: #FF0000;
-}
+.buy-btn:hover { background: #FFD700; color: #FF0000; }
 
 /* ================= FOOTER ================= */
-footer {
-  text-align: center;
-  padding: 20px;
-  color: #FFD700;
-  background: #111;
-  position: relative;
-}
+footer { text-align: center; padding: 20px; color: #FFD700; background: #111; }
 
 /* ================= MESSENGER BUTTON ================= */
 .messenger-btn {
@@ -304,11 +251,7 @@ footer {
   transition: 0.3s;
 }
 
-.messenger-btn:hover {
-  background: #FFD700;
-  color: #FF0000;
-  transform: scale(1.1);
-}
+.messenger-btn:hover { background: #FFD700; color: #FF0000; transform: scale(1.1); }
 
 /* ================= RESPONSIVE ================= */
 @media screen and (max-width: 480px) {
