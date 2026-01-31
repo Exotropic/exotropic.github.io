@@ -1,4 +1,4 @@
-/* ========== RESET ========== */
+/* ================= RESET ================= */
 * {
   margin: 0;
   padding: 0;
@@ -6,7 +6,7 @@
   font-family: Arial, sans-serif;
 }
 
-/* ========== BACKGROUND ========== */
+/* ================= BACKGROUND ================= */
 .background {
   position: fixed;
   inset: 0;
@@ -15,41 +15,42 @@
   filter: brightness(1.25); /* Brightened for clarity */
 }
 
-/* ========== HERO ========== */
+/* ================= HERO ================= */
 .hero {
-  padding: 100px 20px;
+  padding: 120px 20px 80px 20px;
   text-align: center;
   color: #E0F7FA;
 }
 
 .hero-logo {
-  width: 225px;
+  width: 240px;
   margin-bottom: 20px;
   animation: floatLogo 4s ease-in-out infinite;
-  filter: drop-shadow(0 0 20px #81D4FA) drop-shadow(0 0 10px #B2EBF2);
+  filter: drop-shadow(0 0 20px #26C6DA) drop-shadow(0 0 10px #81D4FA);
 }
 
 @keyframes floatLogo {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-  100% { transform: translateY(0); }
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
 .hero h1 {
-  font-size: 48px;
-  margin-bottom: 10px;
-  color: #E0FFFF; /* Light cyan */
-  text-shadow: 2px 2px 6px rgba(0,50,80,0.6);
+  font-size: 56px;
+  font-weight: 900;
+  background: linear-gradient(90deg, #81D4FA, #26C6DA);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 8px rgba(0,50,70,0.5);
 }
 
 .hero p {
   font-size: 20px;
-  margin-top: 5px;
-  color: #B0F0FF; /* Slightly darker cyan */
-  text-shadow: 1px 1px 3px rgba(0,40,70,0.5);
+  margin-top: 12px;
+  color: #B2EBF2;
+  text-shadow: 1px 1px 3px rgba(0,50,70,0.4);
 }
 
-/* ========== HAMBURGER MENU ========== */
+/* ================= HAMBURGER MENU ================= */
 .hamburger {
   position: fixed;
   top: 15px;
@@ -67,16 +68,16 @@
   display: block;
   width: 100%;
   height: 5px;
-  background: linear-gradient(135deg, #00BFA5, #26C6DA); /* Gradient teal-cyan */
+  background: linear-gradient(135deg, #00BFA5, #26C6DA);
   border-radius: 3px;
   transition: 0.3s;
 }
 
 .hamburger:hover span {
-  background: linear-gradient(135deg, #26C6DA, #81D4FA); /* Hover gradient */
+  background: linear-gradient(135deg, #26C6DA, #81D4FA);
 }
 
-/* ========== MENU ========== */
+/* ================= MENU ================= */
 .nav-links {
   position: fixed;
   top: 0;
@@ -117,7 +118,7 @@
   color: #26C6DA;
 }
 
-/* ========== CONTACT MENU ========== */
+/* ================= CONTACT MENU ================= */
 .menu-contact {
   display: none;
 }
@@ -130,7 +131,7 @@
   border-left: 2px solid #B2EBF2;
 }
 
-/* ========== OVERLAY ========== */
+/* ================= OVERLAY ================= */
 #overlay {
   display: none;
   position: fixed;
@@ -143,7 +144,7 @@
   display: block;
 }
 
-/* ========== SHOP ========== */
+/* ================= SHOP ================= */
 .shop {
   padding: 60px 20px;
   color: #E0F7FA;
@@ -191,36 +192,39 @@
   border-radius: 8px;
 }
 
-/* ========== BUTTONS ========== */
-/* Shop Now */
-#shopBtn {
+/* ================= BUTTONS ================= */
+.buy-btn,
+#shopBtn,
+#backBtn,
+.messenger-btn {
   display: inline-block;
-  padding: 10px 25px;
+  padding: 10px 22px;
   font-size: 18px;
-  background: linear-gradient(135deg, #00BFA5, #26C6DA);
-  color: #003040;
-  border-radius: 8px;
   font-weight: bold;
+  border-radius: 8px;
+  text-decoration: none;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0,50,80,0.3);
+  box-shadow: 0 4px 12px rgba(0,50,70,0.3);
+}
+
+/* SHOP NOW */
+#shopBtn {
+  background: linear-gradient(135deg, #26C6DA, #00BFA5);
+  color: #003040;
 }
 
 #shopBtn:hover {
-  background: linear-gradient(135deg, #26C6DA, #81D4FA);
-  box-shadow: 0 6px 14px rgba(0,70,120,0.4);
+  background: linear-gradient(135deg, #81D4FA, #26C6DA);
   transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,70,100,0.4);
 }
 
-/* Buy via Messenger */
+/* BUY VIA MESSENGER */
 .messenger-btn {
   background: linear-gradient(135deg, #00BFA5, #26C6DA);
   color: #003040;
-  padding: 10px 18px;
-  border-radius: 8px;
-  font-weight: bold;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0,50,80,0.3);
+  border: none;
   position: fixed;
   bottom: 20px;
   right: 20px;
@@ -231,10 +235,22 @@
   background: linear-gradient(135deg, #26C6DA, #81D4FA);
   color: #001f30;
   transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0,70,120,0.4);
+  box-shadow: 0 6px 16px rgba(0,70,100,0.4);
 }
 
-/* ========== FOOTER ========== */
+/* BACK TO HOME */
+#backBtn {
+  background: linear-gradient(135deg, #00BFA5, #26C6DA);
+  color: #003040;
+}
+
+#backBtn:hover {
+  background: linear-gradient(135deg, #26C6DA, #81D4FA);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,70,100,0.4);
+}
+
+/* ================= FOOTER ================= */
 footer {
   text-align: center;
   padding: 20px;
@@ -242,7 +258,7 @@ footer {
   background: rgba(0,0,60,0.85);
 }
 
-/* ========== RESPONSIVE ========== */
+/* ================= RESPONSIVE ================= */
 @media screen and (max-width: 480px) {
   .hero-logo,
   .shop-logo { width: 180px; }
