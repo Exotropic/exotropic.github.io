@@ -12,7 +12,7 @@
   inset: 0;
   z-index: -1;
   background: url('images/background.png') center/cover no-repeat;
-  filter: brightness(1.3);
+  filter: brightness(1.35); /* slightly brighter for clarity */
 }
 
 /* ================= HERO ================= */
@@ -26,34 +26,36 @@
   width: 240px;
   margin-bottom: 20px;
   animation: floatLogo 4s ease-in-out infinite;
-  filter: drop-shadow(0 0 20px #26C6DA) drop-shadow(0 0 10px #81D4FA);
+  filter: drop-shadow(0 0 20px #26C6DA) drop-shadow(0 0 15px #81D4FA);
 }
 
 @keyframes floatLogo {
   0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  50% { transform: translateY(-12px); }
 }
 
+/* ================= HERO TEXT ================= */
 .hero h1 {
-  font-size: 60px;
+  font-size: 68px;
   font-weight: 900;
-  background: linear-gradient(90deg, #00BFA5, #26C6DA, #81D4FA);
+  background: linear-gradient(90deg, #00FFE0, #26C6DA, #81D4FA);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 4px 15px rgba(0,50,70,0.7), 0 2px 8px rgba(0,255,255,0.3);
+  text-shadow: 0 8px 25px rgba(0,50,70,0.8), 0 5px 18px rgba(0,255,255,0.5);
   animation: heroGlow 3s ease-in-out infinite alternate;
 }
 
 @keyframes heroGlow {
-  0%,100% { text-shadow: 0 4px 15px rgba(0,50,70,0.7), 0 2px 8px rgba(0,255,255,0.3); }
-  50% { text-shadow: 0 6px 20px rgba(0,50,70,0.8), 0 3px 12px rgba(0,255,255,0.5); }
+  0%,100% { text-shadow: 0 8px 25px rgba(0,50,70,0.8), 0 5px 18px rgba(0,255,255,0.5); }
+  50% { text-shadow: 0 12px 35px rgba(0,50,70,0.9), 0 8px 25px rgba(0,255,255,0.6); }
 }
 
 .hero p {
-  font-size: 20px;
-  margin-top: 12px;
-  color: #B2EBF2;
-  text-shadow: 1px 1px 3px rgba(0,50,70,0.4);
+  font-size: 22px;
+  margin-top: 14px;
+  font-weight: 600;
+  color: #B2FFFF;
+  text-shadow: 1px 1px 4px rgba(0,50,70,0.5);
 }
 
 /* ================= HAMBURGER MENU ================= */
@@ -184,6 +186,31 @@
 }
 
 .product-card img { width: 100%; border-radius: 8px; }
+
+/* ================= PRODUCT CARD BUY BUTTON ================= */
+.product-card .buy-btn {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px 0;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  color: #003040;
+  background: linear-gradient(135deg, #00FFE0, #26C6DA);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 15px rgba(0,50,70,0.45);
+}
+
+.product-card .buy-btn:hover {
+  background: linear-gradient(135deg, #26C6DA, #81D4FA);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0,50,70,0.55);
+  color: #001f30;
+}
 
 /* ================= BUTTONS ================= */
 .buy-btn,
