@@ -42,8 +42,7 @@ const defaultProducts = [
   "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449335/phndllj2guzhcrzujvk4.jpg"
 ];
 
-// Render product
-function renderProduct(url, index){
+function renderProduct(url,index){
   const div = document.createElement('div');
   div.className='product-card';
   div.style.transitionDelay = `${index*0.15}s`;
@@ -52,15 +51,30 @@ function renderProduct(url, index){
   shopGrid.appendChild(div);
 }
 
-// Load products
-function loadProducts(){
+async function loadProducts(){
   shopGrid.innerHTML='';
   loadingText.textContent='Loading products...';
-  defaultProducts.forEach((url,index)=>renderProduct(url,index));
-  loadingText.textContent='';
+  try {
+    defaultProducts.forEach((url,index)=>renderProduct(url,index));
+    loadingText.textContent='';
+    fadeInProducts();
+  } catch(err){
+    console.error(err);
+    loadingText.textContent='Failed to load products.';
+  }
 }
 
-// Show shop section
+function fadeInProducts(){
+  const productCards = shopGrid.querySelectorAll('.product-card');
+  productCards.forEach((card,index)=>{
+    setTimeout(()=>{
+      card.style.opacity='1';
+      card.style.transform='translateY(0)';
+    }, index*150);
+  });
+}
+
+// Show Shop
 function showShop(){
   homeSection.style.display='none';
   shopSection.classList.add('visible');
@@ -68,7 +82,7 @@ function showShop(){
   loadProducts();
 }
 
-// Show home section
+// Show Home
 function showHome(){
   shopSection.classList.remove('visible');
   homeSection.style.display='block';
@@ -78,5 +92,5 @@ function showHome(){
 // Button events
 shopBtn.addEventListener('click', showShop);
 backBtn.addEventListener('click', showHome);
-shopMenu.addEventListener('click', () => { navLinks.classList.remove('open'); overlay.classList.remove('active'); showShop(); });
-homeMenu.addEventListener('click', () => { navLinks.classList.remove('open'); overlay.classList.remove('active'); showHome(); });
+shopMenu.addEventListener('click', showShop);
+homeMenu.addEventListener('click', showHome);
