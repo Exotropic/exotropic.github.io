@@ -1,4 +1,4 @@
-/* RESET */
+/* ================= RESET ================= */
 * {
   margin: 0;
   padding: 0;
@@ -6,9 +6,17 @@
   font-family: Arial, sans-serif;
 }
 
-/* Layout */
-html, body { height: 100%; }
-body { display: flex; flex-direction: column; min-height: 100vh; }
+/* Layout for sticky footer */
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 main { flex: 1; }
 
 /* BACKGROUND */
@@ -25,8 +33,6 @@ main { flex: 1; }
   padding: 120px 20px 80px;
   text-align: center;
   color: #E0F7FA;
-  opacity: 1;
-  transition: opacity 0.4s ease;
 }
 
 .hero-logo {
@@ -49,18 +55,28 @@ main { flex: 1; }
   -webkit-text-fill-color: transparent;
 }
 
-/* SHOP */
+/* ================= SHOP ================= */
 .shop {
-  display: none;
   padding: 60px 20px;
   color: #E0F7FA;
-  opacity: 0;
-  transition: opacity 0.4s ease;
 }
 
-.shop.visible {
-  display: block;
+/* SECTION TRANSITIONS TO FIX FLICKER */
+#home, #shop {
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+  position: relative;
+}
+
+#home.hidden, #shop.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#home.visible, #shop.visible {
   opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .shop-logo {
@@ -89,9 +105,6 @@ main { flex: 1; }
   border-radius: 10px;
   padding: 10px;
   color: #D0F0FD;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .product-card img {
@@ -122,7 +135,6 @@ main { flex: 1; }
   cursor: pointer;
   background: linear-gradient(135deg, #00BFA5, #26C6DA);
   color: #003040;
-  text-decoration: none;
 }
 
 /* MESSENGER BUTTON */
@@ -131,6 +143,7 @@ main { flex: 1; }
   bottom: 20px;
   right: 20px;
   z-index: 1000;
+  text-decoration: none;
 }
 
 /* HAMBURGER */
@@ -162,7 +175,7 @@ main { flex: 1; }
   height: 100%;
   background: rgba(0,60,90,0.95);
   padding: 60px 20px;
-  transition: left 0.3s ease;
+  transition: left 0.3s ease-in-out;
   z-index: 900;
 }
 
@@ -184,23 +197,11 @@ main { flex: 1; }
 
 /* CONTACT MENU */
 .menu-contact { display: none; }
-.menu-contact.visible {
-  display: flex;
-  flex-direction: column;
-  margin-left: 10px;
-  border-left: 2px solid #B2EBF2;
-  padding-left: 10px;
-}
+.menu-contact.visible { display: flex; flex-direction: column; margin-left:10px; border-left:2px solid #B2EBF2; padding-left:10px; }
 
 /* OVERLAY */
-#overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.35);
-  z-index: 800;
-}
-#overlay.active { display: block; }
+#overlay { display: none; position: fixed; inset:0; background: rgba(0,0,0,0.35); z-index:800; }
+#overlay.active { display:block; }
 
 /* SMALL FOOTER */
 .site-credits {
