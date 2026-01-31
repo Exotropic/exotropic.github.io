@@ -12,7 +12,7 @@
   inset: 0;
   z-index: -1;
   background: url('images/background.png') center/cover no-repeat;
-  filter: brightness(1.25); /* Brightened for clarity */
+  filter: brightness(1.3);
 }
 
 /* ================= HERO ================= */
@@ -35,12 +35,18 @@
 }
 
 .hero h1 {
-  font-size: 56px;
+  font-size: 60px;
   font-weight: 900;
-  background: linear-gradient(90deg, #81D4FA, #26C6DA);
+  background: linear-gradient(90deg, #00BFA5, #26C6DA, #81D4FA);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 2px 2px 8px rgba(0,50,70,0.5);
+  text-shadow: 0 4px 15px rgba(0,50,70,0.7), 0 2px 8px rgba(0,255,255,0.3);
+  animation: heroGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes heroGlow {
+  0%,100% { text-shadow: 0 4px 15px rgba(0,50,70,0.7), 0 2px 8px rgba(0,255,255,0.3); }
+  50% { text-shadow: 0 6px 20px rgba(0,50,70,0.8), 0 3px 12px rgba(0,255,255,0.5); }
 }
 
 .hero p {
@@ -91,9 +97,7 @@
   color: #E0F7FA;
 }
 
-.nav-links.open {
-  left: 0;
-}
+.nav-links.open { left: 0; }
 
 .menu-header {
   font-size: 18px;
@@ -114,14 +118,10 @@
 }
 
 .menu-content a:hover,
-.menu-content span:hover {
-  color: #26C6DA;
-}
+.menu-content span:hover { color: #26C6DA; }
 
 /* ================= CONTACT MENU ================= */
-.menu-contact {
-  display: none;
-}
+.menu-contact { display: none; }
 
 .menu-contact.visible {
   display: flex;
@@ -140,9 +140,7 @@
   z-index: 800;
 }
 
-#overlay.active {
-  display: block;
-}
+#overlay.active { display: block; }
 
 /* ================= SHOP ================= */
 .shop {
@@ -151,9 +149,7 @@
   display: none;
 }
 
-.shop.visible {
-  display: block;
-}
+.shop.visible { display: block; }
 
 .shop-logo {
   width: 225px;
@@ -187,10 +183,7 @@
   transition: 0.5s;
 }
 
-.product-card img {
-  width: 100%;
-  border-radius: 8px;
-}
+.product-card img { width: 100%; border-radius: 8px; }
 
 /* ================= BUTTONS ================= */
 .buy-btn,
@@ -198,14 +191,14 @@
 #backBtn,
 .messenger-btn {
   display: inline-block;
-  padding: 10px 22px;
-  font-size: 18px;
+  padding: 12px 22px;
+  font-size: 16px;
   font-weight: bold;
-  border-radius: 8px;
+  border-radius: 12px;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0,50,70,0.3);
+  box-shadow: 0 6px 15px rgba(0,50,70,0.4);
 }
 
 /* SHOP NOW */
@@ -217,7 +210,7 @@
 #shopBtn:hover {
   background: linear-gradient(135deg, #81D4FA, #26C6DA);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0,70,100,0.4);
+  box-shadow: 0 8px 18px rgba(0,50,70,0.5);
 }
 
 /* BUY VIA MESSENGER */
@@ -234,8 +227,8 @@
 .messenger-btn:hover {
   background: linear-gradient(135deg, #26C6DA, #81D4FA);
   color: #001f30;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0,70,100,0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,50,70,0.5);
 }
 
 /* BACK TO HOME */
@@ -246,8 +239,8 @@
 
 #backBtn:hover {
   background: linear-gradient(135deg, #26C6DA, #81D4FA);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0,70,100,0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,50,70,0.5);
 }
 
 /* ================= FOOTER ================= */
@@ -260,8 +253,7 @@ footer {
 
 /* ================= RESPONSIVE ================= */
 @media screen and (max-width: 480px) {
-  .hero-logo,
-  .shop-logo { width: 180px; }
+  .hero-logo, .shop-logo { width: 180px; }
   .hero h1 { font-size: 36px; }
   .hero p { font-size: 16px; }
   .section-title { font-size: 24px; }
