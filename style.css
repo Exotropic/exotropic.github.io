@@ -191,7 +191,7 @@
 #backBtn,
 .messenger-btn {
   display: inline-block;
-  padding: 12px 22px;
+  padding: 14px 28px;
   font-size: 16px;
   font-weight: bold;
   border-radius: 12px;
@@ -205,12 +205,26 @@
 #shopBtn {
   background: linear-gradient(135deg, #26C6DA, #00BFA5);
   color: #003040;
+  border: none;
 }
 
 #shopBtn:hover {
   background: linear-gradient(135deg, #81D4FA, #26C6DA);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(0,50,70,0.5);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,50,70,0.5);
+}
+
+/* BACK TO HOME */
+#backBtn {
+  background: linear-gradient(135deg, #00BFA5, #26C6DA);
+  color: #003040;
+  border: none;
+}
+
+#backBtn:hover {
+  background: linear-gradient(135deg, #26C6DA, #81D4FA);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,50,70,0.5);
 }
 
 /* BUY VIA MESSENGER */
@@ -222,25 +236,19 @@
   bottom: 20px;
   right: 20px;
   z-index: 1000;
+  padding: 14px 28px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: bold;
+  box-shadow: 0 6px 15px rgba(0,50,70,0.4);
+  transition: all 0.3s ease;
 }
 
 .messenger-btn:hover {
   background: linear-gradient(135deg, #26C6DA, #81D4FA);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,50,70,0.5);
   color: #001f30;
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(0,50,70,0.5);
-}
-
-/* BACK TO HOME */
-#backBtn {
-  background: linear-gradient(135deg, #00BFA5, #26C6DA);
-  color: #003040;
-}
-
-#backBtn:hover {
-  background: linear-gradient(135deg, #26C6DA, #81D4FA);
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(0,50,70,0.5);
 }
 
 /* ================= FOOTER ================= */
