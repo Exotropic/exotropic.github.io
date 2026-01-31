@@ -1,4 +1,4 @@
-/* RESET */
+/* ================= RESET ================= */
 * {
   margin: 0;
   padding: 0;
@@ -7,19 +7,9 @@
 }
 
 /* Layout for sticky footer */
-html, body {
-  height: 100%;
-}
-
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-main {
-  flex: 1;
-}
+html, body { height: 100%; }
+body { display: flex; flex-direction: column; min-height: 100vh; }
+main { flex: 1; }
 
 /* BACKGROUND */
 .background {
@@ -36,19 +26,16 @@ main {
   text-align: center;
   color: #E0F7FA;
 }
-
 .hero-logo {
   width: 240px;
   margin-bottom: 20px;
   animation: floatLogo 4s ease-in-out infinite;
   filter: drop-shadow(0 0 20px #26C6DA);
 }
-
 @keyframes floatLogo {
   0%,100% { transform: translateY(0); }
   50% { transform: translateY(-12px); }
 }
-
 .hero h1 {
   font-size: 68px;
   font-weight: 900;
@@ -62,18 +49,26 @@ main {
   display: none;
   padding: 60px 20px;
   color: #E0F7FA;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
 }
+.shop.visible { display: block; opacity: 1; }
 
 .shop-logo {
   width: 225px;
   display: block;
   margin: 0 auto 20px;
 }
-
 .section-title {
   text-align: center;
   font-size: 28px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
+}
+
+/* BACK TO HOME button aligned left */
+.back-left {
+  margin-left: 0;
+  margin-bottom: 20px;
 }
 
 /* SHOP GRID */
@@ -91,12 +86,10 @@ main {
   padding: 10px;
   color: #D0F0FD;
 }
-
 .product-card img {
   width: 100%;
   border-radius: 8px;
 }
-
 .product-card .buy-btn {
   display: block;
   width: 100%;
@@ -144,7 +137,6 @@ main {
   cursor: pointer;
   z-index: 1000;
 }
-
 .hamburger span {
   height: 5px;
   background: linear-gradient(135deg, #00BFA5, #26C6DA);
@@ -160,20 +152,12 @@ main {
   height: 100%;
   background: rgba(0,60,90,0.95);
   padding: 60px 20px;
-  transition: 0.3s;
+  transition: left 0.3s ease-in-out;
   z-index: 900;
 }
-
 .nav-links.open { left: 0; }
-
-.menu-header {
-  text-align: center;
-  margin-bottom: 15px;
-  color: #81D4FA;
-}
-
-.menu-content a,
-.menu-content span {
+.menu-header { text-align: center; margin-bottom: 15px; color: #81D4FA; }
+.menu-content a, .menu-content span {
   display: block;
   padding: 8px 12px;
   color: #E0F7FA;
@@ -182,7 +166,13 @@ main {
 
 /* CONTACT MENU */
 .menu-contact { display: none; }
-.menu-contact.visible { display: flex; flex-direction: column; margin-left:10px; border-left:2px solid #B2EBF2; padding-left:10px; }
+.menu-contact.visible {
+  display: flex;
+  flex-direction: column;
+  margin-left:10px;
+  border-left:2px solid #B2EBF2;
+  padding-left:10px;
+}
 
 /* OVERLAY */
 #overlay { display: none; position: fixed; inset:0; background: rgba(0,0,0,0.35); z-index:800; }
@@ -198,6 +188,9 @@ main {
   background: rgba(0,40,70,0.25);
   padding: 4px 6px;
   backdrop-filter: blur(3px);
+  position: fixed;
+  bottom: 0;
+  left: 0;
 }
 
 /* RESPONSIVE */
