@@ -9,36 +9,50 @@
 /* ================= BACKGROUND ================= */
 .background {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('images/background.png') no-repeat center center / cover;
+  background-color: rgba(255, 255, 255, 0.15); /* lighten effect */
+  background-blend-mode: lighten; /* brightens image */
   z-index: -1;
-  background: url('images/background.png') no-repeat center center;
-  background-size: cover;
+}
+
+.background::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.08); /* subtle overlay to brighten */
+  pointer-events: none;
+  z-index: -1;
 }
 
 /* ================= HERO + SHOP GLASS ================= */
 .hero,
 .shop,
 .menu-content {
-  background: rgba(0, 30, 40, 0.55);
+  background: rgba(0, 30, 40, 0.35); /* more transparent for clarity */
   backdrop-filter: blur(6px);
   border-radius: 14px;
+  padding: 40px 20px;
+  margin: 20px auto;
+  max-width: 1200px;
 }
 
 /* ================= HERO ================= */
 .hero {
-  padding: 100px 20px;
   text-align: center;
-  color: #F5DEB3;
+  color: #F5DEB3; /* light gold for contrast */
   position: relative;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .hero-logo {
-  width: 225px;
+  width: 200px;
   margin-bottom: 20px;
   filter: drop-shadow(0 0 10px #FFD700);
   animation: floatLogo 4s ease-in-out infinite;
-  transition: transform 0.3s ease, filter 0.3s ease;
 }
 
 .hero-logo:hover {
@@ -48,21 +62,18 @@
 
 .hero h1 {
   font-size: 48px;
-  margin-bottom: 10px;
   font-weight: bold;
-  text-shadow: 1px 1px 3px rgba(255, 215, 0, 0.7);
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 }
 
 .hero p {
-  font-size: 20px;
-  color: #FFF8DC;
-  text-shadow: 1px 1px 2px rgba(255, 248, 220, 0.5);
+  font-size: 18px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
 }
 
 @keyframes floatLogo {
-  0% { transform: translateY(0); }
+  0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
-  100% { transform: translateY(0); }
 }
 
 /* ================= HAMBURGER MENU ================= */
@@ -76,11 +87,10 @@
   flex-direction: column;
   justify-content: space-between;
   cursor: pointer;
-  z-index: 3000;
+  z-index: 200;
 }
 
 .hamburger span {
-  display: block;
   width: 100%;
   height: 5px;
   background: #FFD700;
@@ -105,7 +115,7 @@
   flex-direction: column;
   gap: 10px;
   transition: left 0.3s ease-in-out;
-  z-index: 3500;
+  z-index: 300;
   overflow-y: auto;
   color: #F5DEB3;
 }
@@ -147,17 +157,14 @@
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.5);
-  z-index: 3400;
+  z-index: 250;
 }
 
 #overlay.active { display: block; }
 
 /* ================= SHOP ================= */
 .shop {
-  padding: 60px 20px;
   color: #F5DEB3;
-  position: relative;
-  z-index: 1000;
   opacity: 0;
   transform: translateY(20px);
   display: none;
@@ -171,7 +178,7 @@
 }
 
 .shop-logo {
-  width: 225px;
+  width: 200px;
   display: block;
   margin: 0 auto 20px auto;
   filter: drop-shadow(0 0 10px #FFD700);
@@ -236,7 +243,6 @@ footer {
   background: rgba(0,0,0,0.6);
 }
 
-/* ================= MESSENGER BUTTON ================= */
 .messenger-btn {
   position: fixed;
   bottom: 20px;
@@ -247,7 +253,7 @@ footer {
   border-radius: 5px;
   font-weight: bold;
   text-decoration: none;
-  z-index: 1050;
+  z-index: 300;
   transition: 0.3s;
 }
 
