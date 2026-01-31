@@ -7,13 +7,22 @@
 }
 
 /* Layout */
-html, body { height: 100%; }
-body { display: flex; flex-direction: column; min-height: 100vh; }
+html, body {
+  height: 100%;
+  overflow-x: hidden;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 main { flex:1; position: relative; }
 
 /* BACKGROUND */
 .background {
-  position: fixed; inset:0; z-index:-1;
+  position: fixed;
+  inset: 0;
+  z-index: -1;
   background: url('images/background.png') center/cover no-repeat;
   filter: brightness(1.35);
 }
@@ -23,16 +32,17 @@ main { flex:1; position: relative; }
   padding: 120px 20px 80px;
   text-align: center;
   color: #E0F7FA;
-  position: absolute;
-  top:0; left:0; width:100%;
+  min-height: 100vh; /* full viewport height */
   transition: opacity 0.5s ease;
-  opacity:0; visibility:hidden;
+  opacity: 0;
+  visibility: hidden;
 }
 
 .hero.visible { opacity:1; visibility:visible; }
 
 .hero-logo {
-  width: 240px; margin-bottom:20px;
+  width: 240px;
+  margin-bottom:20px;
   animation: floatLogo 4s ease-in-out infinite;
   filter: drop-shadow(0 0 20px #26C6DA);
 }
@@ -51,9 +61,10 @@ main { flex:1; position: relative; }
 .shop {
   padding:60px 20px;
   color:#E0F7FA;
-  position: absolute; top:0; left:0; width:100%;
+  min-height: 100vh; /* full viewport height */
   transition: opacity 0.5s ease;
-  opacity:0; visibility:hidden;
+  opacity:0;
+  visibility:hidden;
 }
 
 .shop.visible { opacity:1; visibility:visible; }
