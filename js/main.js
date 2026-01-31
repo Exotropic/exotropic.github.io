@@ -1,4 +1,4 @@
-// ================= ELEMENTS =================
+// ELEMENTS
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('nav-links');
 const overlay = document.getElementById('overlay');
@@ -16,7 +16,7 @@ const homeSection = document.getElementById('home');
 const shopMenu = document.getElementById('shopMenu');
 const homeMenu = document.getElementById('homeMenu');
 
-// ================= HAMBURGER MENU =================
+// HAMBURGER MENU
 hamburger.addEventListener('click', () => {
   navLinks.classList.toggle('open');
   overlay.classList.toggle('active');
@@ -27,13 +27,13 @@ overlay.addEventListener('click', () => {
   overlay.classList.remove('active');
 });
 
-// ================= CONTACT MENU =================
+// CONTACT MENU
 contactToggle.addEventListener('click', () => {
   const isVisible = contactInfo.classList.toggle('visible');
   contactLabel.textContent = isVisible ? "Contact ▲" : "Contact ▼";
 });
 
-// ================= PRODUCTS =================
+// PRODUCTS
 const defaultProducts = [
   "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449399/jtwtzk0egjizvomclm1w.jpg",
   "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449385/nomumjmwxipfh0ril8oc.jpg",
@@ -44,10 +44,10 @@ const defaultProducts = [
 
 const catalogJSON = "https://res.cloudinary.com/dgmg1cubi/raw/upload/v1/products.json";
 
-function renderProduct(url, index) {
+function renderProduct(url, index){
   const div = document.createElement('div');
   div.className = 'product-card';
-  div.style.transitionDelay = `${index * 0.15}s`;
+  div.style.transitionDelay = `${index*0.15}s`;
   div.innerHTML = `
     <img src="${url}" alt="Product" loading="lazy">
     <a href="https://m.me/ExoTropicAquarium" target="_blank" class="buy-btn">Buy via Messenger</a>
@@ -55,60 +55,58 @@ function renderProduct(url, index) {
   shopGrid.appendChild(div);
 }
 
-async function loadProducts() {
+async function loadProducts(){
   shopGrid.innerHTML = '';
   loadingText.textContent = 'Loading products...';
-  try {
+  try{
     let uploadedImages = [];
-    const res = await fetch(catalogJSON + '?t=' + new Date().getTime());
-    if (res.ok) uploadedImages = await res.json();
-    const allProducts = [...defaultProducts, ...uploadedImages];
-    allProducts.forEach((url, index) => renderProduct(url, index));
-    loadingText.textContent = '';
+    const res = await fetch(catalogJSON+'?t='+new Date().getTime());
+    if(res.ok) uploadedImages = await res.json();
+    const allProducts = [...defaultProducts,...uploadedImages];
+    allProducts.forEach((url,index)=>renderProduct(url,index));
+    loadingText.textContent='';
     fadeInProducts();
-  } catch (err) {
+  }catch(err){
     console.error(err);
-    defaultProducts.forEach((url, index) => renderProduct(url, index));
-    loadingText.textContent = 'Showing default products.';
+    defaultProducts.forEach((url,index)=>renderProduct(url,index));
+    loadingText.textContent='Showing default products.';
     fadeInProducts();
   }
 }
 
-function fadeInProducts() {
+function fadeInProducts(){
   const cards = shopGrid.querySelectorAll('.product-card');
-  cards.forEach((card, index) => {
-    setTimeout(() => {
-      card.style.opacity = '1';
-      card.style.transform = 'translateY(0)';
-    }, index * 100);
+  cards.forEach((card,index)=>{
+    setTimeout(()=>{
+      card.style.opacity='1';
+      card.style.transform='translateY(0)';
+    },index*100);
   });
 }
 
-// ================= SECTION TOGGLE =================
-function showShop() {
-  homeSection.style.display = 'none';
-  shopSection.style.display = 'block';
-  shopSection.scrollIntoView({ behavior: 'smooth' });
+// SECTION TOGGLE
+function showShop(){
+  homeSection.style.display='none';
+  shopSection.style.display='block';
+  shopSection.scrollIntoView({behavior:'smooth'});
   loadProducts();
 }
 
-function showHome() {
-  shopSection.style.display = 'none';
-  homeSection.style.display = 'block';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+function showHome(){
+  shopSection.style.display='none';
+  homeSection.style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
-// ================= BUTTON EVENTS =================
-shopBtn && shopBtn.addEventListener('click', showShop);
-backBtn.addEventListener('click', showHome);
-
-shopMenu.addEventListener('click', () => {
+// BUTTON EVENTS
+shopBtn.addEventListener('click',showShop);
+backBtn.addEventListener('click',showHome);
+shopMenu.addEventListener('click',()=>{
   navLinks.classList.remove('open');
   overlay.classList.remove('active');
   showShop();
 });
-
-homeMenu.addEventListener('click', () => {
+homeMenu.addEventListener('click',()=>{
   navLinks.classList.remove('open');
   overlay.classList.remove('active');
   showHome();
