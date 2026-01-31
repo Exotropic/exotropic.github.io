@@ -12,7 +12,7 @@
   inset: 0;
   z-index: -1;
   background: url('images/background.png') center/cover no-repeat;
-  filter: brightness(1.2); /* Brightened for clarity */
+  filter: brightness(1.25); /* Brightened for clarity */
 }
 
 /* ========== HERO ========== */
@@ -26,29 +26,30 @@
   width: 225px;
   margin-bottom: 20px;
   animation: floatLogo 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px #81D4FA) drop-shadow(0 0 10px #B2EBF2);
 }
 
 @keyframes floatLogo {
   0% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  50% { transform: translateY(-12px); }
   100% { transform: translateY(0); }
 }
 
 .hero h1 {
   font-size: 48px;
   margin-bottom: 10px;
-  color: #B2EBF2;
-  text-shadow: 1px 1px 3px rgba(0,0,50,0.7);
+  color: #E0FFFF; /* Light cyan */
+  text-shadow: 2px 2px 6px rgba(0,50,80,0.6);
 }
 
 .hero p {
   font-size: 20px;
   margin-top: 5px;
-  color: #D0F0FD;
-  text-shadow: 1px 1px 2px rgba(0,0,50,0.5);
+  color: #B0F0FF; /* Slightly darker cyan */
+  text-shadow: 1px 1px 3px rgba(0,40,70,0.5);
 }
 
-/* ========== HAMBURGER ========== */
+/* ========== HAMBURGER MENU ========== */
 .hamburger {
   position: fixed;
   top: 15px;
@@ -66,13 +67,13 @@
   display: block;
   width: 100%;
   height: 5px;
-  background: #FF8A65;
+  background: linear-gradient(135deg, #00BFA5, #26C6DA); /* Gradient teal-cyan */
   border-radius: 3px;
   transition: 0.3s;
 }
 
 .hamburger:hover span {
-  background: #FF7043;
+  background: linear-gradient(135deg, #26C6DA, #81D4FA); /* Hover gradient */
 }
 
 /* ========== MENU ========== */
@@ -82,7 +83,7 @@
   left: -260px;
   width: 260px;
   height: 100%;
-  background: rgba(0,50,80,0.9);
+  background: rgba(0,60,90,0.95);
   padding: 60px 20px;
   transition: left 0.3s ease-in-out;
   z-index: 900;
@@ -97,7 +98,7 @@
   font-size: 18px;
   margin-bottom: 15px;
   text-align: center;
-  color: #B2EBF2;
+  color: #81D4FA;
 }
 
 .menu-content a,
@@ -113,10 +114,10 @@
 
 .menu-content a:hover,
 .menu-content span:hover {
-  color: #FF8A65;
+  color: #26C6DA;
 }
 
-/* ========== CONTACT FIXED ========== */
+/* ========== CONTACT MENU ========== */
 .menu-contact {
   display: none;
 }
@@ -126,7 +127,7 @@
   flex-direction: column;
   margin-left: 10px;
   padding-left: 10px;
-  border-left: 2px solid #FFE082;
+  border-left: 2px solid #B2EBF2;
 }
 
 /* ========== OVERLAY ========== */
@@ -134,7 +135,7 @@
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.3);
+  background: rgba(0,0,0,0.35);
   z-index: 800;
 }
 
@@ -158,13 +159,14 @@
   display: block;
   margin: 0 auto 20px auto;
   animation: floatLogo 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 15px #26C6DA) drop-shadow(0 0 10px #81D4FA);
 }
 
 .section-title {
   text-align: center;
   margin-bottom: 30px;
   font-size: 28px;
-  color: #81D4FA;
+  color: #4DD0E1;
 }
 
 .shop-grid {
@@ -174,8 +176,8 @@
 }
 
 .product-card {
-  background: rgba(0,0,50,0.6);
-  border: 1px solid #FFE082;
+  background: rgba(0,40,70,0.65);
+  border: 1px solid #B2EBF2;
   padding: 10px;
   border-radius: 10px;
   color: #D0F0FD;
@@ -190,20 +192,46 @@
 }
 
 /* ========== BUTTONS ========== */
-.buy-btn {
+/* Shop Now */
+#shopBtn {
   display: inline-block;
-  padding: 6px 12px;
-  background: #FF8A65;
+  padding: 10px 25px;
+  font-size: 18px;
+  background: linear-gradient(135deg, #00BFA5, #26C6DA);
   color: #003040;
-  border-radius: 5px;
-  text-decoration: none;
+  border-radius: 8px;
   font-weight: bold;
-  transition: 0.3s;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,50,80,0.3);
 }
 
-.buy-btn:hover {
-  background: #FF7043;
+#shopBtn:hover {
+  background: linear-gradient(135deg, #26C6DA, #81D4FA);
+  box-shadow: 0 6px 14px rgba(0,70,120,0.4);
+  transform: translateY(-2px);
+}
+
+/* Buy via Messenger */
+.messenger-btn {
+  background: linear-gradient(135deg, #00BFA5, #26C6DA);
+  color: #003040;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,50,80,0.3);
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.messenger-btn:hover {
+  background: linear-gradient(135deg, #26C6DA, #81D4FA);
   color: #001f30;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,70,120,0.4);
 }
 
 /* ========== FOOTER ========== */
@@ -211,27 +239,7 @@ footer {
   text-align: center;
   padding: 20px;
   color: #E0F7FA;
-  background: rgba(0,0,60,0.8);
-}
-
-/* ========== MESSENGER BUTTON ========== */
-.messenger-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #FF8A65;
-  color: #003040;
-  padding: 10px 15px;
-  border-radius: 6px;
-  font-weight: bold;
-  z-index: 1000;
-  transition: 0.3s;
-}
-
-.messenger-btn:hover {
-  background: #FF7043;
-  color: #001f30;
-  transform: scale(1.1);
+  background: rgba(0,0,60,0.85);
 }
 
 /* ========== RESPONSIVE ========== */
