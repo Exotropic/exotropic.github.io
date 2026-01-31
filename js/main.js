@@ -1,4 +1,4 @@
-// Hamburger & Overlay
+// ===== HAMBURGER MENU & OVERLAY =====
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('nav-links');
 const overlay = document.getElementById('overlay');
@@ -11,19 +11,23 @@ hamburger.addEventListener('click', () => {
 overlay.addEventListener('click', () => {
   navLinks.classList.remove('open');
   overlay.classList.remove('active');
+  // Close contact submenu if open
+  contactInfo.classList.remove('visible');
+  contactLabel.textContent = "Contact ▼";
 });
 
-// Contact submenu
+// ===== CONTACT SUBMENU =====
 const contactToggle = document.getElementById('contact-toggle');
 const contactInfo = document.getElementById('contact-info');
 const contactLabel = document.getElementById('contact-label');
 
-contactToggle.addEventListener('click', () => {
-  contactInfo.classList.toggle('visible');
-  contactLabel.textContent = contactInfo.classList.contains('visible') ? "Contact ▲" : "Contact ▼";
+contactToggle.addEventListener('click', (e) => {
+  e.stopPropagation(); // Prevent overlay click from triggering
+  const isOpen = contactInfo.classList.toggle('visible');
+  contactLabel.textContent = isOpen ? "Contact ▲" : "Contact ▼";
 });
 
-// Sections
+// ===== SECTIONS =====
 const shopBtn = document.getElementById('shopBtn');
 const shopSection = document.getElementById('shop');
 const shopGrid = document.getElementById('shopGrid');
@@ -33,7 +37,7 @@ const backBtn = document.getElementById('backBtn');
 const shopMenu = document.getElementById('shopMenu');
 const homeMenu = document.getElementById('homeMenu');
 
-// Products
+// ===== PRODUCTS =====
 const defaultProducts = [
   "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449399/jtwtzk0egjizvomclm1w.jpg",
   "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449385/nomumjmwxipfh0ril8oc.jpg",
@@ -41,7 +45,9 @@ const defaultProducts = [
   "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449352/zfndhypfmvsr7u7gjbdf.jpg",
   "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449335/phndllj2guzhcrzujvk4.jpg"
 ];
+const catalogJSON = "https://res.cloudinary.com/dgmg1cubi/raw/upload/v1/products.json";
 
+// ===== RENDER PRODUCTS =====
 function renderProduct(url,index){
   const div = document.createElement('div');
   div.className='product-card';
@@ -51,19 +57,24 @@ function renderProduct(url,index){
   shopGrid.appendChild(div);
 }
 
+// ===== LOAD PRODUCTS =====
 async function loadProducts(){
   shopGrid.innerHTML='';
   loadingText.textContent='Loading products...';
   try {
-    defaultProducts.forEach((url,index)=>renderProduct(url,index));
+    let uploadedImages=[];
+    const res = await fetch(catalogJSON+'?t='+new Date().getTime());
+    if(res.ok) uploadedImages = await res.json();
+    const allProducts = [...defaultProducts, ...uploadedImages];
+    allProducts.forEach((url,index)=>renderProduct(url,index));
     loadingText.textContent='';
-    fadeInProducts();
   } catch(err){
     console.error(err);
     loadingText.textContent='Failed to load products.';
   }
 }
 
+// ===== FADE-IN PRODUCTS =====
 function fadeInProducts(){
   const productCards = shopGrid.querySelectorAll('.product-card');
   productCards.forEach((card,index)=>{
@@ -74,23 +85,37 @@ function fadeInProducts(){
   });
 }
 
-// Show Shop
-function showShop(){
+// ===== SHOW SHOP =====
+async function showShop(){
+  homeSection.classList.add('hidden');
+  await new Promise(resolve => setTimeout(resolve, 300));
   homeSection.style.display='none';
+
   shopSection.classList.add('visible');
   shopSection.scrollIntoView({behavior:'smooth'});
-  loadProducts();
+
+  await loadProducts();
+  fadeInProducts();
 }
 
-// Show Home
+// ===== SHOW HOME =====
 function showHome(){
   shopSection.classList.remove('visible');
   homeSection.style.display='block';
+  setTimeout(()=> homeSection.classList.remove('hidden'), 50);
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
-// Button events
+// ===== BUTTON EVENTS =====
 shopBtn.addEventListener('click', showShop);
 backBtn.addEventListener('click', showHome);
-shopMenu.addEventListener('click', showShop);
-homeMenu.addEventListener('click', showHome);
+shopMenu.addEventListener('click', () => {
+  navLinks.classList.remove('open');
+  overlay.classList.remove('active');
+  showShop();
+});
+homeMenu.addEventListener('click', () => {
+  navLinks.classList.remove('open');
+  overlay.classList.remove('active');
+  showHome();
+});
