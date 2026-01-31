@@ -7,19 +7,9 @@
 }
 
 /* Layout for sticky footer */
-html, body {
-  height: 100%;
-}
-
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-main {
-  flex: 1;
-}
+html, body { height: 100%; }
+body { display: flex; flex-direction: column; min-height: 100vh; }
+main { flex: 1; }
 
 /* ================= BACKGROUND ================= */
 .background {
@@ -61,7 +51,7 @@ main {
 
 /* ================= SHOP ================= */
 .shop {
-  display: none; /* hidden by default */
+  display: none;
   padding: 60px 20px;
   color: #E0F7FA;
   transition: opacity 0.3s ease-in-out;
@@ -96,10 +86,7 @@ main {
   color: #D0F0FD;
 }
 
-.product-card img {
-  width: 100%;
-  border-radius: 8px;
-}
+.product-card img { width: 100%; border-radius: 8px; }
 
 .product-card .buy-btn {
   display: block;
@@ -114,10 +101,8 @@ main {
   text-decoration: none;
 }
 
-/* Remove underline from floating messenger */
-.messenger-btn {
-  text-decoration: none;
-}
+/* Remove underline for floating messenger */
+.messenger-btn { text-decoration: none; }
 
 /* ================= BUTTONS ================= */
 .buy-btn,
@@ -174,40 +159,17 @@ main {
 
 .nav-links.open { left: 0; }
 
-.menu-header {
-  text-align: center;
-  margin-bottom: 15px;
-  color: #81D4FA;
-}
-
+.menu-header { text-align: center; margin-bottom: 15px; color: #81D4FA; }
 .menu-content a,
-.menu-content span {
-  display: block;
-  padding: 8px 12px;
-  color: #E0F7FA;
-  text-decoration: none;
-}
+.menu-content span { display: block; padding: 8px 12px; color: #E0F7FA; text-decoration: none; }
 
 /* ================= CONTACT MENU ================= */
 .menu-contact { display: none; }
-.menu-contact.visible {
-  display: flex;
-  flex-direction: column;
-  margin-left: 10px;
-  border-left: 2px solid #B2EBF2;
-  padding-left: 10px;
-}
+.menu-contact.visible { display: flex; flex-direction: column; margin-left:10px; border-left:2px solid #B2EBF2; padding-left:10px; }
 
 /* ================= OVERLAY ================= */
-#overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.35);
-  z-index: 800;
-}
-
-#overlay.active { display: block; }
+#overlay { display: none; position: fixed; inset:0; background: rgba(0,0,0,0.35); z-index:800; }
+#overlay.active { display:block; }
 
 /* ================= SMALL FOOTER ================= */
 .site-credits {
@@ -223,6 +185,6 @@ main {
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 480px) {
-  .hero h1 { font-size: 36px; }
-  .hero-logo, .shop-logo { width: 180px; }
+  .hero h1 { font-size:36px; }
+  .hero-logo, .shop-logo { width:180px; }
 }
