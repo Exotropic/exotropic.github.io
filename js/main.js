@@ -22,7 +22,6 @@ hamburger.addEventListener('click', () => {
   overlay.classList.toggle('active');
 });
 
-// Close menu on overlay click
 overlay.addEventListener('click', () => {
   navLinks.classList.remove('open');
   overlay.classList.remove('active');
@@ -94,7 +93,7 @@ function showShop() {
   setTimeout(() => {
     homeSection.style.display = 'none';
     shopSection.style.display = 'block';
-    shopSection.style.opacity = '1';
+    setTimeout(() => { shopSection.style.opacity = '1'; }, 20);
     shopSection.scrollIntoView({ behavior: 'smooth' });
     loadProducts();
   }, 300);
@@ -105,7 +104,7 @@ function showHome() {
   setTimeout(() => {
     shopSection.style.display = 'none';
     homeSection.style.display = 'block';
-    homeSection.style.opacity = '1';
+    setTimeout(() => { homeSection.style.opacity = '1'; }, 20);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, 300);
 }
@@ -114,7 +113,6 @@ function showHome() {
 shopBtn.addEventListener('click', showShop);
 backBtn.addEventListener('click', showHome);
 
-// Hamburger menu links
 shopMenu.addEventListener('click', () => {
   navLinks.classList.remove('open');
   overlay.classList.remove('active');
