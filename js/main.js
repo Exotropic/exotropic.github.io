@@ -73,22 +73,20 @@ async function loadProducts(){
 
 function fadeInProducts(){
   const cards = shopGrid.querySelectorAll('.product-card');
-  cards.forEach((card,i)=>setTimeout(()=>{card.style.opacity='1'; card.style.transform='translateY(0)';},i*100));
+  cards.forEach((card,i)=>setTimeout(()=>{
+    card.style.opacity='1';
+    card.style.transform='translateY(0)';
+  },i*100));
 }
 
-// --- SECTION TOGGLE WITH HOME LOGO & SCROLL FIX ---
+// --- SECTION TOGGLE WITH HOME HERO FIX ---
 function showShop(){
   homeSection.classList.remove('visible');
   shopSection.classList.add('visible');
-  shopSection.scrollIntoView({behavior:'smooth'});
   loadProducts();
 
-  // Enable scrolling for shop page
+  // Enable scrolling for shop
   document.body.classList.remove('no-scroll');
-
-  // Remove any homepage hero fixes
-  document.querySelector('.hero').style.position = '';
-  document.querySelector('.hero').style.top = '';
 }
 
 function showHome(){
@@ -97,12 +95,9 @@ function showHome(){
 
   // Lock homepage scroll
   document.body.classList.add('no-scroll');
-  window.scrollTo({top:0, behavior:'auto'});
 
-  // Reset hero to fixed layout
-  const hero = document.querySelector('.hero');
-  hero.style.position = 'absolute';
-  hero.style.top = '0';
+  // Reset scroll and ensure hero stays fixed
+  window.scrollTo(0,0);
 }
 
 // BUTTON EVENTS
@@ -111,7 +106,7 @@ backBtn.addEventListener('click', showHome);
 shopMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overlay.classList.remove('active'); showShop(); });
 homeMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overlay.classList.remove('active'); showHome(); });
 
-// --- INIT: lock homepage scroll on first load ---
+// INIT: lock homepage scroll on first load
 document.addEventListener('DOMContentLoaded', ()=>{
   document.body.classList.add('no-scroll');
 });
