@@ -22,7 +22,6 @@ hamburger.addEventListener('click', () => {
   overlay.classList.toggle('active');
 });
 
-// Close menu on overlay click
 overlay.addEventListener('click', () => {
   navLinks.classList.remove('open');
   overlay.classList.remove('active');
@@ -31,7 +30,7 @@ overlay.addEventListener('click', () => {
 // ================= CONTACT MENU =================
 contactToggle.addEventListener('click', () => {
   const isVisible = contactInfo.classList.toggle('visible');
-  contactLabel.textContent = isVisible ? "Contact ▲" : "Contact ▼";
+  contactLabel.textContent = isVisible ? 'Contact ▲' : 'Contact ▼';
 });
 
 // ================= PRODUCTS =================
@@ -45,6 +44,7 @@ const defaultProducts = [
 
 const catalogJSON = "https://res.cloudinary.com/dgmg1cubi/raw/upload/v1/products.json";
 
+// Render single product
 function renderProduct(url, index) {
   const div = document.createElement('div');
   div.className = 'product-card';
@@ -56,6 +56,7 @@ function renderProduct(url, index) {
   shopGrid.appendChild(div);
 }
 
+// Load all products
 async function loadProducts() {
   shopGrid.innerHTML = '';
   loadingText.textContent = 'Loading products...';
@@ -75,6 +76,7 @@ async function loadProducts() {
   }
 }
 
+// Animate products
 function fadeInProducts() {
   const cards = shopGrid.querySelectorAll('.product-card');
   cards.forEach((card, index) => {
@@ -87,22 +89,28 @@ function fadeInProducts() {
 
 // ================= SECTION TOGGLE =================
 function showShop() {
+  homeSection.style.transition = 'opacity 0.3s ease';
+  shopSection.style.transition = 'opacity 0.3s ease';
+
   homeSection.style.opacity = '0';
   setTimeout(() => {
     homeSection.style.display = 'none';
     shopSection.style.display = 'block';
-    setTimeout(() => shopSection.style.opacity = '1', 20);
+    shopSection.style.opacity = '1';
     shopSection.scrollIntoView({ behavior: 'smooth' });
     loadProducts();
   }, 300);
 }
 
 function showHome() {
+  homeSection.style.transition = 'opacity 0.3s ease';
+  shopSection.style.transition = 'opacity 0.3s ease';
+
   shopSection.style.opacity = '0';
   setTimeout(() => {
     shopSection.style.display = 'none';
     homeSection.style.display = 'block';
-    setTimeout(() => homeSection.style.opacity = '1', 20);
+    homeSection.style.opacity = '1';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, 300);
 }
@@ -111,6 +119,7 @@ function showHome() {
 shopBtn.addEventListener('click', showShop);
 backBtn.addEventListener('click', showHome);
 
+// Hamburger menu links
 shopMenu.addEventListener('click', () => {
   navLinks.classList.remove('open');
   overlay.classList.remove('active');
