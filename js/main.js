@@ -15,39 +15,29 @@ const homeSection = document.getElementById('home');
 const shopMenu = document.getElementById('shopMenu');
 const homeMenu = document.getElementById('homeMenu');
 
-// ===== HAMBURGER MENU =====
-function closeMenu() {
+// ===== MENU FUNCTIONS =====
+function closeMenu(){
   navLinks.classList.remove('open');
   overlay.classList.remove('active');
-  closeContact(); // close submenu too
-}
-
-hamburger.addEventListener('click', (e) => {
-  e.stopPropagation();
-  const isOpen = navLinks.classList.toggle('open');
-  overlay.classList.toggle('active', isOpen);
-  if (!isOpen) closeContact();
-});
-
-overlay.addEventListener('click', closeMenu);
-
-// ===== CONTACT SUBMENU =====
-function closeContact() {
   contactInfo.classList.remove('visible');
   contactLabel.textContent = "Contact ▼";
 }
 
-contactToggle.addEventListener('click', (e) => {
-  e.stopPropagation(); // Prevent clicks from bubbling
-  const isOpen = contactInfo.classList.toggle('visible');
-  contactLabel.textContent = isOpen ? "Contact ▲" : "Contact ▼";
+// Hamburger toggle
+hamburger.addEventListener('click', () => {
+  const isOpen = navLinks.classList.toggle('open');
+  overlay.classList.toggle('active', isOpen);
+  if(!isOpen) closeMenu();
 });
 
-// Close contact submenu if click outside menu
-document.addEventListener('click', (e) => {
-  if (!navLinks.contains(e.target)) {
-    closeContact();
-  }
+// Overlay click
+overlay.addEventListener('click', closeMenu);
+
+// Contact submenu
+contactToggle.addEventListener('click', (e)=>{
+  e.stopPropagation();
+  const visible = contactInfo.classList.toggle('visible');
+  contactLabel.textContent = visible ? "Contact ▲" : "Contact ▼";
 });
 
 // ===== PRODUCTS =====
@@ -98,12 +88,10 @@ function fadeInProducts(){
 // ===== SHOW SHOP =====
 async function showShop(){
   homeSection.classList.add('hidden');
-  await new Promise(resolve => setTimeout(resolve, 300));
+  await new Promise(r=>setTimeout(r,300));
   homeSection.style.display='none';
-
   shopSection.classList.add('visible');
   shopSection.scrollIntoView({behavior:'smooth'});
-
   await loadProducts();
   fadeInProducts();
 }
@@ -112,18 +100,12 @@ async function showShop(){
 function showHome(){
   shopSection.classList.remove('visible');
   homeSection.style.display='block';
-  setTimeout(()=> homeSection.classList.remove('hidden'), 50);
+  setTimeout(()=> homeSection.classList.remove('hidden'),50);
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
 // ===== BUTTON EVENTS =====
 shopBtn.addEventListener('click', showShop);
 backBtn.addEventListener('click', showHome);
-shopMenu.addEventListener('click', () => {
-  closeMenu();
-  showShop();
-});
-homeMenu.addEventListener('click', () => {
-  closeMenu();
-  showHome();
-});
+shopMenu.addEventListener('click', ()=>{ closeMenu(); showShop(); });
+homeMenu.addEventListener('click', ()=>{ closeMenu(); showHome(); });
