@@ -22,6 +22,7 @@ hamburger.addEventListener('click', () => {
   overlay.classList.toggle('active');
 });
 
+// Close menu on overlay click
 overlay.addEventListener('click', () => {
   navLinks.classList.remove('open');
   overlay.classList.remove('active');
@@ -30,7 +31,7 @@ overlay.addEventListener('click', () => {
 // ================= CONTACT MENU =================
 contactToggle.addEventListener('click', () => {
   const isVisible = contactInfo.classList.toggle('visible');
-  contactLabel.textContent = isVisible ? 'Contact ▲' : 'Contact ▼';
+  contactLabel.textContent = isVisible ? "Contact ▲" : "Contact ▼";
 });
 
 // ================= PRODUCTS =================
@@ -89,37 +90,30 @@ function fadeInProducts() {
 
 // ================= SECTION TOGGLE =================
 function showShop() {
-  homeSection.style.transition = 'opacity 0.3s ease';
-  shopSection.style.transition = 'opacity 0.3s ease';
+  homeSection.classList.remove('visible');
+  homeSection.classList.add('hidden');
 
-  homeSection.style.opacity = '0';
-  setTimeout(() => {
-    homeSection.style.display = 'none';
-    shopSection.style.display = 'block';
-    shopSection.style.opacity = '1';
-    shopSection.scrollIntoView({ behavior: 'smooth' });
-    loadProducts();
-  }, 300);
+  shopSection.classList.remove('hidden');
+  shopSection.classList.add('visible');
+
+  shopSection.scrollIntoView({ behavior: 'smooth' });
+  loadProducts();
 }
 
 function showHome() {
-  homeSection.style.transition = 'opacity 0.3s ease';
-  shopSection.style.transition = 'opacity 0.3s ease';
+  shopSection.classList.remove('visible');
+  shopSection.classList.add('hidden');
 
-  shopSection.style.opacity = '0';
-  setTimeout(() => {
-    shopSection.style.display = 'none';
-    homeSection.style.display = 'block';
-    homeSection.style.opacity = '1';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, 300);
+  homeSection.classList.remove('hidden');
+  homeSection.classList.add('visible');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ================= BUTTON EVENTS =================
 shopBtn.addEventListener('click', showShop);
 backBtn.addEventListener('click', showHome);
 
-// Hamburger menu links
 shopMenu.addEventListener('click', () => {
   navLinks.classList.remove('open');
   overlay.classList.remove('active');
