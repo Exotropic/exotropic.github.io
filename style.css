@@ -18,7 +18,7 @@
 .hero {
   padding: 100px 20px;
   text-align: center;
-  color: #E0F7FA; /* soft aqua */
+  color: #E0F7FA; /* soft aqua text */
 }
 
 .hero-logo {
@@ -36,7 +36,7 @@
 .hero h1 {
   font-size:48px;
   margin-bottom:10px;
-  color:#B2EBF2; /* lighter aqua heading */
+  color:#B2EBF2; /* light aqua */
   text-shadow:1px 1px 3px rgba(0,0,50,0.7);
 }
 
@@ -70,9 +70,7 @@
   transition:0.3s;
 }
 
-.hamburger:hover span {
-  background:#FF7043;
-}
+.hamburger:hover span { background:#FF7043; }
 
 /* ========== MENU ========== */
 .nav-links {
@@ -81,7 +79,7 @@
   left:-260px;
   width:260px;
   height:100%;
-  background:rgba(0,50,80,0.9); /* deep ocean */
+  background:rgba(0,50,80,0.9);
   padding:60px 20px;
   transition:left 0.3s ease-in-out;
   z-index:900;
@@ -90,12 +88,7 @@
 
 .nav-links.open{left:0;}
 
-.menu-header{
-  font-size:18px;
-  margin-bottom:15px;
-  text-align:center;
-  color:#B2EBF2;
-}
+.menu-header{ font-size:18px; margin-bottom:15px; text-align:center; color:#B2EBF2; }
 
 .menu-content a,
 .menu-content span{
@@ -109,16 +102,14 @@
 }
 
 .menu-content a:hover,
-.menu-content span:hover{
-  color:#FF8A65;
-}
+.menu-content span:hover{ color:#FF8A65; }
 
 .menu-contact.visible{
   display:flex;
   flex-direction:column;
   margin-left:10px;
   padding-left:10px;
-  border-left:2px solid #FFE082; /* sandy gold accent */
+  border-left:2px solid #FFE082;
 }
 
 /* ========== OVERLAY ========== */
