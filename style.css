@@ -28,10 +28,9 @@
 .hero {
   padding: 100px 20px;
   text-align: center;
-  color: #F5DEB3; /* Sand/gold theme */
+  color: #F5DEB3;
   position: relative;
   z-index: 1000;
-  transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
 .hero-logo {
