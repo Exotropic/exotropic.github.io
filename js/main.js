@@ -22,7 +22,6 @@ hamburger.addEventListener('click', () => {
   overlay.classList.toggle('active');
 });
 
-// Close menu on overlay click
 overlay.addEventListener('click', () => {
   navLinks.classList.remove('open');
   overlay.classList.remove('active');
@@ -45,7 +44,6 @@ const defaultProducts = [
 
 const catalogJSON = "https://res.cloudinary.com/dgmg1cubi/raw/upload/v1/products.json";
 
-// Render single product
 function renderProduct(url, index) {
   const div = document.createElement('div');
   div.className = 'product-card';
@@ -57,7 +55,6 @@ function renderProduct(url, index) {
   shopGrid.appendChild(div);
 }
 
-// Load all products
 async function loadProducts() {
   shopGrid.innerHTML = '';
   loadingText.textContent = 'Loading products...';
@@ -77,7 +74,6 @@ async function loadProducts() {
   }
 }
 
-// Animate products
 function fadeInProducts() {
   const cards = shopGrid.querySelectorAll('.product-card');
   cards.forEach((card, index) => {
@@ -90,28 +86,20 @@ function fadeInProducts() {
 
 // ================= SECTION TOGGLE =================
 function showShop() {
-  homeSection.classList.remove('visible');
-  homeSection.classList.add('hidden');
-
-  shopSection.classList.remove('hidden');
-  shopSection.classList.add('visible');
-
+  homeSection.style.display = 'none';
+  shopSection.style.display = 'block';
   shopSection.scrollIntoView({ behavior: 'smooth' });
   loadProducts();
 }
 
 function showHome() {
-  shopSection.classList.remove('visible');
-  shopSection.classList.add('hidden');
-
-  homeSection.classList.remove('hidden');
-  homeSection.classList.add('visible');
-
+  shopSection.style.display = 'none';
+  homeSection.style.display = 'block';
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ================= BUTTON EVENTS =================
-shopBtn.addEventListener('click', showShop);
+shopBtn && shopBtn.addEventListener('click', showShop);
 backBtn.addEventListener('click', showHome);
 
 shopMenu.addEventListener('click', () => {
