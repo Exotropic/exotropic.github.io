@@ -19,7 +19,7 @@
   background-attachment: fixed;
 }
 
-/* Overlay to make text/logo pop */
+/* Overlay for contrast */
 .background::after {
   content: '';
   position: absolute;
