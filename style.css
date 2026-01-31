@@ -95,3 +95,9 @@ main { flex:1; position: relative; }
 
 /* RESPONSIVE */
 @media (max-width:480px){ .hero h1{font-size:36px;} .hero-logo,.shop-logo{width:180px;} }
+
+/* ===== FIX: Prevent home logo from jumping and leaving blank space on scroll ===== */
+.hero.home-reset {
+  position: relative;
+  top: auto;
+}
