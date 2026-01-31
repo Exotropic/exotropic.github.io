@@ -19,26 +19,35 @@ const homeMenu = document.getElementById('homeMenu');
 function closeMenu() {
   navLinks.classList.remove('open');
   overlay.classList.remove('active');
-  contactInfo.classList.remove('visible');
-  contactLabel.textContent = "Contact ▼";
+  closeContact(); // close submenu too
 }
 
-hamburger.addEventListener('click', () => {
+hamburger.addEventListener('click', (e) => {
+  e.stopPropagation();
   const isOpen = navLinks.classList.toggle('open');
   overlay.classList.toggle('active', isOpen);
-  if (!isOpen) {
-    contactInfo.classList.remove('visible');
-    contactLabel.textContent = "Contact ▼";
-  }
+  if (!isOpen) closeContact();
 });
 
 overlay.addEventListener('click', closeMenu);
 
 // ===== CONTACT SUBMENU =====
+function closeContact() {
+  contactInfo.classList.remove('visible');
+  contactLabel.textContent = "Contact ▼";
+}
+
 contactToggle.addEventListener('click', (e) => {
-  e.stopPropagation(); // prevent overlay closing
-  const isVisible = contactInfo.classList.toggle('visible');
-  contactLabel.textContent = isVisible ? "Contact ▲" : "Contact ▼";
+  e.stopPropagation(); // Prevent clicks from bubbling
+  const isOpen = contactInfo.classList.toggle('visible');
+  contactLabel.textContent = isOpen ? "Contact ▲" : "Contact ▼";
+});
+
+// Close contact submenu if click outside menu
+document.addEventListener('click', (e) => {
+  if (!navLinks.contains(e.target)) {
+    closeContact();
+  }
 });
 
 // ===== PRODUCTS =====
