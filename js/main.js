@@ -76,18 +76,24 @@ function fadeInProducts(){
   cards.forEach((card,i)=>setTimeout(()=>{card.style.opacity='1'; card.style.transform='translateY(0)';},i*100));
 }
 
-// SECTION TOGGLE
+// --- SECTION TOGGLE WITH HOME LOGO FIX ---
 function showShop(){
   homeSection.classList.remove('visible');
   shopSection.classList.add('visible');
   shopSection.scrollIntoView({behavior:'smooth'});
   loadProducts();
+
+  // Remove home-reset class when leaving home
+  document.querySelector('.hero').classList.remove('home-reset');
 }
 
 function showHome(){
   shopSection.classList.remove('visible');
   homeSection.classList.add('visible');
   window.scrollTo({top:0, behavior:'smooth'});
+
+  // Add home-reset class to prevent logo jump/blank space
+  document.querySelector('.hero').classList.add('home-reset');
 }
 
 // BUTTON EVENTS
