@@ -76,24 +76,33 @@ function fadeInProducts(){
   cards.forEach((card,i)=>setTimeout(()=>{card.style.opacity='1'; card.style.transform='translateY(0)';},i*100));
 }
 
-// --- SECTION TOGGLE WITH HOME LOGO FIX ---
+// --- SECTION TOGGLE WITH HOME LOGO & SCROLL FIX ---
 function showShop(){
   homeSection.classList.remove('visible');
   shopSection.classList.add('visible');
   shopSection.scrollIntoView({behavior:'smooth'});
   loadProducts();
 
-  // Remove home-reset class when leaving home
-  document.querySelector('.hero').classList.remove('home-reset');
+  // Enable scrolling for shop page
+  document.body.classList.remove('no-scroll');
+
+  // Remove any homepage hero fixes
+  document.querySelector('.hero').style.position = '';
+  document.querySelector('.hero').style.top = '';
 }
 
 function showHome(){
   shopSection.classList.remove('visible');
   homeSection.classList.add('visible');
-  window.scrollTo({top:0, behavior:'smooth'});
 
-  // Add home-reset class to prevent logo jump/blank space
-  document.querySelector('.hero').classList.add('home-reset');
+  // Lock homepage scroll
+  document.body.classList.add('no-scroll');
+  window.scrollTo({top:0, behavior:'auto'});
+
+  // Reset hero to fixed layout
+  const hero = document.querySelector('.hero');
+  hero.style.position = 'absolute';
+  hero.style.top = '0';
 }
 
 // BUTTON EVENTS
@@ -101,3 +110,8 @@ shopBtn.addEventListener('click', showShop);
 backBtn.addEventListener('click', showHome);
 shopMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overlay.classList.remove('active'); showShop(); });
 homeMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overlay.classList.remove('active'); showHome(); });
+
+// --- INIT: lock homepage scroll on first load ---
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.body.classList.add('no-scroll');
+});
