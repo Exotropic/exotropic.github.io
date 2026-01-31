@@ -1,4 +1,4 @@
-/* ================= RESET ================= */
+/* RESET */
 * {
   margin: 0;
   padding: 0;
@@ -6,22 +6,12 @@
   font-family: Arial, sans-serif;
 }
 
-/* ================= LAYOUT ================= */
-html, body {
-  height: 100%;
-}
+/* Layout */
+html, body { height: 100%; }
+body { display: flex; flex-direction: column; min-height: 100vh; }
+main { flex: 1; }
 
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-main {
-  flex: 1;
-}
-
-/* ================= BACKGROUND ================= */
+/* BACKGROUND */
 .background {
   position: fixed;
   inset: 0;
@@ -30,11 +20,13 @@ main {
   filter: brightness(1.35);
 }
 
-/* ================= HERO ================= */
+/* HERO */
 .hero {
   padding: 120px 20px 80px;
   text-align: center;
   color: #E0F7FA;
+  opacity: 1;
+  transition: opacity 0.4s ease;
 }
 
 .hero-logo {
@@ -45,7 +37,7 @@ main {
 }
 
 @keyframes floatLogo {
-  0%, 100% { transform: translateY(0); }
+  0%,100% { transform: translateY(0); }
   50% { transform: translateY(-12px); }
 }
 
@@ -57,11 +49,18 @@ main {
   -webkit-text-fill-color: transparent;
 }
 
-/* ================= SHOP ================= */
+/* SHOP */
 .shop {
-  display: none; /* hidden by default */
+  display: none;
   padding: 60px 20px;
   color: #E0F7FA;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.shop.visible {
+  display: block;
+  opacity: 1;
 }
 
 .shop-logo {
@@ -76,20 +75,23 @@ main {
   margin-bottom: 30px;
 }
 
-/* ================= SHOP GRID ================= */
+/* SHOP GRID */
 .shop-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 20px;
 }
 
-/* ================= PRODUCT CARD ================= */
+/* PRODUCT CARD */
 .product-card {
   background: rgba(0,40,70,0.65);
   border: 1px solid #B2EBF2;
   border-radius: 10px;
   padding: 10px;
   color: #D0F0FD;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .product-card img {
@@ -110,7 +112,7 @@ main {
   text-decoration: none;
 }
 
-/* ================= BUTTONS ================= */
+/* BUTTONS */
 .buy-btn,
 .messenger-btn {
   padding: 14px 28px;
@@ -120,18 +122,18 @@ main {
   cursor: pointer;
   background: linear-gradient(135deg, #00BFA5, #26C6DA);
   color: #003040;
+  text-decoration: none;
 }
 
-/* ================= MESSENGER BUTTON ================= */
+/* MESSENGER BUTTON */
 .messenger-btn {
   position: fixed;
   bottom: 20px;
   right: 20px;
   z-index: 1000;
-  text-decoration: none; /* remove underline */
 }
 
-/* ================= HAMBURGER ================= */
+/* HAMBURGER */
 .hamburger {
   position: fixed;
   top: 15px;
@@ -151,7 +153,7 @@ main {
   border-radius: 3px;
 }
 
-/* ================= NAV LINKS ================= */
+/* NAV LINKS */
 .nav-links {
   position: fixed;
   top: 0;
@@ -160,7 +162,7 @@ main {
   height: 100%;
   background: rgba(0,60,90,0.95);
   padding: 60px 20px;
-  transition: 0.3s;
+  transition: left 0.3s ease;
   z-index: 900;
 }
 
@@ -180,15 +182,27 @@ main {
   text-decoration: none;
 }
 
-/* ================= CONTACT MENU ================= */
+/* CONTACT MENU */
 .menu-contact { display: none; }
-.menu-contact.visible { display: flex; flex-direction: column; margin-left: 10px; border-left: 2px solid #B2EBF2; padding-left: 10px; }
+.menu-contact.visible {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  border-left: 2px solid #B2EBF2;
+  padding-left: 10px;
+}
 
-/* ================= OVERLAY ================= */
-#overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 800; }
+/* OVERLAY */
+#overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 800;
+}
 #overlay.active { display: block; }
 
-/* ================= SMALL FOOTER ================= */
+/* SMALL FOOTER */
 .site-credits {
   width: 100%;
   text-align: center;
@@ -198,12 +212,10 @@ main {
   background: rgba(0,40,70,0.25);
   padding: 4px 6px;
   backdrop-filter: blur(3px);
-
-  margin-top: auto; /* sticky bottom fix */
 }
 
-/* ================= RESPONSIVE ================= */
+/* RESPONSIVE */
 @media (max-width: 480px) {
-  .hero h1 { font-size: 36px; }
-  .hero-logo, .shop-logo { width: 180px; }
+  .hero h1 { font-size:36px; }
+  .hero-logo, .shop-logo { width:180px; }
 }
