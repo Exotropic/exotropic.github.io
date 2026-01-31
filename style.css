@@ -6,9 +6,19 @@
   font-family: Arial, sans-serif;
 }
 
-/* Prevent overlap with footer + Messenger button */
+/* Full-height flex layout for sticky bottom footer */
+html, body {
+  height: 100%;
+}
+
 body {
-  padding-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1; /* fills remaining space, pushes footer down */
 }
 
 /* ================= BACKGROUND ================= */
@@ -154,7 +164,6 @@ body {
 
 /* ================= SMALL SAFE FOOTER ================= */
 .site-credits {
-  display: block;               /* normal flow, scrolls with page */
   width: 100%;
   text-align: center;
   font-size: 10px;
@@ -163,7 +172,6 @@ body {
   background: rgba(0, 40, 70, 0.25);
   padding: 4px 6px;
   backdrop-filter: blur(3px);
-  margin-top: 20px;
   z-index: 10;
 }
 
