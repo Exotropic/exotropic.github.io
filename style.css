@@ -11,53 +11,53 @@
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: url('images/IMG_20260131_204502.png') no-repeat center center/cover;
+  background: url('images/background.png') no-repeat center center;
+  background-size: cover;
+}
+
+/* ================= HERO + SHOP GLASS EFFECT ================= */
+.hero,
+.shop,
+.menu-content {
+  background: rgba(0, 25, 50, 0.55);
+  backdrop-filter: blur(6px);
+  border-radius: 14px;
 }
 
 /* ================= HERO ================= */
 .hero {
   padding: 100px 20px;
   text-align: center;
-  color: #FFDFA0; /* softer gold to match ocean */
+  color: #FFD700;
   position: relative;
   z-index: 1000;
-  transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
 .hero-logo {
   width: 225px;
   margin-bottom: 20px;
-  filter: drop-shadow(0 0 15px #FFDFA0);
-  animation: fadeUp 1s ease-out forwards, floatLogo 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 15px #FFD700);
+  animation: floatLogo 4s ease-in-out infinite;
   transition: transform 0.3s ease, filter 0.3s ease;
 }
 
 .hero-logo:hover {
   transform: scale(1.05);
-  filter: drop-shadow(0 0 25px #FFDFA0) drop-shadow(0 0 10px #FFA500);
+  filter: drop-shadow(0 0 25px #FFD700);
 }
 
 .hero h1 {
   font-size: 48px;
   margin-bottom: 10px;
   font-weight: bold;
-  text-shadow: 1px 1px 3px rgba(255,255,255,0.2);
-  opacity: 0;
-  animation: fadeUp 1.2s ease-out forwards;
-  animation-delay: 0.3s;
+  color: #FFD700;
+  text-shadow: 1px 1px 3px rgba(255, 215, 0, 0.7);
 }
 
 .hero p {
   font-size: 20px;
   color: #FFF8DC;
-  opacity: 0;
-  animation: fadeUp 1.2s ease-out forwards;
-  animation-delay: 0.6s;
-}
-
-@keyframes fadeUp {
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
+  text-shadow: 1px 1px 2px rgba(255, 248, 220, 0.5);
 }
 
 @keyframes floatLogo {
@@ -66,7 +66,7 @@
   100% { transform: translateY(0); }
 }
 
-/* ================= HAMBURGER ================= */
+/* ================= HAMBURGER MENU ================= */
 .hamburger {
   position: fixed;
   top: 15px;
@@ -84,13 +84,13 @@
   display: block;
   width: 100%;
   height: 5px;
-  background: #FFA500; /* orange accent */
+  background: #FF0000;
   border-radius: 2px;
   transition: 0.3s;
 }
 
 .hamburger:hover span {
-  background: #FFDFA0;
+  background: #FFD700;
 }
 
 /* ================= MENU ================= */
@@ -100,15 +100,15 @@
   left: -260px;
   width: 260px;
   height: 100%;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0, 0, 0, 0.9);
   padding: 60px 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
   transition: left 0.3s ease-in-out;
   z-index: 3500;
+  color: #FFD700;
   overflow-y: auto;
-  color: #FFDFA0;
 }
 
 .nav-links.open { left: 0; }
@@ -128,7 +128,7 @@
   display: block;
   margin-bottom: 5px;
   text-decoration: none;
-  color: #FFDFA0;
+  color: #FFD700;
   cursor: pointer;
   transition: 0.3s;
 }
@@ -136,8 +136,8 @@
 .menu-content a:hover,
 .menu-content span:hover,
 .menu-contact a:hover {
-  background: rgba(255,165,0,0.8);
-  color: #000;
+  background: #FF0000;
+  color: #FFD700;
 }
 
 .menu-contact {
@@ -145,7 +145,7 @@
   flex-direction: column;
   margin-left: 10px;
   padding-left: 10px;
-  border-left: 2px solid rgba(255,223,160,0.3);
+  border-left: 2px solid rgba(255, 215, 0, 0.3);
 }
 
 .menu-contact.visible { display: flex; }
@@ -164,55 +164,43 @@
 /* ================= SHOP ================= */
 .shop {
   padding: 60px 20px;
-  color: #FFDFA0;
+  color: #FFD700;
   position: relative;
   z-index: 1;
-  opacity: 0;
-  transform: translateY(20px);
   display: none;
-  transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
-.shop.visible {
-  display: block;
-  opacity: 1;
-  transform: translateY(0);
-}
+.shop.visible { display: block; }
 
 .shop-logo {
   width: 225px;
   display: block;
   margin: 0 auto 20px auto;
-  filter: drop-shadow(0 0 15px #FFDFA0);
-  transition: transform 0.3s ease, filter 0.3s ease;
+  filter: drop-shadow(0 0 15px #FFD700);
+  animation: floatLogo 4s ease-in-out infinite;
 }
 
-.shop-logo:hover {
-  transform: scale(1.05);
-  filter: drop-shadow(0 0 25px #FFDFA0) drop-shadow(0 0 10px #FFA500);
-}
-
-#backBtn, .buy-btn {
-  background: #FFA500;
-  color: #000;
-  border-radius: 5px;
+#backBtn {
+  display: inline-block;
+  margin-bottom: 20px;
   padding: 5px 10px;
+  background: #FF0000;
+  color: #FFD700;
+  border-radius: 5px;
   font-weight: bold;
   cursor: pointer;
   transition: 0.3s;
 }
 
-#backBtn:hover, .buy-btn:hover {
-  background: #FFDFA0;
-  color: #000;
+#backBtn:hover {
+  background: #FFD700;
+  color: #FF0000;
 }
 
 .section-title {
   text-align: center;
   margin-bottom: 30px;
   font-size: 28px;
-  color: #FFDFA0;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
 }
 
 .shop-grid {
@@ -222,10 +210,9 @@
 }
 
 .product-card {
-  background: rgba(0,0,0,0.7);
-  border: 1px solid #FFDFA0;
-  padding: 10px;
+  background: rgba(0,0,0,0.6);
   border-radius: 10px;
+  padding: 10px;
   text-align: center;
   color: #FFF8DC;
   opacity: 0;
@@ -235,13 +222,28 @@
 
 .product-card img { width: 100%; border-radius: 8px; }
 
+.buy-btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 5px 10px;
+  background: #FF0000;
+  color: #FFD700;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.buy-btn:hover {
+  background: #FFD700;
+  color: #FF0000;
+}
+
 /* ================= FOOTER ================= */
 footer {
   text-align: center;
   padding: 20px;
-  color: #FFDFA0;
-  background: rgba(0,0,0,0.8);
-  position: relative;
+  color: #FFD700;
+  background: rgba(0,0,0,0.7);
 }
 
 /* ================= MESSENGER BUTTON ================= */
@@ -249,19 +251,18 @@ footer {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background: #FFA500;
-  color: #000;
+  background: #FF0000;
+  color: #FFD700;
   padding: 10px 15px;
   border-radius: 5px;
-  text-decoration: none;
   font-weight: bold;
   z-index: 1050;
   transition: 0.3s;
 }
 
 .messenger-btn:hover {
-  background: #FFDFA0;
-  color: #000;
+  background: #FFD700;
+  color: #FF0000;
   transform: scale(1.1);
 }
 
