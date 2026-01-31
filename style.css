@@ -6,7 +6,7 @@
   font-family: Arial, sans-serif;
 }
 
-/* ================= LAYOUT ================= */
+/* Layout for sticky footer */
 html, body {
   height: 100%;
 }
@@ -24,13 +24,9 @@ main {
 /* ================= BACKGROUND ================= */
 .background {
   position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset: 0;
   z-index: -1;
-  background: url('images/background.png') no-repeat center center;
-  background-size: cover;
+  background: url('images/background.png') center/cover no-repeat;
   filter: brightness(1.35);
 }
 
@@ -39,6 +35,8 @@ main {
   padding: 120px 20px 80px;
   text-align: center;
   color: #E0F7FA;
+  transition: opacity 0.3s ease-in-out;
+  opacity: 1;
 }
 
 .hero-logo {
@@ -49,7 +47,7 @@ main {
 }
 
 @keyframes floatLogo {
-  0%, 100% { transform: translateY(0); }
+  0%,100% { transform: translateY(0); }
   50% { transform: translateY(-12px); }
 }
 
@@ -63,9 +61,11 @@ main {
 
 /* ================= SHOP ================= */
 .shop {
-  display: none;
+  display: none; /* hidden by default */
   padding: 60px 20px;
   color: #E0F7FA;
+  transition: opacity 0.3s ease-in-out;
+  opacity: 0;
 }
 
 .shop-logo {
@@ -80,16 +80,16 @@ main {
   margin-bottom: 30px;
 }
 
-/* ================= SHOP GRID ================= */
+/* SHOP GRID */
 .shop-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 20px;
 }
 
-/* ================= PRODUCT CARD ================= */
+/* PRODUCT CARD */
 .product-card {
-  background-color: rgba(0,40,70,0.65);
+  background: rgba(0,40,70,0.65);
   border: 1px solid #B2EBF2;
   border-radius: 10px;
   padding: 10px;
@@ -114,6 +114,11 @@ main {
   text-decoration: none;
 }
 
+/* Remove underline from floating messenger */
+.messenger-btn {
+  text-decoration: none;
+}
+
 /* ================= BUTTONS ================= */
 .buy-btn,
 .messenger-btn {
@@ -126,7 +131,7 @@ main {
   color: #003040;
 }
 
-/* ================= MESSENGER BUTTON ================= */
+/* MESSENGER BUTTON */
 .messenger-btn {
   position: fixed;
   bottom: 20px;
@@ -161,15 +166,13 @@ main {
   left: -260px;
   width: 260px;
   height: 100%;
-  background-color: rgba(0,60,90,0.95);
+  background: rgba(0,60,90,0.95);
   padding: 60px 20px;
-  transition: left 0.3s ease-in-out;
+  transition: 0.3s;
   z-index: 900;
 }
 
-.nav-links.open {
-  left: 0;
-}
+.nav-links.open { left: 0; }
 
 .menu-header {
   text-align: center;
@@ -186,10 +189,7 @@ main {
 }
 
 /* ================= CONTACT MENU ================= */
-.menu-contact {
-  display: none;
-}
-
+.menu-contact { display: none; }
 .menu-contact.visible {
   display: flex;
   flex-direction: column;
@@ -202,17 +202,12 @@ main {
 #overlay {
   display: none;
   position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: rgba(0,0,0,0.35);
+  inset: 0;
+  background: rgba(0,0,0,0.35);
   z-index: 800;
 }
 
-#overlay.active {
-  display: block;
-}
+#overlay.active { display: block; }
 
 /* ================= SMALL FOOTER ================= */
 .site-credits {
@@ -221,17 +216,13 @@ main {
   font-size: 10px;
   letter-spacing: 0.5px;
   color: rgba(224,247,250,0.75);
-  background-color: rgba(0,40,70,0.25);
+  background: rgba(0,40,70,0.25);
   padding: 4px 6px;
+  backdrop-filter: blur(3px);
 }
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 480px) {
-  .hero h1 {
-    font-size: 36px;
-  }
-  .hero-logo,
-  .shop-logo {
-    width: 180px;
-  }
+  .hero h1 { font-size: 36px; }
+  .hero-logo, .shop-logo { width: 180px; }
 }
