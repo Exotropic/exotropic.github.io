@@ -1,4 +1,4 @@
-/* ================= RESET ================= */
+/* RESET */
 * {
   margin: 0;
   padding: 0;
@@ -6,25 +6,20 @@
   font-family: Arial, sans-serif;
 }
 
-/* ================= LAYOUT ================= */
+/* Layout for sticky footer */
 html, body {
   height: 100%;
-  scroll-behavior: smooth; /* smooth scrolling */
 }
-
 body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
-
 main {
   flex: 1;
-  display: flex;
-  flex-direction: column;
 }
 
-/* ================= BACKGROUND ================= */
+/* BACKGROUND */
 .background {
   position: fixed;
   inset: 0;
@@ -33,28 +28,22 @@ main {
   filter: brightness(1.35);
 }
 
-/* ================= HERO ================= */
+/* HERO */
 .hero {
   padding: 120px 20px 80px;
   text-align: center;
   color: #E0F7FA;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
-
 .hero-logo {
   width: 240px;
   margin-bottom: 20px;
   animation: floatLogo 4s ease-in-out infinite;
   filter: drop-shadow(0 0 20px #26C6DA);
 }
-
 @keyframes floatLogo {
-  0%, 100% { transform: translateY(0); }
+  0%,100% { transform: translateY(0); }
   50% { transform: translateY(-12px); }
 }
-
 .hero h1 {
   font-size: 68px;
   font-weight: 900;
@@ -63,39 +52,30 @@ main {
   -webkit-text-fill-color: transparent;
 }
 
-/* ================= SHOP ================= */
+/* SHOP */
 .shop {
   display: none; /* hidden by default */
-  padding: 20px;
+  padding: 60px 20px;
   color: #E0F7FA;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
-
 .shop-logo {
   width: 225px;
   display: block;
-  margin-bottom: 20px;
-  position: sticky; /* pinned at top when scrolling */
-  top: 20px;
-  z-index: 10;
-  background: rgba(0,40,70,0.2);
-  border-radius: 10px;
-  padding: 5px;
+  margin: 0 auto 20px;
 }
-
+.section-title {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 30px;
+}
 .shop-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 20px;
-  width: 100%;
-  max-width: 1000px;
-  margin-top: 20px;
-  overflow-anchor: none; /* prevent jump/flicker */
+  overflow-anchor: none; /* prevents scroll jumping */
 }
 
-/* ================= PRODUCT CARD ================= */
+/* PRODUCT CARD */
 .product-card {
   background: rgba(0,40,70,0.65);
   border: 1px solid #B2EBF2;
@@ -103,12 +83,10 @@ main {
   padding: 10px;
   color: #D0F0FD;
 }
-
 .product-card img {
   width: 100%;
   border-radius: 8px;
 }
-
 .product-card .buy-btn {
   display: block;
   width: 100%;
@@ -119,10 +97,10 @@ main {
   border-radius: 10px;
   background: linear-gradient(135deg, #00FFE0, #26C6DA);
   color: #003040;
-  text-decoration: none; /* remove underline */
+  text-decoration: none;
 }
 
-/* ================= BUTTONS ================= */
+/* BUTTONS */
 .buy-btn,
 .messenger-btn {
   padding: 14px 28px;
@@ -134,16 +112,16 @@ main {
   color: #003040;
 }
 
-/* Messenger floating button */
+/* MESSENGER BUTTON */
 .messenger-btn {
   position: fixed;
   bottom: 20px;
   right: 20px;
   z-index: 1000;
-  text-decoration: none; /* no underline */
+  text-decoration: none;
 }
 
-/* ================= HAMBURGER ================= */
+/* HAMBURGER */
 .hamburger {
   position: fixed;
   top: 15px;
@@ -156,14 +134,13 @@ main {
   cursor: pointer;
   z-index: 1000;
 }
-
 .hamburger span {
   height: 5px;
   background: linear-gradient(135deg, #00BFA5, #26C6DA);
   border-radius: 3px;
 }
 
-/* ================= NAV LINKS ================= */
+/* NAV LINKS */
 .nav-links {
   position: fixed;
   top: 0;
@@ -175,15 +152,12 @@ main {
   transition: 0.3s;
   z-index: 900;
 }
-
 .nav-links.open { left: 0; }
-
 .menu-header {
   text-align: center;
   margin-bottom: 15px;
   color: #81D4FA;
 }
-
 .menu-content a,
 .menu-content span {
   display: block;
@@ -192,28 +166,15 @@ main {
   text-decoration: none;
 }
 
-/* ================= CONTACT MENU ================= */
+/* CONTACT MENU */
 .menu-contact { display: none; }
-.menu-contact.visible {
-  display: flex;
-  flex-direction: column;
-  margin-left:10px;
-  border-left:2px solid #B2EBF2;
-  padding-left:10px;
-}
+.menu-contact.visible { display: flex; flex-direction: column; margin-left:10px; border-left:2px solid #B2EBF2; padding-left:10px; }
 
-/* ================= OVERLAY ================= */
-#overlay {
-  display: none;
-  position: fixed;
-  inset:0;
-  background: rgba(0,0,0,0.35);
-  z-index:800;
-}
-
+/* OVERLAY */
+#overlay { display: none; position: fixed; inset:0; background: rgba(0,0,0,0.35); z-index:800; }
 #overlay.active { display:block; }
 
-/* ================= SMALL FOOTER ================= */
+/* SMALL FOOTER */
 .site-credits {
   width: 100%;
   text-align: center;
@@ -225,7 +186,7 @@ main {
   backdrop-filter: blur(3px);
 }
 
-/* ================= RESPONSIVE ================= */
+/* RESPONSIVE */
 @media (max-width: 480px) {
   .hero h1 { font-size:36px; }
   .hero-logo, .shop-logo { width:180px; }
