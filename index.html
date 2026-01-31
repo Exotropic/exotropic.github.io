@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
   <!-- Background -->
   <div class="background"></div>
 
@@ -24,7 +23,6 @@
       <div class="menu-header">MENU</div>
       <a href="#home" id="homeMenu">Home</a>
       <a href="#shop" id="shopMenu">Shop</a>
-
       <div class="menu-item" id="contact-toggle">
         <span id="contact-label">Contact ▼</span>
         <div class="menu-contact" id="contact-info">
@@ -34,7 +32,6 @@
           <a href="https://www.facebook.com/share/1ANqkqmvcR/" target="_blank">📘 Facebook Page: Exo Tropic</a>
         </div>
       </div>
-
       <a href="https://m.me/ExoTropicAquarium" target="_blank">Messenger</a>
     </div>
   </nav>
@@ -42,30 +39,32 @@
   <!-- Overlay -->
   <div id="overlay"></div>
 
-  <!-- MAIN CONTENT -->
   <main>
     <!-- Home Section -->
-    <section id="home" class="hero visible">
+    <header id="home" class="hero visible">
       <img src="images/exotropic-logo.png" alt="Exotropic Logo" class="hero-logo">
       <h1>EXOTROPIC AQUARIUM</h1>
-    </section>
+      <button id="shopBtn" class="buy-btn" type="button">Shop Now</button>
+    </header>
 
     <!-- Shop Section -->
-    <section id="shop" class="shop hidden">
+    <section id="shop" class="shop">
       <img src="images/exotropic-logo.png" alt="Exotropic Logo" class="shop-logo">
+      <button id="backBtn" class="buy-btn" type="button">Back to Home</button>
       <h2 class="section-title">🛒 Our Products</h2>
       <div class="shop-grid" id="shopGrid">
         <p id="loadingText">Loading products...</p>
       </div>
-      <button id="backBtn" class="buy-btn">Back to Home</button>
     </section>
   </main>
 
   <!-- Floating Messenger Button -->
-  <a href="https://m.me/ExoTropicAquarium" target="_blank" class="messenger-btn">Buy via Messenger</a>
+  <a href="https://m.me/ExoTropicAquarium" target="_blank" class="messenger-btn">
+    Buy via Messenger
+  </a>
 
   <!-- Footer -->
-  <div class="site-credits">© 2026 EXOTROPIC AQUARIUM SHOP</div>
+  <footer class="site-credits">© 2026 EXOTROPIC AQUARIUM SHOP</footer>
 
   <!-- JS -->
   <script src="js/main.js"></script>
