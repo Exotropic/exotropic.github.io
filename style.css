@@ -12,7 +12,7 @@
   inset: 0;
   z-index: -1;
   background: url('images/background.png') center/cover no-repeat;
-  filter: brightness(1.35); /* slightly brighter for clarity */
+  filter: brightness(1.3);
 }
 
 /* ================= HERO ================= */
@@ -26,35 +26,34 @@
   width: 240px;
   margin-bottom: 20px;
   animation: floatLogo 4s ease-in-out infinite;
-  filter: drop-shadow(0 0 20px #26C6DA) drop-shadow(0 0 15px #81D4FA);
+  filter: drop-shadow(0 0 20px #26C6DA) drop-shadow(0 0 10px #81D4FA);
 }
 
 @keyframes floatLogo {
   0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
+  50% { transform: translateY(-10px); }
 }
 
 .hero h1 {
-  font-size: 64px;
+  font-size: 60px;
   font-weight: 900;
   background: linear-gradient(90deg, #00BFA5, #26C6DA, #81D4FA);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 6px 20px rgba(0,50,70,0.8), 0 4px 12px rgba(0,255,255,0.4);
+  text-shadow: 0 4px 15px rgba(0,50,70,0.7), 0 2px 8px rgba(0,255,255,0.3);
   animation: heroGlow 3s ease-in-out infinite alternate;
 }
 
 @keyframes heroGlow {
-  0%,100% { text-shadow: 0 6px 20px rgba(0,50,70,0.8), 0 4px 12px rgba(0,255,255,0.4); }
-  50% { text-shadow: 0 10px 30px rgba(0,50,70,0.9), 0 6px 20px rgba(0,255,255,0.5); }
+  0%,100% { text-shadow: 0 4px 15px rgba(0,50,70,0.7), 0 2px 8px rgba(0,255,255,0.3); }
+  50% { text-shadow: 0 6px 20px rgba(0,50,70,0.8), 0 3px 12px rgba(0,255,255,0.5); }
 }
 
 .hero p {
-  font-size: 22px;
-  margin-top: 14px;
+  font-size: 20px;
+  margin-top: 12px;
   color: #B2EBF2;
   text-shadow: 1px 1px 3px rgba(0,50,70,0.4);
-  font-weight: 500;
 }
 
 /* ================= HAMBURGER MENU ================= */
@@ -190,8 +189,7 @@
 .buy-btn,
 #shopBtn,
 #backBtn,
-.messenger-btn,
-.shop .messenger-btn { /* shop section messenger button */
+.messenger-btn {
   display: inline-block;
   padding: 14px 28px;
   font-size: 16px;
@@ -229,12 +227,15 @@
   box-shadow: 0 10px 25px rgba(0,50,70,0.5);
 }
 
-/* BUY VIA MESSENGER (floating + shop section) */
-.messenger-btn,
-.shop .messenger-btn {
+/* BUY VIA MESSENGER */
+.messenger-btn {
   background: linear-gradient(135deg, #00BFA5, #26C6DA);
   color: #003040;
   border: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
   padding: 14px 28px;
   border-radius: 12px;
   text-align: center;
@@ -243,8 +244,7 @@
   transition: all 0.3s ease;
 }
 
-.messenger-btn:hover,
-.shop .messenger-btn:hover {
+.messenger-btn:hover {
   background: linear-gradient(135deg, #26C6DA, #81D4FA);
   transform: translateY(-3px);
   box-shadow: 0 10px 25px rgba(0,50,70,0.5);
