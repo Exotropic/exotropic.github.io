@@ -25,7 +25,6 @@
       <a href="#home" id="homeMenu">Home</a>
       <a href="#shop" id="shopMenu">Shop</a>
 
-      <!-- Contact submenu -->
       <div class="menu-item" id="contact-toggle">
         <span id="contact-label">Contact ▼</span>
         <div class="menu-contact" id="contact-info">
@@ -43,28 +42,30 @@
   <!-- Overlay -->
   <div id="overlay"></div>
 
-  <!-- HERO SECTION -->
-  <header id="home" class="hero">
-    <img src="images/exotropic-logo.png" alt="Exotropic Logo" class="hero-logo">
-    <h1>EXOTROPIC AQUARIUM</h1>
-    <button id="shopBtn" class="buy-btn" type="button">Shop Now</button>
-  </header>
+  <!-- MAIN CONTENT -->
+  <main>
+    <!-- Home Section -->
+    <section id="home" class="hero visible">
+      <img src="images/exotropic-logo.png" alt="Exotropic Logo" class="hero-logo">
+      <h1>EXOTROPIC AQUARIUM</h1>
+    </section>
 
-  <!-- SHOP SECTION -->
-  <section class="shop" id="shop">
-    <img src="images/exotropic-logo.png" alt="Exotropic Logo" class="shop-logo">
-    <button id="backBtn" class="buy-btn" type="button">Back to Home</button>
-    <h2 class="section-title">🛒 Our Products</h2>
-    <div class="shop-grid" id="shopGrid">
-      <p id="loadingText">Loading products...</p>
-    </div>
-  </section>
-
-  <!-- SMALL FOOTER -->
-  <footer class="site-credits">© 2026 EXOTROPIC AQUARIUM SHOP</footer>
+    <!-- Shop Section -->
+    <section id="shop" class="shop hidden">
+      <img src="images/exotropic-logo.png" alt="Exotropic Logo" class="shop-logo">
+      <h2 class="section-title">🛒 Our Products</h2>
+      <div class="shop-grid" id="shopGrid">
+        <p id="loadingText">Loading products...</p>
+      </div>
+      <button id="backBtn" class="buy-btn">Back to Home</button>
+    </section>
+  </main>
 
   <!-- Floating Messenger Button -->
   <a href="https://m.me/ExoTropicAquarium" target="_blank" class="messenger-btn">Buy via Messenger</a>
+
+  <!-- Footer -->
+  <div class="site-credits">© 2026 EXOTROPIC AQUARIUM SHOP</div>
 
   <!-- JS -->
   <script src="js/main.js"></script>
