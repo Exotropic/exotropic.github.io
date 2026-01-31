@@ -6,10 +6,20 @@
   font-family: Arial, sans-serif;
 }
 
-/* Layout for sticky footer */
-html, body { height: 100%; }
-body { display: flex; flex-direction: column; min-height: 100vh; }
-main { flex: 1; }
+/* ================= LAYOUT ================= */
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
 
 /* ================= BACKGROUND ================= */
 .background {
@@ -25,8 +35,6 @@ main { flex: 1; }
   padding: 120px 20px 80px;
   text-align: center;
   color: #E0F7FA;
-  transition: opacity 0.3s ease-in-out;
-  opacity: 1;
 }
 
 .hero-logo {
@@ -37,7 +45,7 @@ main { flex: 1; }
 }
 
 @keyframes floatLogo {
-  0%,100% { transform: translateY(0); }
+  0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-12px); }
 }
 
@@ -51,11 +59,9 @@ main { flex: 1; }
 
 /* ================= SHOP ================= */
 .shop {
-  display: none;
+  display: none; /* hidden by default */
   padding: 60px 20px;
   color: #E0F7FA;
-  transition: opacity 0.3s ease-in-out;
-  opacity: 0;
 }
 
 .shop-logo {
@@ -70,14 +76,14 @@ main { flex: 1; }
   margin-bottom: 30px;
 }
 
-/* SHOP GRID */
+/* ================= SHOP GRID ================= */
 .shop-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 20px;
 }
 
-/* PRODUCT CARD */
+/* ================= PRODUCT CARD ================= */
 .product-card {
   background: rgba(0,40,70,0.65);
   border: 1px solid #B2EBF2;
@@ -86,7 +92,10 @@ main { flex: 1; }
   color: #D0F0FD;
 }
 
-.product-card img { width: 100%; border-radius: 8px; }
+.product-card img {
+  width: 100%;
+  border-radius: 8px;
+}
 
 .product-card .buy-btn {
   display: block;
@@ -101,9 +110,6 @@ main { flex: 1; }
   text-decoration: none;
 }
 
-/* Remove underline for floating messenger */
-.messenger-btn { text-decoration: none; }
-
 /* ================= BUTTONS ================= */
 .buy-btn,
 .messenger-btn {
@@ -116,12 +122,13 @@ main { flex: 1; }
   color: #003040;
 }
 
-/* MESSENGER BUTTON */
+/* ================= MESSENGER BUTTON ================= */
 .messenger-btn {
   position: fixed;
   bottom: 20px;
   right: 20px;
   z-index: 1000;
+  text-decoration: none; /* remove underline */
 }
 
 /* ================= HAMBURGER ================= */
@@ -159,17 +166,27 @@ main { flex: 1; }
 
 .nav-links.open { left: 0; }
 
-.menu-header { text-align: center; margin-bottom: 15px; color: #81D4FA; }
+.menu-header {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #81D4FA;
+}
+
 .menu-content a,
-.menu-content span { display: block; padding: 8px 12px; color: #E0F7FA; text-decoration: none; }
+.menu-content span {
+  display: block;
+  padding: 8px 12px;
+  color: #E0F7FA;
+  text-decoration: none;
+}
 
 /* ================= CONTACT MENU ================= */
 .menu-contact { display: none; }
-.menu-contact.visible { display: flex; flex-direction: column; margin-left:10px; border-left:2px solid #B2EBF2; padding-left:10px; }
+.menu-contact.visible { display: flex; flex-direction: column; margin-left: 10px; border-left: 2px solid #B2EBF2; padding-left: 10px; }
 
 /* ================= OVERLAY ================= */
-#overlay { display: none; position: fixed; inset:0; background: rgba(0,0,0,0.35); z-index:800; }
-#overlay.active { display:block; }
+#overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 800; }
+#overlay.active { display: block; }
 
 /* ================= SMALL FOOTER ================= */
 .site-credits {
@@ -181,10 +198,12 @@ main { flex: 1; }
   background: rgba(0,40,70,0.25);
   padding: 4px 6px;
   backdrop-filter: blur(3px);
+
+  margin-top: auto; /* sticky bottom fix */
 }
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 480px) {
-  .hero h1 { font-size:36px; }
-  .hero-logo, .shop-logo { width:180px; }
+  .hero h1 { font-size: 36px; }
+  .hero-logo, .shop-logo { width: 180px; }
 }
