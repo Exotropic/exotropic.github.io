@@ -15,6 +15,7 @@ const homeSection = document.getElementById('home');
 
 const shopMenu = document.getElementById('shopMenu');
 const homeMenu = document.getElementById('homeMenu');
+const shopSearch = document.getElementById('shopSearch');
 
 // --- HAMBURGER MENU ---
 hamburger.addEventListener('click', () => { 
@@ -51,14 +52,17 @@ function renderProduct(product,index){
   shopGrid.appendChild(div);
 }
 
-function loadProducts(){
+// --- LOAD PRODUCTS ---
+function loadProducts(filtered=[]){
   shopGrid.innerHTML='';
   loadingText.textContent='Loading products...';
-  defaultProducts.forEach((prod,i)=>renderProduct(prod,i));
+  const productsToShow = filtered.length ? filtered : defaultProducts;
+  productsToShow.forEach((prod,i)=>renderProduct(prod,i));
   loadingText.textContent='';
   fadeInProducts();
 }
 
+// --- FADE-IN ANIMATION ---
 function fadeInProducts(){
   const cards = shopGrid.querySelectorAll('.product-card');
   cards.forEach((card,i)=>setTimeout(()=>{ 
@@ -68,17 +72,17 @@ function fadeInProducts(){
 }
 
 // --- POPUP LOGIC ---
-const popup = document.getElementById('productPopup');
-const popupTitle = document.getElementById('popupTitle');
-const popupImages = document.getElementById('popupImages');
-const popupPrice = document.getElementById('popupPrice');
-const popupClose = document.getElementById('popupClose');
-const prevBtn = popup.querySelector('.prev');
-const nextBtn = popup.querySelector('.next');
+const popup=document.getElementById('productPopup');
+const popupTitle=document.getElementById('popupTitle');
+const popupImages=document.getElementById('popupImages');
+const popupPrice=document.getElementById('popupPrice');
+const popupClose=document.getElementById('popupClose');
+const prevBtn=popup.querySelector('.prev');
+const nextBtn=popup.querySelector('.next');
 const thumbnailGallery = document.getElementById('thumbnailGallery');
 
-let currentIndex = 0;
-let imagesArray = [];
+let currentIndex=0;
+let imagesArray=[];
 
 // --- OPEN POPUP ---
 function openPopup(product){
@@ -86,9 +90,8 @@ function openPopup(product){
   popupPrice.textContent = product.price;
   imagesArray = product.images;
 
-  // Main images
   popupImages.innerHTML = '';
-  imagesArray.forEach(src=>{
+  imagesArray.forEach(src => {
     const img = document.createElement('img');
     img.src = src;
     popupImages.appendChild(img);
@@ -96,53 +99,44 @@ function openPopup(product){
   currentIndex = 0;
   updateCarousel();
 
-  // Thumbnails
+  // Thumbnail gallery
   thumbnailGallery.innerHTML = '';
   imagesArray.forEach((src,i)=>{
     const thumb = document.createElement('img');
     thumb.src = src;
-    if(i===0) thumb.classList.add('active');
-    thumb.addEventListener('click', ()=>{
-      currentIndex = i;
-      updateCarousel();
+    thumb.classList.toggle('active', i===currentIndex);
+    thumb.addEventListener('click',()=>{
+      currentIndex=i; updateCarousel(); updateThumbnails();
     });
     thumbnailGallery.appendChild(thumb);
   });
 
-  popup.style.display = 'flex';
+  popup.style.display='flex';
 }
 
-// Update carousel main image & active thumbnail
-function updateCarousel(){
-  popupImages.style.transform = `translateX(${-currentIndex*100}%)`;
-
-  const allThumbs = thumbnailGallery.querySelectorAll('img');
-  allThumbs.forEach((thumb,i)=>thumb.classList.toggle('active', i===currentIndex));
-
-  // Auto-scroll thumbnail into view
-  const activeThumb = allThumbs[currentIndex];
-  if(activeThumb){
-    const container = thumbnailGallery;
-    const containerRect = container.getBoundingClientRect();
-    const thumbRect = activeThumb.getBoundingClientRect();
-    const offset = thumbRect.left - containerRect.left - (containerRect.width/2 - thumbRect.width/2);
-    container.scrollBy({ left: offset, behavior: 'smooth' });
-  }
+function updateCarousel(){ 
+  popupImages.style.transform=`translateX(${-currentIndex*100}%)`; 
+  updateThumbnails();
 }
 
-// Buttons
-nextBtn.addEventListener('click', ()=>{
-  currentIndex = (currentIndex + 1) % imagesArray.length;
-  updateCarousel();
-});
-prevBtn.addEventListener('click', ()=>{
-  currentIndex = (currentIndex - 1 + imagesArray.length) % imagesArray.length;
-  updateCarousel();
-});
-popupClose.addEventListener('click', ()=>popup.style.display='none');
-popup.addEventListener('click', e=>{ if(e.target===popup) popup.style.display='none'; });
+function updateThumbnails(){
+  const thumbs = thumbnailGallery.querySelectorAll('img');
+  thumbs.forEach((t,i)=>t.classList.toggle('active', i===currentIndex));
+}
 
-// Swipe support
+// --- POPUP BUTTONS ---
+nextBtn.addEventListener('click',()=>{ 
+  currentIndex=(currentIndex+1)%imagesArray.length; 
+  updateCarousel(); 
+});
+prevBtn.addEventListener('click',()=>{ 
+  currentIndex=(currentIndex-1+imagesArray.length)%imagesArray.length; 
+  updateCarousel(); 
+});
+popupClose.addEventListener('click',()=>popup.style.display='none');
+popup.addEventListener('click',e=>{ if(e.target===popup) popup.style.display='none'; });
+
+// --- SWIPE SUPPORT ---
 let startX=0, endX=0;
 popupImages.addEventListener('touchstart', e=>{ startX=e.touches[0].clientX; });
 popupImages.addEventListener('touchmove', e=>{ endX=e.touches[0].clientX; });
@@ -167,15 +161,17 @@ function showHome(){
 
 shopBtn.addEventListener('click',showShop);
 backBtn.addEventListener('click',showHome);
-shopMenu.addEventListener('click',()=>{ 
-  navLinks.classList.remove('open'); 
-  overlay.classList.remove('active'); 
-  showShop(); 
-});
-homeMenu.addEventListener('click',()=>{ 
-  navLinks.classList.remove('open'); 
-  overlay.classList.remove('active'); 
-  showHome(); 
+shopMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overlay.classList.remove('active'); showShop(); });
+homeMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overlay.classList.remove('active'); showHome(); });
+
+// --- SEARCH FUNCTIONALITY ---
+shopSearch.addEventListener('input', ()=>{
+  const query = shopSearch.value.toLowerCase();
+  const filtered = defaultProducts.filter(p=>p.name.toLowerCase().includes(query));
+  loadProducts(filtered);
 });
 
-document.addEventListener('DOMContentLoaded',()=>{ document.body.classList.add('no-scroll'); });
+// --- INITIAL SETUP ---
+document.addEventListener('DOMContentLoaded',()=>{ 
+  document.body.classList.add('no-scroll'); 
+});
