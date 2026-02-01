@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
   <!-- Background -->
   <div class="background"></div>
 
@@ -24,8 +23,7 @@
       <div class="menu-header">MENU</div>
       <a href="#home" id="homeMenu">Home</a>
       <a href="#shop" id="shopMenu">Shop</a>
-      <a href="#review" id="reviewMenu">Reviews</a>
-
+      <a href="#review" id="reviewMenu">Review</a>
       <div class="menu-item" id="contact-toggle">
         <span id="contact-label">Contact ▼</span>
         <div class="menu-contact" id="contact-info">
@@ -35,7 +33,6 @@
           <a href="https://www.facebook.com/share/1ANqkqmvcR/" target="_blank">📘 Facebook Page: Exo Tropic</a>
         </div>
       </div>
-
       <a href="https://m.me/ExoTropicAquarium" target="_blank">Messenger</a>
     </div>
   </nav>
@@ -45,23 +42,20 @@
 
   <!-- Main Sections -->
   <main>
-
-    <!-- Home Section -->
+    <!-- Hero Section -->
     <header id="home" class="hero visible">
       <img src="images/exotropic-logo.png" alt="Exotropic Logo" class="hero-logo">
       <h1>EXOTROPIC AQUARIUM</h1>
-      <button id="shopBtn" class="buy-btn">Shop Now</button>
+      <button id="shopBtn" class="buy-btn" type="button">Shop Now</button>
     </header>
 
     <!-- Shop Section -->
     <section class="shop" id="shop">
       <img src="images/exotropic-logo.png" alt="Exotropic Logo" class="shop-logo">
-      <button id="backBtn" class="buy-btn">Back to Home</button>
-
+      <button id="backBtn" class="buy-btn" type="button">Back to Home</button>
       <div class="shop-search">
         <input type="text" id="searchInput" placeholder="Search products...">
       </div>
-
       <h2 class="section-title" id="shopTitle">🛒 Our Products</h2>
       <div class="shop-grid" id="shopGrid">
         <p id="loadingText">Loading products...</p>
@@ -71,25 +65,11 @@
     <!-- Review Section -->
     <section class="review" id="review">
       <h2>Customer Reviews</h2>
-      <button id="backBtnReview" class="buy-btn">Back to Home</button>
-
-      <form id="reviewForm">
-        <input type="text" id="reviewName" placeholder="Your Name" required>
-        <select id="reviewRating" required>
-          <option value="">Rating</option>
-          <option value="5">⭐⭐⭐⭐⭐</option>
-          <option value="4">⭐⭐⭐⭐</option>
-          <option value="3">⭐⭐⭐</option>
-          <option value="2">⭐⭐</option>
-          <option value="1">⭐</option>
-        </select>
-        <textarea id="reviewText" placeholder="Write your review..." rows="4" required></textarea>
-        <button type="submit">Submit Review</button>
-      </form>
-
-      <div class="review-list" id="reviewList"></div>
+      <button id="backBtnReview" class="buy-btn" type="button">Back to Home</button>
+      <div class="review-list" id="reviewList">
+        <p>No reviews yet.</p>
+      </div>
     </section>
-
   </main>
 
   <!-- Product Popup -->
@@ -126,8 +106,7 @@
   <!-- Footer -->
   <footer class="site-credits">© 2026 EXOTROPIC AQUARIUM SHOP</footer>
 
-  <!-- JS -->
+  <!-- Script -->
   <script src="js/main.js"></script>
-
 </body>
 </html>
