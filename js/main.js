@@ -65,15 +65,7 @@ function renderProduct(product,index){
       <img src="${product.images[0]}" alt="${product.name}" loading="lazy">
       <div class="buy-btn">Buy via Messenger</div>
     `;
-
-    // Open product popup on image click
     div.querySelector('img').addEventListener('click', ()=>openPopup(product));
-
-    // --- BUY VIA MESSENGER BUTTON ---
-    div.querySelector('.buy-btn').addEventListener('click', ()=>{
-      const messengerLink = `https://m.me/YourPageUsername?ref=${encodeURIComponent(product.name)}`;
-      window.open(messengerLink, '_blank');
-    });
   }
 
   shopGrid.appendChild(div);
@@ -179,6 +171,7 @@ categoryBtns.forEach(btn=>{
       filtered = [{ name: btn.textContent, comingSoon:true, images:[] }];
     }
 
+    // Show shop section **after small delay** to ensure DOM renders
     categoryPopup.style.display='none';
     showShop();
     setTimeout(()=>{ loadProducts(filtered); }, 50);
