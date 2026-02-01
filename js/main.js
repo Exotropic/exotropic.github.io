@@ -43,13 +43,13 @@ contactToggle.addEventListener('click', () => {
 const defaultProducts = [
   { name:"Clownfish", price:"₱500", category:"fish", images:["images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg"] },
   { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"] },
-  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
+  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
   { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
   { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
 ];
 
 // --- CURRENT DISPLAYED PRODUCTS ---
-let currentProducts = []; // keeps track of currently shown products
+let currentProducts = [];
 
 // --- RENDER PRODUCTS ---
 function renderProduct(product,index){
@@ -171,13 +171,18 @@ categoryBtns.forEach(btn=>{
       filtered = [{ name: btn.textContent, comingSoon:true, images:[] }];
     }
 
+    // Show shop section
+    homeSection.classList.remove('visible');
+    shopSection.classList.add('visible');
+
+    // Load products and update title
     loadProducts(filtered);
     shopTitle.textContent = `🛒 Our Products – ${btn.textContent}`;
     categoryPopup.style.display='none';
   });
 });
 
-// --- SEARCH FUNCTIONALITY (only searches current displayed products) ---
+// --- SEARCH FUNCTIONALITY ---
 searchInput.addEventListener('input', ()=>{
   const query = searchInput.value.toLowerCase();
   const filtered = currentProducts.filter(p=>!p.comingSoon && p.name.toLowerCase().includes(query));
