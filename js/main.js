@@ -12,21 +12,19 @@ const backBtnReview = document.getElementById('backBtnReview');
 const shopSection = document.getElementById('shop');
 const homeSection = document.getElementById('home');
 const reviewSection = document.getElementById('review');
+
 const shopGrid = document.getElementById('shopGrid');
 const loadingText = document.getElementById('loadingText');
 
 const shopMenu = document.getElementById('shopMenu');
 const homeMenu = document.getElementById('homeMenu');
 const reviewMenu = document.getElementById('reviewMenu');
-const shopTitle = document.getElementById('shopTitle');
 
 const categoryPopup = document.getElementById('categoryPopup');
 const categoryClose = document.getElementById('categoryClose');
 const categoryBtns = document.querySelectorAll('.category-btn');
-const searchInput = document.getElementById('searchInput');
 
-const reviewForm = document.getElementById('reviewForm');
-const reviewList = document.getElementById('reviewList');
+const searchInput = document.getElementById('searchInput');
 
 // --- HAMBURGER MENU ---
 hamburger.addEventListener('click', () => { 
@@ -46,15 +44,13 @@ contactToggle.addEventListener('click', () => {
 
 // --- PRODUCT DATA ---
 const defaultProducts = [
-  { name:"Clownfish", price:"₱500", category:"fish", images:["images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg"] },
-  { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"] },
-  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
-  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
-  { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
+  { name:"Clownfish", price:"₱500", category:"fish", images:["images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg"] },
+  { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"] },
+  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
+  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
+  { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
 ];
 
-// --- CURRENT CATEGORY & DISPLAYED PRODUCTS ---
-let categoryProducts = [];
 let displayedProducts = [];
 
 // --- RENDER PRODUCTS ---
@@ -67,7 +63,7 @@ function renderProduct(product,index){
     div.style.cursor='default';
   } else {
     div.innerHTML = `<img src="${product.images[0]}" alt="${product.name}" loading="lazy">
-    <button class="buy-btn">Buy via Messenger</button>`;
+                     <button class="buy-btn">Buy via Messenger</button>`;
     div.querySelector('img').addEventListener('click', ()=>openPopup(product));
     div.querySelector('.buy-btn').addEventListener('click', e=>{
       e.stopPropagation();
@@ -97,84 +93,75 @@ function fadeInProducts(){
 }
 
 // --- SECTION TOGGLE ---
-function showHome(){ 
-  homeSection.classList.add('visible'); 
-  shopSection.classList.remove('visible'); 
-  reviewSection.classList.remove('visible');
-  document.body.classList.add('no-scroll'); 
-  window.scrollTo(0,0); 
-}
-function showShop(){ 
-  shopSection.classList.add('visible'); 
-  homeSection.classList.remove('visible'); 
-  reviewSection.classList.remove('visible');
-  document.body.classList.remove('no-scroll'); 
-}
-function showReview(){ 
-  reviewSection.classList.add('visible'); 
-  homeSection.classList.remove('visible'); 
-  shopSection.classList.remove('visible'); 
-  document.body.classList.remove('no-scroll'); 
-}
+function showHome(){ hideAll(); homeSection.classList.add('visible'); window.scrollTo(0,0); }
+function showShop(){ hideAll(); shopSection.classList.add('visible'); }
+function showReview(){ hideAll(); reviewSection.classList.add('visible'); }
+function hideAll(){ homeSection.classList.remove('visible'); shopSection.classList.remove('visible'); reviewSection.classList.remove('visible'); }
+
+// --- BACK BUTTONS ---
+backBtn.addEventListener('click', showHome);
+backBtnReview.addEventListener('click', showHome);
 
 // --- MENU NAVIGATION ---
-shopMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overlay.classList.remove('active'); showShop(); categoryProducts=defaultProducts; loadProducts(defaultProducts); });
-homeMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overlay.classList.remove('active'); showHome(); });
-reviewMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overlay.classList.remove('active'); showReview(); });
+homeMenu.addEventListener('click', showHome);
+shopMenu.addEventListener('click', ()=>{
+  loadProducts(defaultProducts); showShop();
+});
+reviewMenu.addEventListener('click', showReview);
 
-backBtn.addEventListener('click',showHome);
-backBtnReview.addEventListener('click',showHome);
-shopBtn.addEventListener('click',()=>{ categoryPopup.style.display='flex'; });
+// --- SHOP BTN ---
+shopBtn.addEventListener('click',()=>{ loadProducts(defaultProducts); showShop(); });
 
 // --- CATEGORY POPUP ---
-categoryClose.addEventListener('click',()=>{ categoryPopup.style.display='none'; });
 categoryBtns.forEach(btn=>{
   btn.addEventListener('click',()=>{
     const selected = btn.dataset.category;
     let filtered=[];
-    if(selected==='fish') filtered=defaultProducts;
+    if(selected==='fish') filtered = defaultProducts;
     else filtered=[{ name: btn.textContent, comingSoon:true, images:[] }];
     categoryPopup.style.display='none';
+    loadProducts(filtered);
     showShop();
-    categoryProducts = filtered;
-    setTimeout(()=>loadProducts(filtered),50);
-    shopTitle.textContent = `🛒 Our Products – ${btn.textContent}`;
   });
 });
+categoryClose.addEventListener('click', ()=>categoryPopup.style.display='none');
 
-// --- SEARCH ---
+// --- SEARCH FUNCTIONALITY ---
 searchInput.addEventListener('input', ()=>{
-  const query = searchInput.value.toLowerCase();
-  if(query===''){ loadProducts(categoryProducts); return; }
-  const filtered = categoryProducts.filter(p=>!p.comingSoon && p.name.toLowerCase().includes(query));
+  const val = searchInput.value.toLowerCase();
+  const filtered = defaultProducts.filter(p=>p.name.toLowerCase().includes(val));
   loadProducts(filtered);
 });
 
-// --- REVIEW FORM SUBMISSION ---
-reviewForm.addEventListener('submit', e=>{
-  e.preventDefault();
-  const name = reviewForm.name.value.trim();
-  const rating = reviewForm.rating.value;
-  const comment = reviewForm.comment.value.trim();
-  if(!name || !rating || !comment) return;
+// --- PRODUCT POPUP ---
+const productPopup = document.getElementById('productPopup');
+const popupClose = document.getElementById('popupClose');
+const popupImg = document.getElementById('popupImg');
+const popupTitle = document.getElementById('popupTitle');
+const popupPrice = document.getElementById('popupPrice');
+let currentIndex = 0;
+let currentImages = [];
 
-  const div = document.createElement('div');
-  div.innerHTML = `<strong>${name}</strong> (${rating}⭐)<br>${comment}`;
-  reviewList.prepend(div);
-  reviewForm.reset();
+function openPopup(product){
+  currentImages = product.images;
+  currentIndex=0;
+  popupTitle.textContent = product.name;
+  popupPrice.textContent = product.price;
+  popupImg.src = currentImages[currentIndex];
+  productPopup.style.display='flex';
+}
+popupClose.addEventListener('click', ()=> productPopup.style.display='none');
+
+document.getElementById('prev').addEventListener('click', ()=>{
+  if(currentImages.length===0) return;
+  currentIndex = (currentIndex-1+currentImages.length)%currentImages.length;
+  popupImg.src = currentImages[currentIndex];
+});
+document.getElementById('next').addEventListener('click', ()=>{
+  if(currentImages.length===0) return;
+  currentIndex = (currentIndex+1)%currentImages.length;
+  popupImg.src = currentImages[currentIndex];
 });
 
-// --- INITIAL SETUP ---
-document.addEventListener('DOMContentLoaded',()=>{
-  document.body.classList.add('no-scroll');
-
-  // Floating Messenger Button
-  if(!document.querySelector('.messenger-btn')){
-    const floatMessenger = document.createElement('a');
-    floatMessenger.href = "https://m.me/ExoTropicAquarium";
-    floatMessenger.target="_blank";
-    floatMessenger.className = "messenger-btn";
-    floatMessenger.textContent = "Buy via Messenger";
-    document.body.appendChild(floatMessenger);
-  }
-});
+// --- INITIALIZE ---
+showHome();
