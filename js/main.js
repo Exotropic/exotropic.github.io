@@ -43,8 +43,8 @@ contactToggle.addEventListener('click', () => {
 const defaultProducts = [
   { name:"Clownfish", price:"₱500", category:"fish", images:["images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg"] },
   { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"] },
-  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
-  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
+  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
+  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
   { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
 ];
 
@@ -67,6 +67,7 @@ function renderProduct(product,index){
       <button class="buy-btn">Buy via Messenger</button>
     `;
     div.querySelector('img').addEventListener('click', ()=>openPopup(product));
+
     div.querySelector('.buy-btn').addEventListener('click', e=>{
       e.stopPropagation();
       window.open("https://m.me/ExoTropicAquarium","_blank");
@@ -114,7 +115,7 @@ function openPopup(product){
   popupPrice.textContent = product.price;
   imagesArray = product.images;
 
-  // --- MAIN IMAGE CAROUSEL (iOS fix applied) ---
+  // --- MAIN IMAGE CAROUSEL (iOS swipe fix) ---
   popupImages.innerHTML='';
   let imagesLoaded = 0;
   imagesArray.forEach(src=>{
@@ -123,7 +124,6 @@ function openPopup(product){
     img.onload = () => {
       imagesLoaded++;
       if(imagesLoaded === imagesArray.length){
-        // Force iOS Safari to recalc layout
         requestAnimationFrame(()=>updateCarousel());
       }
     }
@@ -245,7 +245,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   }
 });
 
-// --- SWIPE / DRAG SUPPORT FOR MAIN CAROUSEL (iOS fixed) ---
+// --- SWIPE / DRAG SUPPORT FOR MAIN CAROUSEL (iOS fix) ---
 let isDragging = false;
 let startPos = 0;
 
@@ -260,10 +260,13 @@ popupImages.addEventListener('mousemove', dragMove);
 popupImages.addEventListener('touchmove', dragMove);
 
 function dragStart(e){
-  if (!popupImages.querySelector('img')) return;
   isDragging = true;
   startPos = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-  popupImages.querySelector('img').getBoundingClientRect(); // force layout recalculation
+
+  // ✅ iOS fix: store current slide offset
+  const slideWidth = popupImages.querySelector('img') ? popupImages.querySelector('img').clientWidth : 0;
+  popupImages.dataset.offset = -currentIndex * slideWidth;
+
   popupImages.style.transition = 'none';
   popupImages.style.cursor = 'grabbing';
 }
@@ -272,8 +275,9 @@ function dragMove(e){
   if(!isDragging) return;
   const currentPosition = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
   const delta = currentPosition - startPos;
-  const slideWidth = popupImages.querySelector('img') ? popupImages.querySelector('img').clientWidth : 0;
-  popupImages.style.transform = `translateX(${-currentIndex * slideWidth + delta}px)`;
+
+  const offset = parseFloat(popupImages.dataset.offset || 0);
+  popupImages.style.transform = `translateX(${offset + delta}px)`;
 }
 
 function dragEnd(e){
@@ -281,6 +285,7 @@ function dragEnd(e){
   isDragging = false;
   const endPos = e.type.includes('mouse') ? e.pageX : e.changedTouches[0].clientX;
   const delta = endPos - startPos;
+
   const slideWidth = popupImages.querySelector('img') ? popupImages.querySelector('img').clientWidth : 0;
 
   if(delta < -50) currentIndex = Math.min(currentIndex+1, imagesArray.length-1);
@@ -289,6 +294,7 @@ function dragEnd(e){
   popupImages.style.transition = 'transform 0.3s ease';
   popupImages.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
   popupImages.style.cursor = 'grab';
+
   updateThumbnails();
 }
 
