@@ -23,6 +23,15 @@ const categoryBtns = document.querySelectorAll('.category-btn');
 
 const searchInput = document.getElementById('searchInput');
 
+const popup = document.getElementById('productPopup');
+const popupTitle = document.getElementById('popupTitle');
+const popupImages = document.getElementById('popupImages');
+const popupPrice = document.getElementById('popupPrice');
+const popupClose = document.getElementById('popupClose');
+const prevBtn = popup.querySelector('.prev');
+const nextBtn = popup.querySelector('.next');
+const thumbnailGallery = document.getElementById('thumbnailGallery');
+
 // --- HAMBURGER MENU ---
 hamburger.addEventListener('click', () => { 
   navLinks.classList.toggle('open'); 
@@ -67,7 +76,6 @@ function renderProduct(product,index){
       <button class="buy-btn">Buy via Messenger</button>
     `;
     div.querySelector('img').addEventListener('click', ()=>openPopup(product));
-
     div.querySelector('.buy-btn').addEventListener('click', e=>{
       e.stopPropagation();
       window.open("https://m.me/ExoTropicAquarium","_blank");
@@ -97,15 +105,6 @@ function fadeInProducts(){
 }
 
 // --- PRODUCT POPUP ---
-const popup=document.getElementById('productPopup');
-const popupTitle=document.getElementById('popupTitle');
-const popupImages=document.getElementById('popupImages');
-const popupPrice=document.getElementById('popupPrice');
-const popupClose=document.getElementById('popupClose');
-const prevBtn=popup.querySelector('.prev');
-const nextBtn=popup.querySelector('.next');
-const thumbnailGallery = document.getElementById('thumbnailGallery');
-
 let currentIndex=0;
 let imagesArray=[];
 
@@ -124,7 +123,7 @@ function openPopup(product){
     img.onload = () => {
       imagesLoaded++;
       if(imagesLoaded === imagesArray.length){
-        updateCarousel(); // set correct initial position
+        updateCarousel();
       }
     }
     popupImages.appendChild(img);
@@ -154,7 +153,6 @@ function updateCarousel(){
   popupImages.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
   updateThumbnails();
 }
-
 function updateThumbnails(){
   const thumbs = thumbnailGallery.querySelectorAll('img');
   thumbs.forEach((t,i)=>t.classList.toggle('active', i===currentIndex));
@@ -175,7 +173,6 @@ popup.addEventListener('click',e=>{ if(e.target===popup) popup.style.display='no
 // --- CATEGORY POPUP ---
 shopBtn.addEventListener('click',()=>{ categoryPopup.style.display='flex'; });
 categoryClose.addEventListener('click',()=>{ categoryPopup.style.display='none'; });
-
 categoryBtns.forEach(btn=>{
   btn.addEventListener('click',()=>{
     const selected = btn.dataset.category;
@@ -185,7 +182,7 @@ categoryBtns.forEach(btn=>{
 
     categoryPopup.style.display='none';
     showShop();
-    categoryProducts = filtered; // keep full category list for search
+    categoryProducts = filtered;
     setTimeout(()=>loadProducts(filtered),50);
     shopTitle.textContent = `🛒 Our Products – ${btn.textContent}`;
   });
@@ -194,12 +191,10 @@ categoryBtns.forEach(btn=>{
 // --- SEARCH ---
 searchInput.addEventListener('input', ()=>{
   const query = searchInput.value.toLowerCase();
-
   if(query === ''){
-    loadProducts(categoryProducts); // restore all products in current category
+    loadProducts(categoryProducts);
     return;
   }
-
   const filtered = categoryProducts.filter(p => !p.comingSoon && p.name.toLowerCase().includes(query));
   loadProducts(filtered);
 });
@@ -216,7 +211,6 @@ function showHome(){
   document.body.classList.add('no-scroll'); 
   window.scrollTo(0,0); 
 }
-
 backBtn.addEventListener('click',showHome);
 shopMenu.addEventListener('click',()=>{ 
   navLinks.classList.remove('open'); 
@@ -230,3 +224,79 @@ homeMenu.addEventListener('click',()=>{
   overlay.classList.remove('active'); 
   showHome(); 
 });
+
+// --- DOM CONTENT LOADED ---
+document.addEventListener('DOMContentLoaded',()=>{
+  // Floating Messenger button is handled via HTML now
+  // --- SWIPE / DRAG SUPPORT FOR MAIN CAROUSEL ---
+  let isDragging = false;
+  let startPos = 0;
+
+  popupImages.addEventListener('mousedown', dragStart);
+  popupImages.addEventListener('touchstart', dragStart);
+
+  popupImages.addEventListener('mouseup', dragEnd);
+  popupImages.addEventListener('touchend', dragEnd);
+  popupImages.addEventListener('mouseleave', dragEnd);
+  popupImages.addEventListener('mousemove', dragMove);
+  popupImages.addEventListener('touchmove', dragMove);
+
+  // --- THUMBNAIL SWIPE SUPPORT ---
+  let isThumbDragging = false;
+  let thumbStartX = 0;
+  let scrollStart = 0;
+
+  thumbnailGallery.addEventListener('mousedown', thumbDragStart);
+  thumbnailGallery.addEventListener('touchstart', thumbDragStart);
+  thumbnailGallery.addEventListener('mouseup', thumbDragEnd);
+  thumbnailGallery.addEventListener('touchend', thumbDragEnd);
+  thumbnailGallery.addEventListener('mouseleave', thumbDragEnd);
+  thumbnailGallery.addEventListener('mousemove', thumbDragMove);
+  thumbnailGallery.addEventListener('touchmove', thumbDragMove);
+});
+
+// --- DRAG FUNCTIONS ---
+function dragStart(e){
+  isDragging = true;
+  startPos = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+  popupImages.style.transition = 'none';
+  popupImages.style.cursor = 'grabbing';
+}
+function dragMove(e){
+  if(!isDragging) return;
+  const currentPosition = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+  const delta = currentPosition - startPos;
+  const slideWidth = popupImages.querySelector('img') ? popupImages.querySelector('img').clientWidth : 0;
+  popupImages.style.transform = `translateX(${-currentIndex * slideWidth + delta}px)`;
+}
+function dragEnd(e){
+  if(!isDragging) return;
+  isDragging = false;
+  const endPos = e.type.includes('mouse') ? e.pageX : e.changedTouches[0].clientX;
+  const delta = endPos - startPos;
+  const slideWidth = popupImages.querySelector('img') ? popupImages.querySelector('img').clientWidth : 0;
+
+  if(delta < -50) currentIndex = (currentIndex+1) % imagesArray.length;
+  else if(delta > 50) currentIndex = (currentIndex-1 + imagesArray.length) % imagesArray.length;
+
+  popupImages.style.transition = 'transform 0.3s ease';
+  popupImages.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
+  popupImages.style.cursor = 'grab';
+  updateThumbnails();
+}
+
+// --- THUMBNAIL DRAG FUNCTIONS ---
+function thumbDragStart(e){
+  isThumbDragging = true;
+  thumbStartX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+  scrollStart = thumbnailGallery.scrollLeft;
+}
+function thumbDragMove(e){
+  if(!isThumbDragging) return;
+  const currentX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+  const delta = thumbStartX - currentX;
+  thumbnailGallery.scrollLeft = scrollStart + delta;
+}
+function thumbDragEnd(){
+  isThumbDragging = false;
+}
