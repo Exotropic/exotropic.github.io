@@ -60,7 +60,7 @@ const defaultProducts = [
 // --- CURRENT CATEGORY & DISPLAYED PRODUCTS ---
 let categoryProducts = [];
 let displayedProducts = [];
-let currentCategory = 'fish'; // default
+let currentCategory = localStorage.getItem('lastCategory') || null; // remember last category
 
 // --- RENDER PRODUCTS ---
 function renderProduct(product,index){
@@ -174,6 +174,7 @@ popup.addEventListener('click',e=>{ if(e.target===popup) popup.style.display='no
 // --- CATEGORY HANDLER ---
 function loadCategory(category){
   currentCategory = category;
+  localStorage.setItem('lastCategory', category); // remember last selected category
   let filtered = [];
   if(category === 'fish') filtered = defaultProducts;
   else filtered = [{ name: category, comingSoon:true, images:[] }];
@@ -226,12 +227,18 @@ homeMenu.addEventListener('click',()=>{
   showHome(); 
 });
 
+// --- SHOP NOW BUTTON ---
+shopBtn.addEventListener('click', ()=> {
+  categoryPopup.style.display = 'flex';
+});
+
 // --- DOM CONTENT LOADED ---
 document.addEventListener('DOMContentLoaded',()=>{
 
-  // Load current category on refresh
+  // Load last selected category if Shop is visible
   if(shopSection.classList.contains('visible')){
-    loadCategory(currentCategory);
+    if(currentCategory) loadCategory(currentCategory);
+    else categoryPopup.style.display='flex'; // show popup if no previous category
   }
 
   // --- SWIPE / DRAG SUPPORT FOR MAIN CAROUSEL ---
