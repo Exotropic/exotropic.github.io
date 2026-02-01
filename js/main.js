@@ -329,3 +329,30 @@ function thumbDragMove(e){
 function thumbDragEnd(){
   isThumbDragging = false;
 }
+
+// --- REVIEW PAGE TOGGLE ---
+const reviewSection = document.getElementById('review');
+const reviewMenu = document.getElementById('reviewMenu');
+const backFromReview = document.getElementById('backFromReview');
+
+function showReview() {
+  homeSection.classList.remove('visible');
+  shopSection.classList.remove('visible');
+  reviewSection.classList.add('visible');
+  document.body.classList.remove('no-scroll');
+}
+
+function hideReview() {
+  reviewSection.classList.remove('visible');
+  homeSection.classList.add('visible');
+  document.body.classList.add('no-scroll');
+  window.scrollTo(0,0);
+}
+
+reviewMenu.addEventListener('click',()=>{
+  navLinks.classList.remove('open'); 
+  overlay.classList.remove('active'); 
+  showReview();
+});
+
+backFromReview.addEventListener('click',hideReview);
