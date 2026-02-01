@@ -13,6 +13,10 @@ const shopGrid = document.getElementById('shopGrid');
 const loadingText = document.getElementById('loadingText');
 const homeSection = document.getElementById('home');
 
+const reviewsMenu = document.getElementById('reviewsMenu');
+const reviewsSection = document.getElementById('reviews');
+const backReviewsBtn = document.getElementById('backReviewsBtn');
+
 const shopMenu = document.getElementById('shopMenu');
 const homeMenu = document.getElementById('homeMenu');
 const shopTitle = document.getElementById('shopTitle');
@@ -50,17 +54,16 @@ contactToggle.addEventListener('click', () => {
 
 // --- PRODUCT DATA ---
 const defaultProducts = [
-  { name:"Clownfish", price:"₱500", category:"fish", images:["images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg"] },
-  { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"] },
-  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
-  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
-  { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
+  { name:"Clownfish", price:"₱500", category:"fish", images:["images/product1.jpg","images/product1.jpg"] },
+  { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg"] },
+  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg"] },
+  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg"] },
+  { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg"] }
 ];
 
-// --- CURRENT CATEGORY ---
 let categoryProducts = [];
 let displayedProducts = [];
-let currentCategory = null; // 'fish', 'plant', 'misc'
+let currentCategory = null;
 
 // --- RENDER PRODUCTS ---
 function renderProduct(product,index){
@@ -96,7 +99,7 @@ function loadProducts(products){
   fadeInProducts();
 }
 
-// --- FADE-IN ANIMATION ---
+// --- FADE-IN ---
 function fadeInProducts(){
   const cards = shopGrid.querySelectorAll('.product-card');
   cards.forEach((card,i)=>setTimeout(()=>{ 
@@ -108,7 +111,6 @@ function fadeInProducts(){
 // --- PRODUCT POPUP ---
 let currentIndex=0;
 let imagesArray=[];
-
 function openPopup(product){
   if(!product.images || !product.images.length) return;
   popupTitle.textContent = product.name;
@@ -116,16 +118,9 @@ function openPopup(product){
   imagesArray = product.images;
 
   popupImages.innerHTML='';
-  let imagesLoaded = 0;
   imagesArray.forEach(src=>{
     const img = document.createElement('img');
     img.src = src;
-    img.onload = () => {
-      imagesLoaded++;
-      if(imagesLoaded === imagesArray.length){
-        updateCarousel();
-      }
-    }
     popupImages.appendChild(img);
   });
   currentIndex = 0;
@@ -146,7 +141,7 @@ function openPopup(product){
   popup.style.display='flex';
 }
 
-// --- CAROUSEL NAVIGATION ---
+// --- CAROUSEL ---
 function updateCarousel(){ 
   const slideWidth = popupImages.querySelector('img') ? popupImages.querySelector('img').clientWidth : 0;
   popupImages.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
@@ -156,26 +151,14 @@ function updateThumbnails(){
   const thumbs = thumbnailGallery.querySelectorAll('img');
   thumbs.forEach((t,i)=>t.classList.toggle('active', i===currentIndex));
 }
-
-// NEXT/PREV BUTTONS
-nextBtn.addEventListener('click',()=>{ 
-  currentIndex = (currentIndex+1) % imagesArray.length; 
-  updateCarousel(); 
-});
-prevBtn.addEventListener('click',()=>{ 
-  currentIndex = (currentIndex-1 + imagesArray.length) % imagesArray.length; 
-  updateCarousel(); 
-});
+nextBtn.addEventListener('click',()=>{ currentIndex = (currentIndex+1) % imagesArray.length; updateCarousel(); });
+prevBtn.addEventListener('click',()=>{ currentIndex = (currentIndex-1 + imagesArray.length) % imagesArray.length; updateCarousel(); });
 popupClose.addEventListener('click',()=>popup.style.display='none');
 popup.addEventListener('click',e=>{ if(e.target===popup) popup.style.display='none'; });
 
 // --- CATEGORY POPUP ---
-shopBtn.addEventListener('click',()=>{ 
-  categoryPopup.style.display='flex'; 
-});
-categoryClose.addEventListener('click',()=>{ 
-  categoryPopup.style.display='none'; 
-});
+shopBtn.addEventListener('click',()=> categoryPopup.style.display='flex');
+categoryClose.addEventListener('click',()=> categoryPopup.style.display='none');
 categoryBtns.forEach(btn=>{
   btn.addEventListener('click',()=>{
     const selected = btn.dataset.category;
@@ -191,6 +174,7 @@ categoryBtns.forEach(btn=>{
     loadProducts(filtered);
     shopTitle.textContent = `🛒 Our Products – ${btn.textContent}`;
     localStorage.setItem('lastCategory', selected);
+    sessionStorage.setItem('shopOpen','true');
   });
 });
 
@@ -209,115 +193,92 @@ searchInput.addEventListener('input', ()=>{
 function showShop(){ 
   homeSection.classList.remove('visible'); 
   shopSection.classList.add('visible'); 
+  reviewsSection.classList.remove('visible');
   document.body.classList.remove('no-scroll'); 
 }
 function showHome(){ 
   shopSection.classList.remove('visible'); 
+  reviewsSection.classList.remove('visible');
   homeSection.classList.add('visible'); 
   document.body.classList.add('no-scroll'); 
   window.scrollTo(0,0); 
 }
+function showReviews(){
+  homeSection.classList.remove('visible');
+  shopSection.classList.remove('visible');
+  reviewsSection.classList.add('visible');
+  document.body.classList.remove('no-scroll');
+}
 
 // --- MENU BUTTONS ---
 backBtn.addEventListener('click',showHome);
+backReviewsBtn.addEventListener('click',showHome);
+
 shopMenu.addEventListener('click',()=>{ 
   navLinks.classList.remove('open'); 
   overlay.classList.remove('active'); 
   categoryPopup.style.display='flex';
 });
+
 homeMenu.addEventListener('click',()=>{ 
   navLinks.classList.remove('open'); 
   overlay.classList.remove('active'); 
   showHome(); 
 });
 
+reviewsMenu.addEventListener('click',()=>{
+  navLinks.classList.remove('open'); 
+  overlay.classList.remove('active'); 
+  showReviews();
+});
+
 // --- DOM CONTENT LOADED ---
 document.addEventListener('DOMContentLoaded',()=>{
-
-  document.body.classList.add('no-scroll');
-
-  // --- RESTORE LAST CATEGORY ONLY IF SHOP SECTION WAS OPEN ---
+  // Load last category if shop was open
   const lastCategory = localStorage.getItem('lastCategory');
   if(lastCategory && sessionStorage.getItem('shopOpen') === 'true'){
-    currentCategory = lastCategory;
     let filtered = [];
-    if(currentCategory==='fish') filtered = defaultProducts;
-    else filtered=[{ name: capitalize(currentCategory), comingSoon:true, images:[] }];
+    if(lastCategory==='fish') filtered = defaultProducts;
+    else filtered=[{ name: capitalize(lastCategory), comingSoon:true, images:[] }];
 
     showShop();
     categoryProducts = filtered;
     loadProducts(filtered);
-    shopTitle.textContent = `🛒 Our Products – ${capitalize(currentCategory)}`;
+    shopTitle.textContent = `🛒 Our Products – ${capitalize(lastCategory)}`;
   }
-
-  // --- MARK SHOP AS OPEN IF REFRESH IN SHOP ---
-  shopBtn.addEventListener('click',()=> sessionStorage.setItem('shopOpen','true'));
-  shopMenu.addEventListener('click',()=> sessionStorage.setItem('shopOpen','true'));
 });
 
 // --- UTILITY ---
 function capitalize(str){ return str.charAt(0).toUpperCase() + str.slice(1); }
 
-// --- DRAG / SWIPE SUPPORT FOR CAROUSEL ---
-let isDragging = false, startPos = 0;
-popupImages.addEventListener('mousedown', dragStart);
-popupImages.addEventListener('touchstart', dragStart);
-popupImages.addEventListener('mouseup', dragEnd);
-popupImages.addEventListener('touchend', dragEnd);
-popupImages.addEventListener('mouseleave', dragEnd);
-popupImages.addEventListener('mousemove', dragMove);
-popupImages.addEventListener('touchmove', dragMove);
+// --- REVIEWS FUNCTIONALITY ---
+const reviewList = document.getElementById('reviewList');
+const reviewName = document.getElementById('reviewName');
+const reviewText = document.getElementById('reviewText');
+const submitReview = document.getElementById('submitReview');
 
-function dragStart(e){
-  isDragging = true;
-  startPos = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-  popupImages.style.transition = 'none';
-  popupImages.style.cursor = 'grabbing';
-}
-function dragMove(e){
-  if(!isDragging) return;
-  const currentPosition = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-  const delta = currentPosition - startPos;
-  const slideWidth = popupImages.querySelector('img') ? popupImages.querySelector('img').clientWidth : 0;
-  popupImages.style.transform = `translateX(${-currentIndex * slideWidth + delta}px)`;
-}
-function dragEnd(e){
-  if(!isDragging) return;
-  isDragging = false;
-  const endPos = e.type.includes('mouse') ? e.pageX : e.changedTouches[0].clientX;
-  const delta = endPos - startPos;
-  const slideWidth = popupImages.querySelector('img') ? popupImages.querySelector('img').clientWidth : 0;
-
-  if(delta < -50) currentIndex = (currentIndex+1) % imagesArray.length;
-  else if(delta > 50) currentIndex = (currentIndex-1 + imagesArray.length) % imagesArray.length;
-
-  popupImages.style.transition = 'transform 0.3s ease';
-  popupImages.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
-  popupImages.style.cursor = 'grab';
-  updateThumbnails();
+function loadReviews(){
+  const reviews = JSON.parse(localStorage.getItem('reviews') || "[]");
+  reviewList.innerHTML = '';
+  reviews.forEach(r=>{
+    const div = document.createElement('div');
+    div.className='review-card';
+    div.innerHTML = `<strong>${r.name}</strong><p>${r.text}</p>`;
+    reviewList.appendChild(div);
+  });
 }
 
-// --- THUMBNAIL DRAG SUPPORT ---
-let isThumbDragging = false, thumbStartX = 0, scrollStart = 0;
-thumbnailGallery.addEventListener('mousedown', thumbDragStart);
-thumbnailGallery.addEventListener('touchstart', thumbDragStart);
-thumbnailGallery.addEventListener('mouseup', thumbDragEnd);
-thumbnailGallery.addEventListener('touchend', thumbDragEnd);
-thumbnailGallery.addEventListener('mouseleave', thumbDragEnd);
-thumbnailGallery.addEventListener('mousemove', thumbDragMove);
-thumbnailGallery.addEventListener('touchmove', thumbDragMove);
+submitReview.addEventListener('click',()=>{
+  const name = reviewName.value.trim();
+  const text = reviewText.value.trim();
+  if(!name || !text) return alert("Please fill out both fields.");
+  const reviews = JSON.parse(localStorage.getItem('reviews') || "[]");
+  reviews.push({name,text});
+  localStorage.setItem('reviews', JSON.stringify(reviews));
+  reviewName.value='';
+  reviewText.value='';
+  loadReviews();
+});
 
-function thumbDragStart(e){
-  isThumbDragging = true;
-  thumbStartX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-  scrollStart = thumbnailGallery.scrollLeft;
-}
-function thumbDragMove(e){
-  if(!isThumbDragging) return;
-  const currentX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-  const delta = thumbStartX - currentX;
-  thumbnailGallery.scrollLeft = scrollStart + delta;
-}
-function thumbDragEnd(){
-  isThumbDragging = false;
-}
+// Initial load
+loadReviews();
