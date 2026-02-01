@@ -42,8 +42,8 @@ contactToggle.addEventListener('click', () => {
 // --- PRODUCT DATA ---
 const defaultProducts = [
   { name:"Clownfish", price:"₱500", category:"fish", images:["images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg"] },
-  { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"] },
-  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
+  { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"] },
+  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
   { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
   { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
 ];
@@ -137,8 +137,9 @@ function openPopup(product){
   popup.style.display='flex';
 }
 
+// --- CAROUSEL SWIPE FIX ---
 function updateCarousel(){ 
-  popupImages.style.transform=`translateX(${-currentIndex*100}%)`;
+  popupImages.style.transform = `translateX(${-currentIndex*100}%)`;
   updateThumbnails();
 }
 
@@ -148,11 +149,11 @@ function updateThumbnails(){
 }
 
 nextBtn.addEventListener('click',()=>{ 
-  currentIndex=(currentIndex+1)%imagesArray.length; 
+  currentIndex = (currentIndex+1) % imagesArray.length; 
   updateCarousel(); 
 });
 prevBtn.addEventListener('click',()=>{ 
-  currentIndex=(currentIndex-1+imagesArray.length)%imagesArray.length; 
+  currentIndex = (currentIndex-1 + imagesArray.length) % imagesArray.length; 
   updateCarousel(); 
 });
 popupClose.addEventListener('click',()=>popup.style.display='none');
