@@ -25,21 +25,15 @@
       <a href="#home" id="homeMenu">Home</a>
       <a href="#shop" id="shopMenu">Shop</a>
       <a href="#review" id="reviewMenu">Reviews</a>
-
       <div class="menu-item" id="contact-toggle">
         <span id="contact-label">Contact ▼</span>
         <div class="menu-contact" id="contact-info">
           <a href="tel:16132554540">📞 Phone: 613-255-4540</a>
           <a href="mailto:Exotropic1@gmail.com">📧 Email: Exotropic1@gmail.com</a>
-          <a href="https://www.google.com/maps/place/Ottawa,+Ontario" target="_blank">
-            📍 Location: Ottawa, Ontario
-          </a>
-          <a href="https://www.facebook.com/share/1ANqkqmvcR/" target="_blank">
-            📘 Facebook Page: Exo Tropic
-          </a>
+          <a href="https://www.google.com/maps/place/Ottawa,+Ontario" target="_blank">📍 Location: Ottawa, Ontario</a>
+          <a href="https://www.facebook.com/share/1ANqkqmvcR/" target="_blank">📘 Facebook Page: Exo Tropic</a>
         </div>
       </div>
-
       <a href="https://m.me/ExoTropicAquarium" target="_blank">Messenger</a>
     </div>
   </nav>
@@ -70,22 +64,27 @@
 
     <!-- Review Section -->
     <section class="review" id="review">
-      <h2 class="section-title">⭐ Customer Reviews</h2>
-      <div class="review-grid">
-        <div class="review-card">
-          <p>"Amazing fish selection and great service!"</p>
-          <span>- John D.</span>
-        </div>
-        <div class="review-card">
-          <p>"Love the tropical plants I bought here."</p>
-          <span>- Sarah W.</span>
-        </div>
-        <div class="review-card">
-          <p>"Fast delivery and very helpful staff."</p>
-          <span>- Mike T.</span>
-        </div>
+      <h2>Customer Reviews</h2>
+
+      <form id="reviewForm">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <select name="rating" required>
+          <option value="">Rating</option>
+          <option value="1">⭐️</option>
+          <option value="2">⭐️⭐️</option>
+          <option value="3">⭐️⭐️⭐️</option>
+          <option value="4">⭐️⭐️⭐️⭐️</option>
+          <option value="5">⭐️⭐️⭐️⭐️⭐️</option>
+        </select>
+        <textarea name="comment" placeholder="Your Review" required></textarea>
+        <button type="submit" class="buy-btn">Submit Review</button>
+      </form>
+
+      <div class="review-list" id="reviewList">
+        <p>No reviews yet. Be the first to submit!</p>
       </div>
-      <button id="backFromReview" class="buy-btn">Back to Home</button>
+
+      <button id="backBtnReview" class="buy-btn">Back to Home</button>
     </section>
   </main>
 
