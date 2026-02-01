@@ -63,16 +63,13 @@ const defaultProducts = [
   ]},
   { name:"Betta", price:"₱700", category:"fish", images:[
     "images/product3.jpg","images/product3.jpg",
-    "images/product3.jpg","images/product3.jpg",
     "images/product3.jpg","images/product3.jpg"
   ]},
   { name:"Guppy", price:"₱800", category:"fish", images:[
     "images/product4.jpg","images/product4.jpg",
-    "images/product4.jpg","images/product4.jpg",
     "images/product4.jpg","images/product4.jpg"
   ]},
   { name:"Goldfish", price:"₱900", category:"fish", images:[
-    "images/product5.jpg","images/product5.jpg",
     "images/product5.jpg","images/product5.jpg",
     "images/product5.jpg","images/product5.jpg"
   ]}
@@ -200,6 +197,7 @@ categoryBtns.forEach(btn=>{
     loadProducts(filtered);
     shopTitle.textContent = `🛒 Our Products – ${btn.textContent}`;
     localStorage.setItem('lastCategory', selected);
+    localStorage.setItem('lastSection','shop');
     sessionStorage.setItem('shopOpen','true');
   });
 });
@@ -218,24 +216,30 @@ searchInput.addEventListener('input', ()=>{
 // --- SECTION TOGGLE ---
 function showShop(){ 
   homeSection.classList.remove('visible'); 
-  reviewsSection.classList.remove('visible'); // Hide reviews
+  reviewsSection.classList.remove('visible');
   shopSection.classList.add('visible'); 
   document.body.classList.remove('no-scroll'); 
   window.scrollTo(0,0);
+  localStorage.setItem('lastSection','shop');
+  sessionStorage.setItem('shopOpen','true');
 }
 function showHome(){ 
   shopSection.classList.remove('visible'); 
-  reviewsSection.classList.remove('visible'); // Hide reviews
+  reviewsSection.classList.remove('visible'); 
   homeSection.classList.add('visible'); 
   document.body.classList.add('no-scroll'); 
   window.scrollTo(0,0); 
+  localStorage.setItem('lastSection','home');
+  sessionStorage.removeItem('shopOpen');
 }
 function showReviews(){
   shopSection.classList.remove('visible'); 
   homeSection.classList.remove('visible'); 
   reviewsSection.classList.add('visible'); 
   document.body.classList.remove('no-scroll');
-  window.scrollTo(0,0); // Fix disappearing issue
+  window.scrollTo(0,0);
+  localStorage.setItem('lastSection','reviews');
+  sessionStorage.removeItem('shopOpen');
 }
 
 // --- MENU BUTTONS ---
@@ -262,9 +266,11 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   document.body.classList.add('no-scroll');
 
-  // Restore last category if shop was open before refresh
+  // Restore last section and category
+  const lastSection = localStorage.getItem('lastSection');
   const lastCategory = localStorage.getItem('lastCategory');
-  if(lastCategory && sessionStorage.getItem('shopOpen') === 'true'){
+
+  if(lastSection === 'shop' && lastCategory && sessionStorage.getItem('shopOpen') === 'true'){
     currentCategory = lastCategory;
     let filtered = [];
     if(currentCategory==='fish') filtered = defaultProducts;
@@ -274,6 +280,10 @@ document.addEventListener('DOMContentLoaded',()=>{
     categoryProducts = filtered;
     loadProducts(filtered);
     shopTitle.textContent = `🛒 Our Products – ${capitalize(currentCategory)}`;
+  } else if(lastSection === 'reviews'){
+    showReviews();
+  } else {
+    showHome();
   }
 });
 
