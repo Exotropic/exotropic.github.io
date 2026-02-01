@@ -58,8 +58,8 @@ const defaultProducts = [
     "images/product1.jpg","images/product1.jpg","images/product1.jpg"
   ]},
   { name:"Angelfish", price:"₱600", category:"fish", images:[
-    "images/product2.jpg","images/product2.jpg","images/product2.jpg",
-    "images/product2.jpg","images/product2.jpg","images/product2.jpg"
+    "images/product2.jpg","images/product2.jpg",
+    "images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"
   ]},
   { name:"Betta", price:"₱700", category:"fish", images:[
     "images/product3.jpg","images/product3.jpg"
@@ -75,8 +75,8 @@ const defaultProducts = [
 // --- ENSURE 6 IMAGES PER PRODUCT ---
 defaultProducts.forEach(product => {
   while (product.images.length < 6) {
-    product.images.push(...product.images); // repeat images
-    if (product.images.length > 6) product.images = product.images.slice(0,6); // trim to exactly 6
+    product.images.push(...product.images);
+    if (product.images.length > 6) product.images = product.images.slice(0,6);
   }
 });
 
@@ -100,17 +100,14 @@ function renderProduct(product,index){
       <button class="buy-btn">Buy via Messenger</button>
     `;
     div.querySelector('img').addEventListener('click', ()=>openPopup(product));
-
+    
     // --- UPDATED BUY BUTTON ---
     div.querySelector('.buy-btn').addEventListener('click', e=>{
       e.stopPropagation();
-      const productName = product.name;
-      const productImage = product.images[0]; // first image
-      const message = encodeURIComponent(
-        `Hi! I want to buy: ${productName}\nImage: ${window.location.origin}/${productImage}`
-      );
-      const messengerLink = `https://m.me/ExoTropicAquarium?message=${message}`;
-      window.open(messengerLink, '_blank');
+      const messengerLink = `https://m.me/ExoTropicAquarium?ref=${encodeURIComponent(
+        `Hi! I want to buy: ${product.name}\nImage: ${window.location.origin}/${product.images[0]}`
+      )}`;
+      window.open(messengerLink,"_blank");
     });
   }
 
