@@ -52,17 +52,12 @@
 
     <!-- Shop Section -->
     <section class="shop" id="shop">
-      <!-- Back to Home Button (upper-right) -->
-      <button id="backBtn" class="buy-btn back-btn" type="button">Back to Home</button>
-
+      <div class="shop-header">
+        <button id="backBtn" class="buy-btn back-btn" type="button">Back to Home</button>
+        <input type="text" id="shopSearch" placeholder="Search products..." class="shop-search">
+      </div>
       <img src="images/exotropic-logo.png" alt="Exotropic Logo" class="shop-logo">
       <h2 class="section-title">🛒 Our Products</h2>
-
-      <!-- Search Bar -->
-      <div class="shop-search">
-        <input type="text" id="shopSearch" placeholder="Search products..." />
-      </div>
-
       <div class="shop-grid" id="shopGrid">
         <p id="loadingText">Loading products...</p>
       </div>
@@ -72,7 +67,6 @@
   <!-- Popup Modal -->
   <div class="product-popup" id="productPopup">
     <div class="popup-content">
-      <!-- ✅ GitHub-safe close button -->
       <button class="close-btn" id="popupClose">✕</button>
       <h2 id="popupTitle"></h2>
       <h3 id="popupPrice"></h3>
@@ -81,8 +75,7 @@
         <div class="carousel-images" id="popupImages"></div>
         <span class="next">&#10095;</span>
       </div>
-      <!-- Thumbnail Gallery -->
-      <div class="thumbnail-gallery" id="thumbnailGallery"></div>
+      <div id="thumbnailGallery" class="thumbnail-gallery"></div>
     </div>
   </div>
 
