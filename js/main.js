@@ -8,13 +8,16 @@ const contactLabel = document.getElementById('contact-label');
 
 const shopBtn = document.getElementById('shopBtn');
 const backBtn = document.getElementById('backBtn');
+const backReviewsBtn = document.getElementById('backReviewsBtn');
 const shopSection = document.getElementById('shop');
 const shopGrid = document.getElementById('shopGrid');
 const loadingText = document.getElementById('loadingText');
 const homeSection = document.getElementById('home');
+const reviewsSection = document.getElementById('reviews');
 
 const shopMenu = document.getElementById('shopMenu');
 const homeMenu = document.getElementById('homeMenu');
+const reviewsMenu = document.getElementById('reviewsMenu');
 const shopTitle = document.getElementById('shopTitle');
 
 const categoryPopup = document.getElementById('categoryPopup');
@@ -31,15 +34,6 @@ const popupClose = document.getElementById('popupClose');
 const prevBtn = popup.querySelector('.prev');
 const nextBtn = popup.querySelector('.next');
 const thumbnailGallery = document.getElementById('thumbnailGallery');
-
-// --- REVIEWS ELEMENTS ---
-const reviewsSection = document.getElementById('reviews');
-const reviewsMenu = document.getElementById('reviewsMenu');
-const backReviewsBtn = document.getElementById('backReviewsBtn');
-const reviewName = document.getElementById('reviewName');
-const reviewText = document.getElementById('reviewText');
-const submitReview = document.getElementById('submitReview');
-const reviewList = document.getElementById('reviewList');
 
 // --- HAMBURGER MENU ---
 hamburger.addEventListener('click', () => { 
@@ -68,16 +62,19 @@ const defaultProducts = [
     "images/product2.jpg","images/product2.jpg","images/product2.jpg"
   ]},
   { name:"Betta", price:"₱700", category:"fish", images:[
-    "images/product3.jpg","images/product3.jpg","images/product3.jpg",
-    "images/product3.jpg","images/product3.jpg","images/product3.jpg"
+    "images/product3.jpg","images/product3.jpg",
+    "images/product3.jpg","images/product3.jpg",
+    "images/product3.jpg","images/product3.jpg"
   ]},
   { name:"Guppy", price:"₱800", category:"fish", images:[
-    "images/product4.jpg","images/product4.jpg","images/product4.jpg",
-    "images/product4.jpg","images/product4.jpg","images/product4.jpg"
+    "images/product4.jpg","images/product4.jpg",
+    "images/product4.jpg","images/product4.jpg",
+    "images/product4.jpg","images/product4.jpg"
   ]},
   { name:"Goldfish", price:"₱900", category:"fish", images:[
-    "images/product5.jpg","images/product5.jpg","images/product5.jpg",
-    "images/product5.jpg","images/product5.jpg","images/product5.jpg"
+    "images/product5.jpg","images/product5.jpg",
+    "images/product5.jpg","images/product5.jpg",
+    "images/product5.jpg","images/product5.jpg"
   ]}
 ];
 
@@ -139,7 +136,6 @@ function openPopup(product){
   popupPrice.textContent = product.price;
   imagesArray = product.images;
 
-  // MAIN IMAGE CAROUSEL
   popupImages.innerHTML='';
   imagesArray.forEach(src=>{
     const img = document.createElement('img');
@@ -149,7 +145,6 @@ function openPopup(product){
   currentIndex = 0;
   updateCarousel();
 
-  // THUMBNAILS
   thumbnailGallery.innerHTML='';
   imagesArray.forEach((src,i)=>{
     const thumb=document.createElement('img');
@@ -223,27 +218,29 @@ searchInput.addEventListener('input', ()=>{
 // --- SECTION TOGGLE ---
 function showShop(){ 
   homeSection.classList.remove('visible'); 
-  reviewsSection.classList.remove('visible');
+  reviewsSection.classList.remove('visible'); // Hide reviews
   shopSection.classList.add('visible'); 
   document.body.classList.remove('no-scroll'); 
+  window.scrollTo(0,0);
 }
 function showHome(){ 
   shopSection.classList.remove('visible'); 
-  reviewsSection.classList.remove('visible');
+  reviewsSection.classList.remove('visible'); // Hide reviews
   homeSection.classList.add('visible'); 
   document.body.classList.add('no-scroll'); 
   window.scrollTo(0,0); 
 }
-function showReviews() {
-  homeSection.classList.remove('visible');
-  shopSection.classList.remove('visible');
-  reviewsSection.classList.add('visible');
+function showReviews(){
+  shopSection.classList.remove('visible'); 
+  homeSection.classList.remove('visible'); 
+  reviewsSection.classList.add('visible'); 
   document.body.classList.remove('no-scroll');
-  window.scrollTo(0,0);
+  window.scrollTo(0,0); // Fix disappearing issue
 }
 
 // --- MENU BUTTONS ---
 backBtn.addEventListener('click',showHome);
+backReviewsBtn.addEventListener('click',showHome);
 shopMenu.addEventListener('click',()=>{ 
   navLinks.classList.remove('open'); 
   overlay.classList.remove('active'); 
@@ -254,12 +251,11 @@ homeMenu.addEventListener('click',()=>{
   overlay.classList.remove('active'); 
   showHome(); 
 });
-reviewsMenu.addEventListener('click',()=>{
+reviewsMenu.addEventListener('click',()=>{ 
   navLinks.classList.remove('open'); 
   overlay.classList.remove('active'); 
-  showReviews();
+  showReviews(); 
 });
-backReviewsBtn.addEventListener('click', showHome);
 
 // --- DOM CONTENT LOADED ---
 document.addEventListener('DOMContentLoaded',()=>{
@@ -279,10 +275,6 @@ document.addEventListener('DOMContentLoaded',()=>{
     loadProducts(filtered);
     shopTitle.textContent = `🛒 Our Products – ${capitalize(currentCategory)}`;
   }
-
-  // Load reviews from localStorage
-  const savedReviews = JSON.parse(localStorage.getItem('reviews')) || [];
-  savedReviews.forEach(r => addReviewCard(r.name, r.text));
 });
 
 // --- UTILITY ---
@@ -313,28 +305,3 @@ thumbnailGallery.addEventListener('touchmove', thumbDragMove);
 function thumbDragStart(e){ isThumbDragging=true; thumbStartX=e.type.includes('mouse')?e.pageX:e.touches[0].clientX; scrollStart=thumbnailGallery.scrollLeft; }
 function thumbDragMove(e){ if(!isThumbDragging) return; const currentX=e.type.includes('mouse')?e.pageX:e.touches[0].clientX; const delta=thumbStartX-currentX; thumbnailGallery.scrollLeft=scrollStart+delta; }
 function thumbDragEnd(){ isThumbDragging=false; }
-
-// --- REVIEW FORM SUBMISSION ---
-submitReview.addEventListener('click', () => {
-  const name = reviewName.value.trim();
-  const text = reviewText.value.trim();
-  if(!name || !text) return alert("Please enter your name and review.");
-
-  addReviewCard(name, text);
-
-  // Save to localStorage
-  const savedReviews = JSON.parse(localStorage.getItem('reviews')) || [];
-  savedReviews.unshift({ name, text });
-  localStorage.setItem('reviews', JSON.stringify(savedReviews));
-
-  // Clear form
-  reviewName.value = '';
-  reviewText.value = '';
-});
-
-function addReviewCard(name, text){
-  const card = document.createElement('div');
-  card.className = 'review-card';
-  card.innerHTML = `<strong>${name}</strong><p>${text}</p>`;
-  reviewList.prepend(card);
-}
