@@ -17,8 +17,14 @@ const shopMenu = document.getElementById('shopMenu');
 const homeMenu = document.getElementById('homeMenu');
 
 // --- HAMBURGER MENU ---
-hamburger.addEventListener('click', () => { navLinks.classList.toggle('open'); overlay.classList.toggle('active'); });
-overlay.addEventListener('click', () => { navLinks.classList.remove('open'); overlay.classList.remove('active'); });
+hamburger.addEventListener('click', () => { 
+  navLinks.classList.toggle('open'); 
+  overlay.classList.toggle('active'); 
+});
+overlay.addEventListener('click', () => { 
+  navLinks.classList.remove('open'); 
+  overlay.classList.remove('active'); 
+});
 
 // --- CONTACT TOGGLE ---
 contactToggle.addEventListener('click', () => {
@@ -55,20 +61,24 @@ function loadProducts(){
 
 function fadeInProducts(){
   const cards = shopGrid.querySelectorAll('.product-card');
-  cards.forEach((card,i)=>setTimeout(()=>{ card.style.opacity='1'; card.style.transform='translateY(0)'; },i*100));
+  cards.forEach((card,i)=>setTimeout(()=>{ 
+    card.style.opacity='1'; 
+    card.style.transform='translateY(0)'; 
+  },i*100));
 }
 
 // --- POPUP LOGIC ---
-const popup=document.getElementById('productPopup');
-const popupTitle=document.getElementById('popupTitle');
-const popupImages=document.getElementById('popupImages');
-const popupPrice=document.getElementById('popupPrice');
-const popupClose=document.getElementById('popupClose');
-const prevBtn=popup.querySelector('.prev');
-const nextBtn=popup.querySelector('.next');
+const popup = document.getElementById('productPopup');
+const popupTitle = document.getElementById('popupTitle');
+const popupImages = document.getElementById('popupImages');
+const popupPrice = document.getElementById('popupPrice');
+const popupClose = document.getElementById('popupClose');
+const prevBtn = popup.querySelector('.prev');
+const nextBtn = popup.querySelector('.next');
+const thumbnailGallery = document.getElementById('thumbnailGallery');
 
-let currentIndex=0;
-let imagesArray=[];
+let currentIndex = 0;
+let imagesArray = [];
 
 // --- OPEN POPUP ---
 function openPopup(product){
@@ -76,8 +86,9 @@ function openPopup(product){
   popupPrice.textContent = product.price;
   imagesArray = product.images;
 
+  // Main images
   popupImages.innerHTML = '';
-  imagesArray.forEach(src => {
+  imagesArray.forEach(src=>{
     const img = document.createElement('img');
     img.src = src;
     popupImages.appendChild(img);
@@ -85,24 +96,51 @@ function openPopup(product){
   currentIndex = 0;
   updateCarousel();
 
-  // Thumbnail gallery
-  const thumbnailGallery = document.getElementById('thumbnailGallery');
+  // Thumbnails
   thumbnailGallery.innerHTML = '';
   imagesArray.forEach((src,i)=>{
     const thumb = document.createElement('img');
     thumb.src = src;
-    thumb.addEventListener('click',()=>{ currentIndex=i; updateCarousel(); });
+    if(i===0) thumb.classList.add('active');
+    thumb.addEventListener('click', ()=>{
+      currentIndex = i;
+      updateCarousel();
+    });
     thumbnailGallery.appendChild(thumb);
   });
 
-  popup.style.display='flex';
+  popup.style.display = 'flex';
 }
 
-function updateCarousel(){ popupImages.style.transform=`translateX(${-currentIndex*100}%)`; }
-nextBtn.addEventListener('click',()=>{ currentIndex=(currentIndex+1)%imagesArray.length; updateCarousel(); });
-prevBtn.addEventListener('click',()=>{ currentIndex=(currentIndex-1+imagesArray.length)%imagesArray.length; updateCarousel(); });
-popupClose.addEventListener('click',()=>popup.style.display='none');
-popup.addEventListener('click',e=>{ if(e.target===popup) popup.style.display='none'; });
+// Update carousel main image & active thumbnail
+function updateCarousel(){
+  popupImages.style.transform = `translateX(${-currentIndex*100}%)`;
+
+  const allThumbs = thumbnailGallery.querySelectorAll('img');
+  allThumbs.forEach((thumb,i)=>thumb.classList.toggle('active', i===currentIndex));
+
+  // Auto-scroll thumbnail into view
+  const activeThumb = allThumbs[currentIndex];
+  if(activeThumb){
+    const container = thumbnailGallery;
+    const containerRect = container.getBoundingClientRect();
+    const thumbRect = activeThumb.getBoundingClientRect();
+    const offset = thumbRect.left - containerRect.left - (containerRect.width/2 - thumbRect.width/2);
+    container.scrollBy({ left: offset, behavior: 'smooth' });
+  }
+}
+
+// Buttons
+nextBtn.addEventListener('click', ()=>{
+  currentIndex = (currentIndex + 1) % imagesArray.length;
+  updateCarousel();
+});
+prevBtn.addEventListener('click', ()=>{
+  currentIndex = (currentIndex - 1 + imagesArray.length) % imagesArray.length;
+  updateCarousel();
+});
+popupClose.addEventListener('click', ()=>popup.style.display='none');
+popup.addEventListener('click', e=>{ if(e.target===popup) popup.style.display='none'; });
 
 // Swipe support
 let startX=0, endX=0;
@@ -114,12 +152,30 @@ popupImages.addEventListener('touchend', ()=>{
 });
 
 // --- SECTION TOGGLE ---
-function showShop(){ homeSection.classList.remove('visible'); shopSection.classList.add('visible'); loadProducts(); document.body.classList.remove('no-scroll'); }
-function showHome(){ shopSection.classList.remove('visible'); homeSection.classList.add('visible'); document.body.classList.add('no-scroll'); window.scrollTo(0,0); }
+function showShop(){ 
+  homeSection.classList.remove('visible'); 
+  shopSection.classList.add('visible'); 
+  loadProducts(); 
+  document.body.classList.remove('no-scroll'); 
+}
+function showHome(){ 
+  shopSection.classList.remove('visible'); 
+  homeSection.classList.add('visible'); 
+  document.body.classList.add('no-scroll'); 
+  window.scrollTo(0,0); 
+}
 
 shopBtn.addEventListener('click',showShop);
 backBtn.addEventListener('click',showHome);
-shopMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overlay.classList.remove('active'); showShop(); });
-homeMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overlay.classList.remove('active'); showHome(); });
+shopMenu.addEventListener('click',()=>{ 
+  navLinks.classList.remove('open'); 
+  overlay.classList.remove('active'); 
+  showShop(); 
+});
+homeMenu.addEventListener('click',()=>{ 
+  navLinks.classList.remove('open'); 
+  overlay.classList.remove('active'); 
+  showHome(); 
+});
 
 document.addEventListener('DOMContentLoaded',()=>{ document.body.classList.add('no-scroll'); });
