@@ -16,32 +16,30 @@ body.no-scroll{ overflow:hidden; }
 .hero h1{ font-size:68px; font-weight:900; background:linear-gradient(90deg,#00FFE0,#26C6DA,#81D4FA); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
 
 /* ================= SHOP ================= */
-.shop{ padding:60px 20px; color:#E0F7FA; position:absolute; top:0; left:0; width:100%; transition:opacity 0.5s ease; opacity:0; visibility:hidden; }
+.shop{ padding:60px 20px; color:#E0F7FA; position:absolute; top:0; left:0; width:100%; transition:opacity 0.5s ease; opacity:0; visibility:hidden; position:relative; }
 .shop.visible{ opacity:1; visibility:visible; }
 .shop-logo{ width:225px; display:block; margin:0 auto 20px; }
 .section-title{ text-align:center; font-size:28px; margin-bottom:30px; }
 
-/* ================= SHOP HEADER ================= */
-.shop-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
+/* ================= BACK BUTTON ================= */
+#backBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
 }
-.shop-search {
-  flex: 1;
-  min-width: 180px;
-  margin-left: 10px;
-  padding: 10px 14px;
-  border-radius: 10px;
-  border: 1px solid #B2EBF2;
-  background: rgba(0,40,70,0.65);
-  color: #E0F7FA;
-  font-size: 14px;
+
+/* ================= SEARCH BAR ================= */
+.shop-search { text-align:center; margin:20px 0; }
+.shop-search input {
+  width:80%;
+  max-width:400px;
+  padding:10px 15px;
+  border-radius:12px;
+  border:1px solid #B2EBF2;
+  font-size:16px;
+  outline:none;
 }
-.shop-search::placeholder { color: #B2EBF2; }
-.back-btn { order: -1; }
 
 /* ================= SHOP GRID ================= */
 .shop-grid{ display:grid; grid-template-columns: repeat(auto-fill,minmax(150px,1fr)); gap:20px; }
@@ -92,8 +90,6 @@ body.no-scroll{ overflow:hidden; }
 #popupPrice{ top:60px; font-size:24px; }
 
 /* ================= THUMBNAILS ================= */
-.thumbnail-gallery{ display:flex; justify-content:center; flex-wrap: wrap; margin-top: 10px; gap:5px; }
-.thumbnail-gallery img{
-  width:60px; height:60px; object-fit:cover; border:2px solid transparent; border-radius:5px; cursor:pointer;
-}
+.thumbnail-gallery{ display:flex; justify-content:center; gap:10px; margin-top:10px; flex-wrap:wrap; }
+.thumbnail-gallery img{ width:60px; height:60px; object-fit:cover; cursor:pointer; border:2px solid transparent; border-radius:8px; transition:0.3s; }
 .thumbnail-gallery img.active{ border-color:#00FFE0; }
