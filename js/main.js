@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   }
 });
 
-// --- SWIPE / DRAG SUPPORT FOR MAIN CAROUSEL (iOS FIX) ---
+// --- SWIPE / DRAG SUPPORT FOR MAIN CAROUSEL (iOS FIX with indicators) ---
 let isDragging = false;
 let startPos = 0;
 
@@ -260,6 +260,8 @@ function dragEnd(e){
   popupImages.style.transition = 'transform 0.3s ease';
   popupImages.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
   popupImages.style.cursor = 'grab';
+
+  updateThumbnails(); // ✅ ensures indicator stays synced
 }
 
 // --- SWIPE SUPPORT FOR THUMBNAILS ---
