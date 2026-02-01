@@ -22,12 +22,7 @@ body.no-scroll{ overflow:hidden; }
 .section-title{ text-align:center; font-size:28px; margin-bottom:30px; }
 
 /* ================= BACK BUTTON ================= */
-#backBtn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 1000;
-}
+#backBtn { position: absolute; top: 20px; right: 20px; z-index: 1000; }
 
 /* ================= SEARCH BAR ================= */
 .shop-search { text-align:center; margin:20px 0; }
@@ -45,29 +40,54 @@ body.no-scroll{ overflow:hidden; }
 .shop-grid{ display:grid; grid-template-columns: repeat(auto-fill,minmax(150px,1fr)); gap:20px; }
 .product-card{ background: rgba(0,40,70,0.65); border:1px solid #B2EBF2; border-radius:10px; padding:10px; color:#D0F0FD; opacity:0; transform:translateY(20px); transition:0.4s ease; cursor:pointer; }
 .product-card img{ width:100%; border-radius:8px; }
-.product-card .buy-btn{ display:block; width:100%; margin-top:10px; padding:12px 0; font-weight:bold; text-align:center; border-radius:10px; background:linear-gradient(135deg,#00FFE0,#26C6DA); color:#003040; text-decoration:none; }
 
-/* ================= BUTTONS ================= */
-.buy-btn, .messenger-btn{ padding:14px 28px; font-weight:bold; border-radius:12px; border:none; cursor:pointer; background:linear-gradient(135deg,#00BFA5,#26C6DA); color:#003040; }
+/* ================= PRODUCT BUY BUTTON ================= */
+.product-card .buy-btn {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px 0;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 10px;
+  background: linear-gradient(135deg,#00FFE0,#26C6DA);
+  color: #003040;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s ease;
+}
 
-/* ================= MESSENGER BUTTON ================= */
-.messenger-btn{ position:fixed; bottom:20px; right:20px; z-index:1000; text-decoration:none; }
+.product-card .buy-btn:hover {
+  transform: scale(1.05);
+  color: #fff;
+}
 
 /* ================= FLOATING MESSENGER BUTTON ================= */
 .floating-messenger {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 60px;
-  height: 60px;
-  z-index: 1000;
+  padding: 12px 0;
+  width: 160px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  color: #003040;
+  background: linear-gradient(135deg,#00FFE0,#26C6DA);
+  border-radius: 10px;
+  border: none;
   cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  z-index: 2000;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.floating-messenger img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+
+.floating-messenger:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+  color: #fff;
 }
 
 /* ================= HAMBURGER ================= */
@@ -112,47 +132,7 @@ body.no-scroll{ overflow:hidden; }
 .thumbnail-gallery img.active{ border-color:#00FFE0; }
 
 /* ================= CATEGORY POPUP ================= */
-.category-popup{
-  display:none; /* hidden by default */
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background: rgba(0,0,0,0.6);
-  justify-content: center;
-  align-items: center;
-  z-index:1000;
-}
-.category-popup .category-content{
-  background:#003040;
-  color:#E0F7FA;
-  padding:30px;
-  border-radius:12px;
-  text-align:center;
-  min-width:250px;
-}
-.category-popup .category-btn{
-  display:block;
-  margin:10px auto;
-  padding:12px 20px;
-  font-weight:bold;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-  background:linear-gradient(135deg,#00FFE0,#26C6DA);
-  color:#003040;
-}
-.category-popup .close-btn{
-  margin-top:15px;
-  background:rgba(0,0,0,0.5);
-  color:#fff;
-  border-radius:50%;
-  width:45px;
-  height:45px;
-  text-align:center;
-  line-height:45px;
-  font-size:28px;
-  border:none;
-  cursor:pointer;
-}
+.category-popup{ display:none; position:fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index:1000; }
+.category-popup .category-content{ background:#003040; color:#E0F7FA; padding:30px; border-radius:12px; text-align:center; min-width:250px; }
+.category-popup .category-btn{ display:block; margin:10px auto; padding:12px 20px; font-weight:bold; border:none; border-radius:10px; cursor:pointer; background:linear-gradient(135deg,#00FFE0,#26C6DA); color:#003040; }
+.category-popup .close-btn{ margin-top:15px; background:rgba(0,0,0,0.5); color:#fff; border-radius:50%; width:45px; height:45px; text-align:center; line-height:45px; font-size:28px; border:none; cursor:pointer; }
