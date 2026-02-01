@@ -32,18 +32,18 @@ const categoryNames = {
 let activeProducts = [];
 
 // ================= HAMBURGER MENU =================
-hamburger.addEventListener('click', () => {
+hamburger.addEventListener('click', function() {
   navLinks.classList.toggle('open');
   overlay.classList.toggle('active');
 });
-overlay.addEventListener('click', () => {
+overlay.addEventListener('click', function() {
   navLinks.classList.remove('open');
   overlay.classList.remove('active');
 });
 
 // ================= CONTACT TOGGLE =================
-contactToggle.addEventListener('click', () => {
-  const visible = contactInfo.classList.toggle('visible');
+contactToggle.addEventListener('click', function() {
+  var visible = contactInfo.classList.toggle('visible');
   contactLabel.textContent = visible ? "Contact ▲" : "Contact ▼";
 });
 
@@ -67,17 +67,15 @@ function openCategoryPopup() {
   categoryPopup.style.display = 'flex';
 }
 
-categoryClose.addEventListener('click', () => {
+categoryClose.addEventListener('click', function() {
   categoryPopup.style.display = 'none';
 });
 
-categoryButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const key = btn.dataset.category;
+categoryButtons.forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var key = btn.dataset.category;
     activeProducts = productsByCategory[key] || [];
-
-    shopTitle.textContent = `🛒 Our Products – ${categoryNames[key]}`;
-
+    shopTitle.textContent = "🛒 Our Products – " + categoryNames[key];
     categoryPopup.style.display = 'none';
     showShop();
     loadProducts(activeProducts);
@@ -86,30 +84,24 @@ categoryButtons.forEach(btn => {
 
 // ================= RENDER PRODUCTS =================
 function renderProduct(product, index) {
-  const div = document.createElement('div');
+  var div = document.createElement('div');
   div.className = 'product-card';
-  div.style.transitionDelay = `${index * 0.15}s`;
+  div.style.transitionDelay = (index * 0.15) + 's';
 
-  div.innerHTML = `
-    <img src="${product.images[0]}" alt="${product.name}" loading="lazy">
-    <a href="https://m.me/ExoTropicAquarium"
-       target="_blank"
-       class="buy-btn"
-       onclick="event.stopPropagation()">
-       Buy via Messenger
-    </a>
-  `;
+  div.innerHTML = '<img src="' + product.images[0] + '" alt="' + product.name + '" loading="lazy">' +
+    '<a href="https://m.me/ExoTropicAquarium" target="_blank" class="buy-btn" onclick="event.stopPropagation()">Buy via Messenger</a>';
 
-  div.addEventListener('click', () => openPopup(product));
+  div.addEventListener('click', function() { openPopup(product); });
   shopGrid.appendChild(div);
 }
 
 // ================= LOAD PRODUCTS =================
-function loadProducts(list = []) {
+function loadProducts(list) {
+  list = list || [];
   shopGrid.innerHTML = '';
   loadingText.textContent = 'Loading products...';
 
-  list.forEach((prod, i) => renderProduct(prod, i));
+  list.forEach(function(prod, i) { renderProduct(prod, i); });
 
   loadingText.textContent = '';
   fadeInProducts();
@@ -117,9 +109,9 @@ function loadProducts(list = []) {
 
 // ================= FADE IN =================
 function fadeInProducts() {
-  const cards = shopGrid.querySelectorAll('.product-card');
-  cards.forEach((card, i) => {
-    setTimeout(() => {
+  var cards = shopGrid.querySelectorAll('.product-card');
+  cards.forEach(function(card, i) {
+    setTimeout(function() {
       card.style.opacity = '1';
       card.style.transform = 'translateY(0)';
     }, i * 100);
@@ -127,17 +119,17 @@ function fadeInProducts() {
 }
 
 // ================= POPUP =================
-const popup = document.getElementById('productPopup');
-const popupTitle = document.getElementById('popupTitle');
-const popupPrice = document.getElementById('popupPrice');
-const popupImages = document.getElementById('popupImages');
-const popupClose = document.getElementById('popupClose');
-const prevBtn = popup.querySelector('.prev');
-const nextBtn = popup.querySelector('.next');
-const thumbnailGallery = document.getElementById('thumbnailGallery');
+var popup = document.getElementById('productPopup');
+var popupTitle = document.getElementById('popupTitle');
+var popupPrice = document.getElementById('popupPrice');
+var popupImages = document.getElementById('popupImages');
+var popupClose = document.getElementById('popupClose');
+var prevBtn = popup.querySelector('.prev');
+var nextBtn = popup.querySelector('.next');
+var thumbnailGallery = document.getElementById('thumbnailGallery');
 
-let currentIndex = 0;
-let imagesArray = [];
+var currentIndex = 0;
+var imagesArray = [];
 
 function openPopup(product) {
   popupTitle.textContent = product.name;
@@ -145,18 +137,18 @@ function openPopup(product) {
   imagesArray = product.images;
 
   popupImages.innerHTML = '';
-  imagesArray.forEach(src => {
-    const img = document.createElement('img');
+  imagesArray.forEach(function(src) {
+    var img = document.createElement('img');
     img.src = src;
     popupImages.appendChild(img);
   });
 
   thumbnailGallery.innerHTML = '';
-  imagesArray.forEach((src, i) => {
-    const thumb = document.createElement('img');
+  imagesArray.forEach(function(src, i) {
+    var thumb = document.createElement('img');
     thumb.src = src;
-    thumb.classList.toggle('active', i === currentIndex);
-    thumb.addEventListener('click', () => {
+    if(i === currentIndex) thumb.classList.add('active');
+    thumb.addEventListener('click', function() {
       currentIndex = i;
       updateCarousel();
     });
@@ -169,33 +161,36 @@ function openPopup(product) {
 }
 
 function updateCarousel() {
-  popupImages.style.transform = `translateX(${-currentIndex * 100}%)`;
-  const thumbs = thumbnailGallery.querySelectorAll('img');
-  thumbs.forEach((t, i) => t.classList.toggle('active', i === currentIndex));
+  popupImages.style.transform = 'translateX(' + (-currentIndex * 100) + '%)';
+  var thumbs = thumbnailGallery.querySelectorAll('img');
+  thumbs.forEach(function(t, i) {
+    if(i === currentIndex) t.classList.add('active');
+    else t.classList.remove('active');
+  });
 }
 
-nextBtn.addEventListener('click', e => {
+nextBtn.addEventListener('click', function(e) {
   e.stopPropagation();
   currentIndex = (currentIndex + 1) % imagesArray.length;
   updateCarousel();
 });
-prevBtn.addEventListener('click', e => {
+prevBtn.addEventListener('click', function(e) {
   e.stopPropagation();
   currentIndex = (currentIndex - 1 + imagesArray.length) % imagesArray.length;
   updateCarousel();
 });
-popupClose.addEventListener('click', () => popup.style.display = 'none');
-popup.addEventListener('click', e => {
-  if (e.target === popup) popup.style.display = 'none';
+popupClose.addEventListener('click', function() { popup.style.display = 'none'; });
+popup.addEventListener('click', function(e) {
+  if(e.target === popup) popup.style.display = 'none';
 });
 
 // ================= SWIPE =================
-let startX = 0;
-popupImages.addEventListener('touchstart', e => startX = e.touches[0].clientX);
-popupImages.addEventListener('touchend', e => {
-  const endX = e.changedTouches[0].clientX;
-  if (startX - endX > 50) nextBtn.click();
-  if (endX - startX > 50) prevBtn.click();
+var startX = 0;
+popupImages.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; });
+popupImages.addEventListener('touchend', function(e) {
+  var endX = e.changedTouches[0].clientX;
+  if(startX - endX > 50) nextBtn.click();
+  if(endX - startX > 50) prevBtn.click();
 });
 
 // ================= SECTIONS =================
@@ -219,15 +214,15 @@ backBtn.addEventListener('click', showHome);
 homeMenu.addEventListener('click', showHome);
 
 // ================= SEARCH =================
-shopSearch.addEventListener('input', () => {
-  const q = shopSearch.value.toLowerCase();
-  const filtered = activeProducts.filter(p =>
-    p.name.toLowerCase().includes(q)
-  );
+shopSearch.addEventListener('input', function() {
+  var q = shopSearch.value.toLowerCase();
+  var filtered = activeProducts.filter(function(p) {
+    return p.name.toLowerCase().includes(q);
+  });
   loadProducts(filtered);
 });
 
 // ================= INIT =================
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
   document.body.classList.add('no-scroll');
 });
