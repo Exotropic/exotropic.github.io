@@ -12,12 +12,9 @@ const shopSection = document.getElementById('shop');
 const shopGrid = document.getElementById('shopGrid');
 const loadingText = document.getElementById('loadingText');
 const homeSection = document.getElementById('home');
-const reviewSection = document.getElementById('review'); // <- added
-const reviewBack = document.getElementById('reviewBack'); // <- added
 
 const shopMenu = document.getElementById('shopMenu');
 const homeMenu = document.getElementById('homeMenu');
-const reviewMenu = document.getElementById('reviewMenu'); // <- added
 const shopTitle = document.getElementById('shopTitle');
 
 const categoryPopup = document.getElementById('categoryPopup');
@@ -53,11 +50,26 @@ contactToggle.addEventListener('click', () => {
 
 // --- PRODUCT DATA ---
 const defaultProducts = [
-  { name:"Clownfish", price:"₱500", category:"fish", images:["images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg"]},
-  { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"]},
-  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"]},
-  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"]},
-  { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"]}
+  { name:"Clownfish", price:"₱500", category:"fish", images:[
+    "images/product1.jpg","images/product1.jpg","images/product1.jpg",
+    "images/product1.jpg","images/product1.jpg","images/product1.jpg"
+  ]},
+  { name:"Angelfish", price:"₱600", category:"fish", images:[
+    "images/product2.jpg","images/product2.jpg","images/product2.jpg",
+    "images/product2.jpg","images/product2.jpg","images/product2.jpg"
+  ]},
+  { name:"Betta", price:"₱700", category:"fish", images:[
+    "images/product3.jpg","images/product3.jpg","images/product3.jpg",
+    "images/product3.jpg","images/product3.jpg","images/product3.jpg"
+  ]},
+  { name:"Guppy", price:"₱800", category:"fish", images:[
+    "images/product4.jpg","images/product4.jpg","images/product4.jpg",
+    "images/product4.jpg","images/product4.jpg","images/product4.jpg"
+  ]},
+  { name:"Goldfish", price:"₱900", category:"fish", images:[
+    "images/product5.jpg","images/product5.jpg","images/product5.jpg",
+    "images/product5.jpg","images/product5.jpg","images/product5.jpg"
+  ]}
 ];
 
 // --- CURRENT CATEGORY & DISPLAYED PRODUCTS ---
@@ -75,7 +87,10 @@ function renderProduct(product,index){
     div.innerHTML = `<div style="padding:20px; text-align:center; font-weight:bold; font-size:18px;">${product.name}<br>Coming Soon</div>`;
     div.style.cursor='default';
   } else {
-    div.innerHTML = `<img src="${product.images[0]}" alt="${product.name}" loading="lazy"><button class="buy-btn">Buy via Messenger</button>`;
+    div.innerHTML = `
+      <img src="${product.images[0]}" alt="${product.name}" loading="lazy">
+      <button class="buy-btn">Buy via Messenger</button>
+    `;
     div.querySelector('img').addEventListener('click', ()=>openPopup(product));
     div.querySelector('.buy-btn').addEventListener('click', e=>{
       e.stopPropagation();
@@ -108,12 +123,14 @@ function fadeInProducts(){
 // --- PRODUCT POPUP ---
 let currentIndex=0;
 let imagesArray=[];
+
 function openPopup(product){
   if(!product.images || !product.images.length) return;
   popupTitle.textContent = product.name;
   popupPrice.textContent = product.price;
   imagesArray = product.images;
 
+  // MAIN IMAGE CAROUSEL
   popupImages.innerHTML='';
   imagesArray.forEach(src=>{
     const img = document.createElement('img');
@@ -123,13 +140,18 @@ function openPopup(product){
   currentIndex = 0;
   updateCarousel();
 
+  // THUMBNAILS
   thumbnailGallery.innerHTML='';
   imagesArray.forEach((src,i)=>{
     const thumb=document.createElement('img');
     thumb.src=src;
     thumb.classList.toggle('active', i===currentIndex);
     thumbnailGallery.appendChild(thumb);
-    thumb.addEventListener('click', ()=>{ currentIndex=i; updateCarousel(); updateThumbnails(); });
+    thumb.addEventListener('click', ()=>{ 
+      currentIndex=i; 
+      updateCarousel(); 
+      updateThumbnails(); 
+    });
   });
 
   popup.style.display='flex';
@@ -145,8 +167,14 @@ function updateThumbnails(){
   const thumbs = thumbnailGallery.querySelectorAll('img');
   thumbs.forEach((t,i)=>t.classList.toggle('active', i===currentIndex));
 }
-nextBtn.addEventListener('click',()=>{ currentIndex = (currentIndex+1) % imagesArray.length; updateCarousel(); });
-prevBtn.addEventListener('click',()=>{ currentIndex = (currentIndex-1 + imagesArray.length) % imagesArray.length; updateCarousel(); });
+nextBtn.addEventListener('click',()=>{ 
+  currentIndex = (currentIndex+1) % imagesArray.length; 
+  updateCarousel(); 
+});
+prevBtn.addEventListener('click',()=>{ 
+  currentIndex = (currentIndex-1 + imagesArray.length) % imagesArray.length; 
+  updateCarousel(); 
+});
 popupClose.addEventListener('click',()=>popup.style.display='none');
 popup.addEventListener('click',e=>{ if(e.target===popup) popup.style.display='none'; });
 
@@ -186,33 +214,32 @@ searchInput.addEventListener('input', ()=>{
 // --- SECTION TOGGLE ---
 function showShop(){ 
   homeSection.classList.remove('visible'); 
-  reviewSection.classList.remove('visible'); // <- added
   shopSection.classList.add('visible'); 
   document.body.classList.remove('no-scroll'); 
 }
 function showHome(){ 
   shopSection.classList.remove('visible'); 
-  reviewSection.classList.remove('visible'); // <- added
   homeSection.classList.add('visible'); 
   document.body.classList.add('no-scroll'); 
   window.scrollTo(0,0); 
 }
-function showReview(){
-  homeSection.classList.remove('visible');
-  shopSection.classList.remove('visible');
-  reviewSection.classList.add('visible');
-  document.body.classList.remove('no-scroll');
-}
 
 // --- MENU BUTTONS ---
 backBtn.addEventListener('click',showHome);
-shopMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overlay.classList.remove('active'); categoryPopup.style.display='flex'; });
-homeMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overlay.classList.remove('active'); showHome(); });
-reviewMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overlay.classList.remove('active'); showReview(); });
-reviewBack.addEventListener('click', showHome);
+shopMenu.addEventListener('click',()=>{ 
+  navLinks.classList.remove('open'); 
+  overlay.classList.remove('active'); 
+  categoryPopup.style.display='flex';
+});
+homeMenu.addEventListener('click',()=>{ 
+  navLinks.classList.remove('open'); 
+  overlay.classList.remove('active'); 
+  showHome(); 
+});
 
 // --- DOM CONTENT LOADED ---
 document.addEventListener('DOMContentLoaded',()=>{
+
   document.body.classList.add('no-scroll');
 
   // Restore last category if shop was open before refresh
