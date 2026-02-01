@@ -51,7 +51,7 @@ contactToggle.addEventListener('click', () => {
   contactLabel.textContent = isVisible ? "Contact ▲" : "Contact ▼";
 });
 
-// --- PRODUCT DATA (Cloudinary links) ---
+// --- PRODUCT DATA (CLOUDINARY IMAGES) ---
 const defaultProducts = [
   { name:"Clownfish", price:"₱500", category:"fish", images:[
     "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769465638/products/ztzlggvdaml34g5u3one.jpg"
@@ -99,7 +99,7 @@ function renderProduct(product,index){
     `;
     div.querySelector('img').addEventListener('click', ()=>openPopup(product));
     
-    // --- UPDATED BUY BUTTON ---
+    // --- BUY BUTTON (NEW FEATURE) ---
     div.querySelector('.buy-btn').addEventListener('click', e=>{
       e.stopPropagation();
       const messengerLink = `https://m.me/ExoTropicAquarium?ref=${encodeURIComponent(
