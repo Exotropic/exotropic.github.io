@@ -52,9 +52,9 @@ contactToggle.addEventListener('click', () => {
 const defaultProducts = [
   { name:"Clownfish", price:"₱500", category:"fish", images:["images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg"] },
   { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"] },
-  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
-  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
-  { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
+  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
+  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
+  { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
 ];
 
 // --- CURRENT CATEGORY & DISPLAYED PRODUCTS ---
@@ -114,7 +114,7 @@ function openPopup(product){
   popupPrice.textContent = product.price;
   imagesArray = product.images;
 
-  // --- MAIN IMAGE CAROUSEL ---
+  // MAIN IMAGE CAROUSEL
   popupImages.innerHTML='';
   let imagesLoaded = 0;
   imagesArray.forEach(src=>{
@@ -130,7 +130,7 @@ function openPopup(product){
   });
   currentIndex = 0;
 
-  // --- THUMBNAILS ---
+  // THUMBNAILS
   thumbnailGallery.innerHTML='';
   imagesArray.forEach((src,i)=>{
     const thumb=document.createElement('img');
@@ -158,7 +158,7 @@ function updateThumbnails(){
   thumbs.forEach((t,i)=>t.classList.toggle('active', i===currentIndex));
 }
 
-// --- NEXT/PREV BUTTONS ---
+// NEXT/PREV BUTTONS
 nextBtn.addEventListener('click',()=>{ 
   currentIndex = (currentIndex+1) % imagesArray.length; 
   updateCarousel(); 
@@ -170,7 +170,7 @@ prevBtn.addEventListener('click',()=>{
 popupClose.addEventListener('click',()=>popup.style.display='none');
 popup.addEventListener('click',e=>{ if(e.target===popup) popup.style.display='none'; });
 
-// --- CATEGORY POPUP ---
+// CATEGORY POPUP
 shopBtn.addEventListener('click',()=>{ categoryPopup.style.display='flex'; });
 categoryClose.addEventListener('click',()=>{ categoryPopup.style.display='none'; });
 categoryBtns.forEach(btn=>{
@@ -188,7 +188,7 @@ categoryBtns.forEach(btn=>{
   });
 });
 
-// --- SEARCH ---
+// SEARCH FUNCTIONALITY
 searchInput.addEventListener('input', ()=>{
   const query = searchInput.value.toLowerCase();
   if(query === ''){
@@ -199,7 +199,7 @@ searchInput.addEventListener('input', ()=>{
   loadProducts(filtered);
 });
 
-// --- SECTION TOGGLE ---
+// SECTION TOGGLE
 function showShop(){ 
   homeSection.classList.remove('visible'); 
   shopSection.classList.add('visible'); 
@@ -227,7 +227,13 @@ homeMenu.addEventListener('click',()=>{
 
 // --- DOM CONTENT LOADED ---
 document.addEventListener('DOMContentLoaded',()=>{
-  // Floating Messenger button is handled via HTML now
+
+  // Load products automatically if shop section is visible
+  if(shopSection.classList.contains('visible')){
+    categoryProducts = defaultProducts;
+    loadProducts(defaultProducts);
+  }
+
   // --- SWIPE / DRAG SUPPORT FOR MAIN CAROUSEL ---
   let isDragging = false;
   let startPos = 0;
@@ -253,6 +259,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   thumbnailGallery.addEventListener('mouseleave', thumbDragEnd);
   thumbnailGallery.addEventListener('mousemove', thumbDragMove);
   thumbnailGallery.addEventListener('touchmove', thumbDragMove);
+
 });
 
 // --- DRAG FUNCTIONS ---
