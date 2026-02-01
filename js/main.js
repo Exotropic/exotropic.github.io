@@ -140,7 +140,7 @@ function openPopup(product){
 
 // --- CAROUSEL NAVIGATION ---
 function updateCarousel(){ 
-  popupImages.style.transform = `translateX(${-currentIndex*100}%)`;
+  popupImages.style.transform = `translateX(${-currentIndex * popupImages.clientWidth}px)`;
   updateThumbnails();
 }
 
@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   }
 });
 
-// --- SWIPE / DRAG SUPPORT FOR MAIN CAROUSEL ---
+// --- SWIPE / DRAG SUPPORT FOR MAIN CAROUSEL (iOS FIX) ---
 let isDragging = false;
 let startPos = 0;
 
@@ -243,20 +243,22 @@ function dragMove(e){
   if(!isDragging) return;
   const currentPosition = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
   const delta = currentPosition - startPos;
-  popupImages.style.transform = `translateX(${-currentIndex*100 + (delta/popupImages.clientWidth)*100}%)`;
+  const slideWidth = popupImages.clientWidth;
+  popupImages.style.transform = `translateX(${-currentIndex * slideWidth + delta}px)`;
 }
 
 function dragEnd(e){
   if(!isDragging) return;
   isDragging = false;
   const endPos = e.type.includes('mouse') ? e.pageX : e.changedTouches[0].clientX;
-  const movedBy = startPos - endPos;
+  const delta = endPos - startPos;
+  const slideWidth = popupImages.clientWidth;
 
-  if(movedBy > 50) currentIndex = (currentIndex+1) % imagesArray.length;
-  else if(movedBy < -50) currentIndex = (currentIndex-1 + imagesArray.length) % imagesArray.length;
+  if(delta < -50) currentIndex = (currentIndex+1) % imagesArray.length;
+  else if(delta > 50) currentIndex = (currentIndex-1 + imagesArray.length) % imagesArray.length;
 
   popupImages.style.transition = 'transform 0.3s ease';
-  updateCarousel();
+  popupImages.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
   popupImages.style.cursor = 'grab';
 }
 
