@@ -1,5 +1,3 @@
-NEW MAIN JS TRIAL
-
 // --- ELEMENTS ---
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('nav-links');
@@ -56,43 +54,18 @@ contactToggle.addEventListener('click', () => {
 // --- PRODUCT DATA ---
 const defaultProducts = [
   { name:"Clownfish", price:"₱500", category:"fish", images:[
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769465638/products/ztzlggvdaml34g5u3one.jpg",
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769465638/products/ztzlggvdaml34g5u3one.jpg",
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769465638/products/ztzlggvdaml34g5u3one.jpg",
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769465638/products/ztzlggvdaml34g5u3one.jpg",
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769465638/products/ztzlggvdaml34g5u3one.jpg",
     "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769465638/products/ztzlggvdaml34g5u3one.jpg"
   ]},
   { name:"Angelfish", price:"₱600", category:"fish", images:[
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449352/zfndhypfmvsr7u7gjbdf.jpg",
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449352/zfndhypfmvsr7u7gjbdf.jpg",
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449352/zfndhypfmvsr7u7gjbdf.jpg",
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449352/zfndhypfmvsr7u7gjbdf.jpg",
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449352/zfndhypfmvsr7u7gjbdf.jpg",
     "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449352/zfndhypfmvsr7u7gjbdf.jpg"
   ]},
   { name:"Betta", price:"₱700", category:"fish", images:[
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769458298/products/rovezwl9opia0hi2ux7h.jpg",
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769458298/products/rovezwl9opia0hi2ux7h.jpg",
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769458298/products/rovezwl9opia0hi2ux7h.jpg",
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769458298/products/rovezwl9opia0hi2ux7h.jpg",
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769458298/products/rovezwl9opia0hi2ux7h.jpg",
     "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769458298/products/rovezwl9opia0hi2ux7h.jpg"
   ]},
   { name:"Guppy", price:"₱800", category:"fish", images:[
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449385/nomumjmwxipfh0ril8oc.jpg",
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449385/nomumjmwxipfh0ril8oc.jpg",
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449385/nomumjmwxipfh0ril8oc.jpg",
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449385/nomumjmwxipfh0ril8oc.jpg",
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449385/nomumjmwxipfh0ril8oc.jpg",
     "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449385/nomumjmwxipfh0ril8oc.jpg"
   ]},
   { name:"Goldfish", price:"₱900", category:"fish", images:[
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449399/jtwtzk0egjizvomclm1w.jpg",
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449399/jtwtzk0egjizvomclm1w.jpg",
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449399/jtwtzk0egjizvomclm1w.jpg",
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449399/jtwtzk0egjizvomclm1w.jpg",
-    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449399/jtwtzk0egjizvomclm1w.jpg",
     "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449399/jtwtzk0egjizvomclm1w.jpg"
   ]}
 ];
@@ -126,7 +99,7 @@ function renderProduct(product,index){
     `;
     div.querySelector('img').addEventListener('click', ()=>openPopup(product));
     
-    // --- UPDATED BUY BUTTON ---
+    // --- BUY BUTTON ---
     div.querySelector('.buy-btn').addEventListener('click', e=>{
       e.stopPropagation();
       const messengerLink = `https://m.me/ExoTropicAquarium?ref=${encodeURIComponent(
@@ -298,7 +271,9 @@ reviewsMenu.addEventListener('click',()=>{
 
 // --- DOM CONTENT LOADED ---
 document.addEventListener('DOMContentLoaded',()=>{
+
   document.body.classList.add('no-scroll');
+
   const lastSection = localStorage.getItem('lastSection');
   const lastCategory = localStorage.getItem('lastCategory');
 
@@ -321,69 +296,3 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 // --- UTILITY ---
 function capitalize(str){ return str.charAt(0).toUpperCase() + str.slice(1); }
-
-// --- DRAG / SWIPE SUPPORT ---
-let isDragging=false, startPos=0;
-popupImages.addEventListener('mousedown', dragStart);
-popupImages.addEventListener('touchstart', dragStart);
-popupImages.addEventListener('mouseup', dragEnd);
-popupImages.addEventListener('touchend', dragEnd);
-popupImages.addEventListener('mouseleave', dragEnd);
-popupImages.addEventListener('mousemove', dragMove);
-popupImages.addEventListener('touchmove', dragMove);
-function dragStart(e){ isDragging=true; startPos=e.type.includes('mouse')? e.pageX : e.touches[0].clientX; popupImages.style.transition='none'; popupImages.style.cursor='grabbing'; }
-function dragMove(e){ if(!isDragging) return; const currentPosition=e.type.includes('mouse')? e.pageX:e.touches[0].clientX; const delta=currentPosition-startPos; const slideWidth=popupImages.querySelector('img')?popupImages.querySelector('img').clientWidth:0; popupImages.style.transform=`translateX(${-currentIndex*slideWidth+delta}px)`; }
-function dragEnd(e){ if(!isDragging) return; isDragging=false; const endPos=e.type.includes('mouse')? e.pageX:e.changedTouches[0].clientX; const delta=endPos-startPos; const slideWidth=popupImages.querySelector('img')?popupImages.querySelector('img').clientWidth:0; if(delta<-50) currentIndex=(currentIndex+1)%imagesArray.length; else if(delta>50) currentIndex=(currentIndex-1+imagesArray.length)%imagesArray.length; popupImages.style.transition='transform 0.3s ease'; popupImages.style.transform=`translateX(${-currentIndex*slideWidth}px)`; popupImages.style.cursor='grab'; updateThumbnails(); }
-
-// --- THUMBNAIL DRAG SUPPORT ---
-let isThumbDragging=false, thumbStartX=0, scrollStart=0;
-thumbnailGallery.addEventListener('mousedown', thumbDragStart);
-thumbnailGallery.addEventListener('touchstart', thumbDragStart);
-thumbnailGallery.addEventListener('mouseup', thumbDragEnd);
-thumbnailGallery.addEventListener('touchend', thumbDragEnd);
-thumbnailGallery.addEventListener('mouseleave', thumbDragEnd);
-thumbnailGallery.addEventListener('mousemove', thumbDragMove);
-thumbnailGallery.addEventListener('touchmove', thumbDragMove);
-function thumbDragStart(e){ isThumbDragging=true; thumbStartX=e.type.includes('mouse')?e.pageX:e.touches[0].clientX; scrollStart=thumbnailGallery.scrollLeft; }
-function thumbDragMove(e){ if(!isThumbDragging) return; const currentX=e.type.includes('mouse')? e.pageX:e.touches[0].clientX; const delta=thumbStartX-currentX; thumbnailGallery.scrollLeft=scrollStart+delta; }
-function thumbDragEnd(){ isThumbDragging=false; }
-
-// --- REVIEW FORM SUBMISSION WITH PERSISTENCE ---
-const reviewForm = document.getElementById('reviewForm');
-const reviewList = document.getElementById('reviewList');
-
-// Load saved reviews from localStorage
-const savedReviews = JSON.parse(localStorage.getItem('reviews')) || [];
-savedReviews.forEach(r => {
-  const card = document.createElement('div');
-  card.className = 'review-card';
-  card.innerHTML = `<strong>${r.name}</strong><p>${r.message}</p>`;
-  reviewList.appendChild(card);
-});
-
-if (reviewForm && reviewList) {
-  reviewForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const nameInput = reviewForm.querySelector('input[name="name"]');
-    const messageInput = reviewForm.querySelector('textarea[name="message"]');
-
-    const name = nameInput.value.trim();
-    const message = messageInput.value.trim();
-
-    if (!name || !message) return;
-
-    const card = document.createElement('div');
-    card.className = 'review-card';
-    card.innerHTML = `<strong>${name}</strong><p>${message}</p>`;
-    reviewList.prepend(card);
-
-    // Save to localStorage
-    savedReviews.unshift({ name, message });
-    localStorage.setItem('reviews', JSON.stringify(savedReviews));
-
-    // Clear form
-    nameInput.value = '';
-    messageInput.value = '';
-  });
-}
