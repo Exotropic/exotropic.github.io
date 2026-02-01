@@ -236,16 +236,6 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   document.body.classList.add('no-scroll');
 
-  // --- FLOATING MESSENGER BUTTON ---
-  if(!document.querySelector('.messenger-btn')){
-    const floatMessenger = document.createElement('a');
-    floatMessenger.href = "https://m.me/ExoTropicAquarium";
-    floatMessenger.target = "_blank";
-    floatMessenger.className = "messenger-btn";
-    floatMessenger.textContent = "Buy via Messenger";
-    document.body.appendChild(floatMessenger);
-  }
-
   // --- RESTORE LAST CATEGORY ONLY IF SHOP SECTION WAS OPEN ---
   const lastCategory = localStorage.getItem('lastCategory');
   if(lastCategory && sessionStorage.getItem('shopOpen') === 'true'){
