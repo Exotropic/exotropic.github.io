@@ -30,8 +30,12 @@
         <div class="menu-contact" id="contact-info">
           <a href="tel:16132554540">📞 Phone: 613-255-4540</a>
           <a href="mailto:Exotropic1@gmail.com">📧 Email: Exotropic1@gmail.com</a>
-          <a href="https://www.google.com/maps/place/Ottawa,+Ontario" target="_blank">📍 Location: Ottawa, Ontario</a>
-          <a href="https://www.facebook.com/share/1ANqkqmvcR/" target="_blank">📘 Facebook Page: Exo Tropic</a>
+          <a href="https://www.google.com/maps/place/Ottawa,+Ontario" target="_blank">
+            📍 Location: Ottawa, Ontario
+          </a>
+          <a href="https://www.facebook.com/share/1ANqkqmvcR/" target="_blank">
+            📘 Facebook Page: Exo Tropic
+          </a>
         </div>
       </div>
 
@@ -54,45 +58,58 @@
     <section class="shop" id="shop">
       <img src="images/exotropic-logo.png" alt="Exotropic Logo" class="shop-logo">
 
-      <!-- Back button top-right -->
+      <!-- Back button -->
       <button id="backBtn" class="buy-btn" type="button">Back to Home</button>
 
-      <!-- Search bar -->
+      <!-- Search -->
       <div class="shop-search">
         <input type="text" id="searchInput" placeholder="Search products...">
       </div>
 
-      <h2 class="section-title">🛒 Our Products</h2>
+      <!-- ✅ UPDATED TITLE -->
+      <h2 class="section-title" id="shopTitle">🛒 Our Products</h2>
+
       <div class="shop-grid" id="shopGrid">
         <p id="loadingText">Loading products...</p>
       </div>
     </section>
   </main>
 
-  <!-- Popup Modal -->
+  <!-- Product Popup -->
   <div class="product-popup" id="productPopup">
     <div class="popup-content">
       <button class="close-btn" id="popupClose">✕</button>
       <h2 id="popupTitle"></h2>
       <h3 id="popupPrice"></h3>
+
       <div class="carousel">
         <span class="prev">&#10094;</span>
         <div class="carousel-images" id="popupImages"></div>
         <span class="next">&#10095;</span>
       </div>
-      <!-- Thumbnail gallery -->
+
       <div class="thumbnail-gallery" id="thumbnailGallery"></div>
+    </div>
+  </div>
+
+  <!-- ✅ CATEGORY POPUP -->
+  <div class="category-popup" id="categoryPopup">
+    <div class="category-content">
+      <h2>Select Category</h2>
+
+      <button class="category-btn" data-category="fish">🐟 Fish</button>
+      <button class="category-btn" data-category="plant">🌱 Plant</button>
+      <button class="category-btn" data-category="misc">📦 Miscellaneous</button>
+
+      <button class="close-btn" id="categoryClose">✕</button>
     </div>
   </div>
 
   <!-- Footer -->
   <footer class="site-credits">© 2026 EXOTROPIC AQUARIUM SHOP</footer>
 
-  <!-- Messenger Button -->
-  <a href="https://m.me/ExoTropicAquarium" target="_blank" class="messenger-btn">
-    Buy via Messenger
-  </a>
-
+  <!-- Script -->
   <script src="js/main.js"></script>
+
 </body>
 </html>
