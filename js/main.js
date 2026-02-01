@@ -45,12 +45,12 @@ const defaultProducts = [
   { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"] },
   { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
   { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
-  { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
+  { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
 ];
 
 // --- CURRENT CATEGORY & DISPLAYED PRODUCTS ---
-let categoryProducts = []; // products in current category
-let displayedProducts = []; // currently displayed in shop grid
+let categoryProducts = [];
+let displayedProducts = [];
 
 // --- RENDER PRODUCTS ---
 function renderProduct(product,index){
@@ -84,16 +84,6 @@ function loadProducts(products){
   displayedProducts = products;
   products.forEach((prod,i)=>renderProduct(prod,i));
   loadingText.textContent='';
-  fadeInProducts();
-}
-
-// --- FADE-IN ANIMATION ---
-function fadeInProducts(){
-  const cards = shopGrid.querySelectorAll('.product-card');
-  cards.forEach((card,i)=>setTimeout(()=>{ 
-    card.style.opacity='1'; 
-    card.style.transform='translateY(0)'; 
-  },i*100));
 }
 
 // --- PRODUCT POPUP ---
@@ -117,19 +107,13 @@ function openPopup(product){
 
   // --- MAIN IMAGE CAROUSEL ---
   popupImages.innerHTML='';
-  let imagesLoaded = 0;
   imagesArray.forEach(src=>{
     const img = document.createElement('img');
     img.src = src;
-    img.onload = () => {
-      imagesLoaded++;
-      if(imagesLoaded === imagesArray.length){
-        updateCarousel(); // set correct initial position
-      }
-    }
     popupImages.appendChild(img);
   });
   currentIndex = 0;
+  updateCarousel();
 
   // --- THUMBNAILS ---
   thumbnailGallery.innerHTML='';
@@ -141,7 +125,6 @@ function openPopup(product){
     thumb.addEventListener('click', ()=>{ 
       currentIndex=i; 
       updateCarousel(); 
-      updateThumbnails(); 
     });
   });
 
@@ -149,8 +132,13 @@ function openPopup(product){
 }
 
 // --- CAROUSEL NAVIGATION ---
+function getSlideWidth(){
+  const img = popupImages.querySelector('img');
+  return img ? Math.round(img.offsetWidth) : 0;
+}
+
 function updateCarousel(){ 
-  const slideWidth = popupImages.querySelector('img') ? popupImages.querySelector('img').clientWidth : 0;
+  const slideWidth = getSlideWidth();
   popupImages.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
   updateThumbnails();
 }
@@ -185,7 +173,7 @@ categoryBtns.forEach(btn=>{
 
     categoryPopup.style.display='none';
     showShop();
-    categoryProducts = filtered; // keep full category list for search
+    categoryProducts = filtered;
     setTimeout(()=>loadProducts(filtered),50);
     shopTitle.textContent = `🛒 Our Products – ${btn.textContent}`;
   });
@@ -194,12 +182,7 @@ categoryBtns.forEach(btn=>{
 // --- SEARCH ---
 searchInput.addEventListener('input', ()=>{
   const query = searchInput.value.toLowerCase();
-
-  if(query === ''){
-    loadProducts(categoryProducts); // restore all products in current category
-    return;
-  }
-
+  if(query==='') { loadProducts(categoryProducts); return; }
   const filtered = categoryProducts.filter(p => !p.comingSoon && p.name.toLowerCase().includes(query));
   loadProducts(filtered);
 });
@@ -235,7 +218,6 @@ homeMenu.addEventListener('click',()=>{
 document.addEventListener('DOMContentLoaded',()=>{
   document.body.classList.add('no-scroll');
 
-  // --- FLOATING MESSENGER BUTTON ---
   if(!document.querySelector('.messenger-btn')){
     const floatMessenger = document.createElement('a');
     floatMessenger.href = "https://m.me/ExoTropicAquarium";
@@ -271,8 +253,7 @@ function dragMove(e){
   if(!isDragging) return;
   const currentPosition = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
   const delta = currentPosition - startPos;
-  const slideWidth = popupImages.querySelector('img') ? popupImages.querySelector('img').clientWidth : 0;
-  popupImages.style.transform = `translateX(${-currentIndex * slideWidth + delta}px)`;
+  popupImages.style.transform = `translateX(${-currentIndex * getSlideWidth() + delta}px)`;
 }
 
 function dragEnd(e){
@@ -280,15 +261,14 @@ function dragEnd(e){
   isDragging = false;
   const endPos = e.type.includes('mouse') ? e.pageX : e.changedTouches[0].clientX;
   const delta = endPos - startPos;
-  const slideWidth = popupImages.querySelector('img') ? popupImages.querySelector('img').clientWidth : 0;
+  const threshold = 50;
 
-  if(delta < -50) currentIndex = (currentIndex+1) % imagesArray.length;
-  else if(delta > 50) currentIndex = (currentIndex-1 + imagesArray.length) % imagesArray.length;
+  if(delta < -threshold) currentIndex = (currentIndex+1) % imagesArray.length;
+  else if(delta > threshold) currentIndex = (currentIndex-1 + imagesArray.length) % imagesArray.length;
 
   popupImages.style.transition = 'transform 0.3s ease';
-  popupImages.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
+  popupImages.style.transform = `translateX(${-currentIndex * getSlideWidth()}px)`;
   popupImages.style.cursor = 'grab';
-
   updateThumbnails();
 }
 
