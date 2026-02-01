@@ -115,6 +115,7 @@ function openPopup(product){
   popupPrice.textContent = product.price;
   imagesArray = product.images;
 
+  // --- MAIN IMAGE CAROUSEL ---
   popupImages.innerHTML='';
   imagesArray.forEach(src=>{
     const img=document.createElement('img');
@@ -124,14 +125,14 @@ function openPopup(product){
   currentIndex=0;
   updateCarousel();
 
-  // Thumbnails
+  // --- THUMBNAILS ---
   thumbnailGallery.innerHTML='';
   imagesArray.forEach((src,i)=>{
     const thumb=document.createElement('img');
     thumb.src=src;
     thumb.classList.toggle('active', i===currentIndex);
-    thumb.addEventListener('click', ()=>{ currentIndex=i; updateCarousel(); updateThumbnails(); });
     thumbnailGallery.appendChild(thumb);
+    thumb.addEventListener('click', ()=>{ currentIndex=i; updateCarousel(); updateThumbnails(); });
   });
 
   popup.style.display='flex';
@@ -148,6 +149,7 @@ function updateThumbnails(){
   thumbs.forEach((t,i)=>t.classList.toggle('active', i===currentIndex));
 }
 
+// --- NEXT/PREV BUTTONS ---
 nextBtn.addEventListener('click',()=>{ 
   currentIndex = (currentIndex+1) % imagesArray.length; 
   updateCarousel(); 
@@ -216,11 +218,9 @@ document.addEventListener('DOMContentLoaded',()=>{
   }
 });
 
-// --- SWIPE / DRAG SUPPORT FOR CAROUSEL ---
+// --- SWIPE / DRAG SUPPORT FOR MAIN CAROUSEL ---
 let isDragging = false;
 let startPos = 0;
-let currentTranslate = 0;
-let prevTranslate = 0;
 
 popupImages.addEventListener('mousedown', dragStart);
 popupImages.addEventListener('touchstart', dragStart);
@@ -235,26 +235,59 @@ popupImages.addEventListener('touchmove', dragMove);
 function dragStart(e){
   isDragging = true;
   startPos = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+  popupImages.style.transition = 'none';
   popupImages.style.cursor = 'grabbing';
 }
 
 function dragMove(e){
   if(!isDragging) return;
   const currentPosition = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-  currentTranslate = prevTranslate + currentPosition - startPos;
-  popupImages.style.transform = `translateX(${currentTranslate - currentIndex*popupImages.offsetWidth}px)`;
+  const delta = currentPosition - startPos;
+  popupImages.style.transform = `translateX(${-currentIndex*100 + (delta/popupImages.clientWidth)*100}%)`;
 }
 
-function dragEnd(){
+function dragEnd(e){
   if(!isDragging) return;
   isDragging = false;
-  const movedBy = currentTranslate - prevTranslate;
+  const endPos = e.type.includes('mouse') ? e.pageX : e.changedTouches[0].clientX;
+  const movedBy = startPos - endPos;
 
-  if(movedBy < -50 && currentIndex < imagesArray.length - 1) currentIndex += 1;
-  if(movedBy > 50 && currentIndex > 0) currentIndex -= 1;
+  if(movedBy > 50) currentIndex = (currentIndex+1) % imagesArray.length;
+  else if(movedBy < -50) currentIndex = (currentIndex-1 + imagesArray.length) % imagesArray.length;
 
+  popupImages.style.transition = 'transform 0.3s ease';
   updateCarousel();
-  currentTranslate = 0;
-  prevTranslate = 0;
   popupImages.style.cursor = 'grab';
+}
+
+// --- SWIPE SUPPORT FOR THUMBNAILS ---
+let isThumbDragging = false;
+let thumbStartX = 0;
+let scrollStart = 0;
+
+thumbnailGallery.addEventListener('mousedown', thumbDragStart);
+thumbnailGallery.addEventListener('touchstart', thumbDragStart);
+
+thumbnailGallery.addEventListener('mouseup', thumbDragEnd);
+thumbnailGallery.addEventListener('touchend', thumbDragEnd);
+
+thumbnailGallery.addEventListener('mouseleave', thumbDragEnd);
+thumbnailGallery.addEventListener('mousemove', thumbDragMove);
+thumbnailGallery.addEventListener('touchmove', thumbDragMove);
+
+function thumbDragStart(e){
+  isThumbDragging = true;
+  thumbStartX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+  scrollStart = thumbnailGallery.scrollLeft;
+}
+
+function thumbDragMove(e){
+  if(!isThumbDragging) return;
+  const currentX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+  const delta = thumbStartX - currentX;
+  thumbnailGallery.scrollLeft = scrollStart + delta;
+}
+
+function thumbDragEnd(){
+  isThumbDragging = false;
 }
