@@ -43,8 +43,8 @@ contactToggle.addEventListener('click', () => {
 const defaultProducts = [
   { name:"Clownfish", price:"₱500", category:"fish", images:["images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg"] },
   { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"] },
-  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
-  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
+  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
+  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
   { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
 ];
 
@@ -63,16 +63,14 @@ function renderProduct(product,index){
   } else {
     div.innerHTML = `
       <img src="${product.images[0]}" alt="${product.name}" loading="lazy">
-      <div class="buy-btn">Buy via Messenger</div>
+      <button class="buy-btn">Buy via Messenger</button>
     `;
-
-    // Open product popup on image click
     div.querySelector('img').addEventListener('click', ()=>openPopup(product));
 
-    // --- BUY VIA MESSENGER BUTTON ---
-    div.querySelector('.buy-btn').addEventListener('click', ()=>{
-      const messengerLink = "https://m.me/ExoTropicAquarium";
-      window.open(messengerLink, '_blank');
+    // Buy via Messenger click
+    div.querySelector('.buy-btn').addEventListener('click', e=>{
+      e.stopPropagation();
+      window.open("https://m.me/ExoTropicAquarium","_blank");
     });
   }
 
@@ -98,7 +96,7 @@ function fadeInProducts(){
   },i*100));
 }
 
-// --- POPUP LOGIC ---
+// --- PRODUCT POPUP ---
 const popup=document.getElementById('productPopup');
 const popupTitle=document.getElementById('popupTitle');
 const popupImages=document.getElementById('popupImages');
@@ -111,31 +109,28 @@ const thumbnailGallery = document.getElementById('thumbnailGallery');
 let currentIndex=0;
 let imagesArray=[];
 
-// --- OPEN POPUP ---
 function openPopup(product){
   if(!product.images || !product.images.length) return;
   popupTitle.textContent = product.name;
   popupPrice.textContent = product.price;
   imagesArray = product.images;
 
-  popupImages.innerHTML = '';
-  imagesArray.forEach(src => {
-    const img = document.createElement('img');
-    img.src = src;
+  popupImages.innerHTML='';
+  imagesArray.forEach(src=>{
+    const img=document.createElement('img');
+    img.src=src;
     popupImages.appendChild(img);
   });
-  currentIndex = 0;
+  currentIndex=0;
   updateCarousel();
 
-  // Thumbnail gallery
-  thumbnailGallery.innerHTML = '';
+  // Thumbnails
+  thumbnailGallery.innerHTML='';
   imagesArray.forEach((src,i)=>{
-    const thumb = document.createElement('img');
-    thumb.src = src;
+    const thumb=document.createElement('img');
+    thumb.src=src;
     thumb.classList.toggle('active', i===currentIndex);
-    thumb.addEventListener('click',()=>{
-      currentIndex=i; updateCarousel(); updateThumbnails();
-    });
+    thumb.addEventListener('click', ()=>{ currentIndex=i; updateCarousel(); updateThumbnails(); });
     thumbnailGallery.appendChild(thumb);
   });
 
@@ -143,7 +138,7 @@ function openPopup(product){
 }
 
 function updateCarousel(){ 
-  popupImages.style.transform=`translateX(${-currentIndex*100}%)`; 
+  popupImages.style.transform=`translateX(${-currentIndex*100}%)`;
   updateThumbnails();
 }
 
@@ -152,7 +147,6 @@ function updateThumbnails(){
   thumbs.forEach((t,i)=>t.classList.toggle('active', i===currentIndex));
 }
 
-// --- POPUP BUTTONS ---
 nextBtn.addEventListener('click',()=>{ 
   currentIndex=(currentIndex+1)%imagesArray.length; 
   updateCarousel(); 
@@ -171,24 +165,18 @@ categoryClose.addEventListener('click',()=>{ categoryPopup.style.display='none';
 categoryBtns.forEach(btn=>{
   btn.addEventListener('click',()=>{
     const selected = btn.dataset.category;
-    let filtered = [];
+    let filtered=[];
+    if(selected==='fish') filtered = defaultProducts;
+    else filtered=[{ name: btn.textContent, comingSoon:true, images:[] }];
 
-    if(selected==='fish'){
-      filtered = defaultProducts;
-    } else {
-      filtered = [{ name: btn.textContent, comingSoon:true, images:[] }];
-    }
-
-    // Show shop section **after small delay** to ensure DOM renders
     categoryPopup.style.display='none';
     showShop();
-    setTimeout(()=>{ loadProducts(filtered); }, 50);
-
+    setTimeout(()=>loadProducts(filtered),50);
     shopTitle.textContent = `🛒 Our Products – ${btn.textContent}`;
   });
 });
 
-// --- SEARCH FUNCTIONALITY ---
+// --- SEARCH ---
 searchInput.addEventListener('input', ()=>{
   const query = searchInput.value.toLowerCase();
   const filtered = currentProducts.filter(p=>!p.comingSoon && p.name.toLowerCase().includes(query));
@@ -213,14 +201,14 @@ shopMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overl
 homeMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overlay.classList.remove('active'); showHome(); });
 
 // --- INITIAL SETUP ---
-document.addEventListener('DOMContentLoaded',()=>{ document.body.classList.add('no-scroll'); });
+document.addEventListener('DOMContentLoaded',()=>{
+  document.body.classList.add('no-scroll');
 
-// --- FLOATING MESSENGER BUTTON ---
-(function createFloatingMessenger(){
-  const a = document.createElement('a');
-  a.href = "https://m.me/ExoTropicAquarium"; // <-- your real Messenger link
-  a.className = 'floating-messenger';
-  a.target = '_blank';
-  a.innerHTML = `<img src="images/messenger-icon.png" alt="Messenger" />`;
-  document.body.appendChild(a);
-})();
+  // --- FLOATING MESSENGER BUTTON ---
+  const floatMessenger = document.createElement('a');
+  floatMessenger.href = "https://m.me/ExoTropicAquarium";
+  floatMessenger.target = "_blank";
+  floatMessenger.className = "floating-messenger";
+  floatMessenger.textContent = "Buy via Messenger";
+  document.body.appendChild(floatMessenger);
+});
