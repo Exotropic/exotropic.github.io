@@ -58,13 +58,12 @@ const defaultProducts = [
     "images/product1.jpg","images/product1.jpg","images/product1.jpg"
   ]},
   { name:"Angelfish", price:"₱600", category:"fish", images:[
-    "images/product2.jpg","images/product2.jpg",
-    "images/product2.jpg","images/product2.jpg",
-    "images/product2.jpg","images/product2.jpg"
+    "images/product2.jpg","images/product2.jpg","images/product2.jpg",
+    "images/product2.jpg","images/product2.jpg","images/product2.jpg"
   ]},
   { name:"Betta", price:"₱700", category:"fish", images:[
     "images/product3.jpg","images/product3.jpg",
-    "images/product3.jpg"
+    "images/product3.jpg","images/product3.jpg"
   ]},
   { name:"Guppy", price:"₱800", category:"fish", images:[
     "images/product4.jpg","images/product4.jpg",
@@ -198,6 +197,7 @@ categoryBtns.forEach(btn=>{
     loadProducts(filtered);
     shopTitle.textContent = `🛒 Our Products – ${btn.textContent}`;
     localStorage.setItem('lastCategory', selected);
+    localStorage.setItem('lastSection','shop');
     sessionStorage.setItem('shopOpen','true');
   });
 });
@@ -216,10 +216,12 @@ searchInput.addEventListener('input', ()=>{
 // --- SECTION TOGGLE ---
 function showShop(){ 
   homeSection.classList.remove('visible'); 
-  reviewsSection.classList.remove('visible'); 
+  reviewsSection.classList.remove('visible');
   shopSection.classList.add('visible'); 
   document.body.classList.remove('no-scroll'); 
   window.scrollTo(0,0);
+  localStorage.setItem('lastSection','shop');
+  sessionStorage.setItem('shopOpen','true');
 }
 function showHome(){ 
   shopSection.classList.remove('visible'); 
@@ -227,6 +229,8 @@ function showHome(){
   homeSection.classList.add('visible'); 
   document.body.classList.add('no-scroll'); 
   window.scrollTo(0,0); 
+  localStorage.setItem('lastSection','home');
+  sessionStorage.removeItem('shopOpen');
 }
 function showReviews(){
   shopSection.classList.remove('visible'); 
@@ -234,6 +238,8 @@ function showReviews(){
   reviewsSection.classList.add('visible'); 
   document.body.classList.remove('no-scroll');
   window.scrollTo(0,0);
+  localStorage.setItem('lastSection','reviews');
+  sessionStorage.removeItem('shopOpen');
 }
 
 // --- MENU BUTTONS ---
@@ -260,9 +266,11 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   document.body.classList.add('no-scroll');
 
-  // Restore last category if shop was open before refresh
+  // Restore last section and category
+  const lastSection = localStorage.getItem('lastSection');
   const lastCategory = localStorage.getItem('lastCategory');
-  if(lastCategory && sessionStorage.getItem('shopOpen') === 'true'){
+
+  if(lastSection === 'shop' && lastCategory && sessionStorage.getItem('shopOpen') === 'true'){
     currentCategory = lastCategory;
     let filtered = [];
     if(currentCategory==='fish') filtered = defaultProducts;
@@ -272,6 +280,10 @@ document.addEventListener('DOMContentLoaded',()=>{
     categoryProducts = filtered;
     loadProducts(filtered);
     shopTitle.textContent = `🛒 Our Products – ${capitalize(currentCategory)}`;
+  } else if(lastSection === 'reviews'){
+    showReviews();
+  } else {
+    showHome();
   }
 });
 
@@ -303,31 +315,3 @@ thumbnailGallery.addEventListener('touchmove', thumbDragMove);
 function thumbDragStart(e){ isThumbDragging=true; thumbStartX=e.type.includes('mouse')?e.pageX:e.touches[0].clientX; scrollStart=thumbnailGallery.scrollLeft; }
 function thumbDragMove(e){ if(!isThumbDragging) return; const currentX=e.type.includes('mouse')?e.pageX:e.touches[0].clientX; const delta=thumbStartX-currentX; thumbnailGallery.scrollLeft=scrollStart+delta; }
 function thumbDragEnd(){ isThumbDragging=false; }
-
-// --- REVIEW FORM SUBMISSION FIX ---
-const reviewForm = document.querySelector('.review-form');
-const reviewList = document.querySelector('.review-list');
-
-if (reviewForm && reviewList) {
-  reviewForm.addEventListener('submit', e => {
-    e.preventDefault(); // prevent default page refresh
-
-    const name = reviewForm.querySelector('#reviewName').value.trim();
-    const message = reviewForm.querySelector('#reviewText').value.trim();
-
-    if (!name || !message) return; // simple validation
-
-    // create review card
-    const card = document.createElement('div');
-    card.className = 'review-card';
-    card.innerHTML = `<strong>${name}</strong><p>${message}</p>`;
-
-    reviewList.appendChild(card);
-
-    // reset form
-    reviewForm.reset();
-
-    // scroll to the new review
-    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  });
-}
