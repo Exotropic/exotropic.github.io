@@ -53,14 +53,14 @@ const defaultProducts = [
   { name:"Clownfish", price:"₱500", category:"fish", images:["images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg"] },
   { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"] },
   { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
-  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
-  { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
+  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
+  { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
 ];
 
-// --- CURRENT CATEGORY & DISPLAYED PRODUCTS ---
+// --- CURRENT CATEGORY ---
 let categoryProducts = [];
 let displayedProducts = [];
-let currentCategory = localStorage.getItem('lastCategory') || null; // remember last category
+let currentCategory = null; // 'fish', 'plant', 'misc'
 
 // --- RENDER PRODUCTS ---
 function renderProduct(product,index){
@@ -115,7 +115,6 @@ function openPopup(product){
   popupPrice.textContent = product.price;
   imagesArray = product.images;
 
-  // MAIN IMAGE CAROUSEL
   popupImages.innerHTML='';
   let imagesLoaded = 0;
   imagesArray.forEach(src=>{
@@ -131,7 +130,6 @@ function openPopup(product){
   });
   currentIndex = 0;
 
-  // THUMBNAILS
   thumbnailGallery.innerHTML='';
   imagesArray.forEach((src,i)=>{
     const thumb=document.createElement('img');
@@ -171,28 +169,32 @@ prevBtn.addEventListener('click',()=>{
 popupClose.addEventListener('click',()=>popup.style.display='none');
 popup.addEventListener('click',e=>{ if(e.target===popup) popup.style.display='none'; });
 
-// --- CATEGORY HANDLER ---
-function loadCategory(category){
-  currentCategory = category;
-  localStorage.setItem('lastCategory', category); // remember last selected category
-  let filtered = [];
-  if(category === 'fish') filtered = defaultProducts;
-  else filtered = [{ name: category, comingSoon:true, images:[] }];
-
-  categoryProducts = filtered; // for search
-  showShop();
-  loadProducts(filtered);
-  shopTitle.textContent = `🛒 Our Products – ${capitalize(category)}`;
-  categoryPopup.style.display = 'none';
-}
-
+// --- CATEGORY POPUP ---
+shopBtn.addEventListener('click',()=>{ 
+  categoryPopup.style.display='flex'; 
+});
+categoryClose.addEventListener('click',()=>{ 
+  categoryPopup.style.display='none'; 
+});
 categoryBtns.forEach(btn=>{
   btn.addEventListener('click',()=>{
-    loadCategory(btn.dataset.category);
+    const selected = btn.dataset.category;
+    currentCategory = selected;
+
+    let filtered=[];
+    if(selected==='fish') filtered = defaultProducts;
+    else filtered=[{ name: btn.textContent, comingSoon:true, images:[] }];
+
+    categoryPopup.style.display='none';
+    showShop();
+    categoryProducts = filtered;
+    loadProducts(filtered);
+    shopTitle.textContent = `🛒 Our Products – ${btn.textContent}`;
+    localStorage.setItem('lastCategory', selected);
   });
 });
 
-// --- SEARCH FUNCTIONALITY ---
+// --- SEARCH ---
 searchInput.addEventListener('input', ()=>{
   const query = searchInput.value.toLowerCase();
   if(query === ''){
@@ -215,11 +217,13 @@ function showHome(){
   document.body.classList.add('no-scroll'); 
   window.scrollTo(0,0); 
 }
+
+// --- MENU BUTTONS ---
 backBtn.addEventListener('click',showHome);
 shopMenu.addEventListener('click',()=>{ 
   navLinks.classList.remove('open'); 
   overlay.classList.remove('active'); 
-  loadCategory('fish'); // default on menu click
+  categoryPopup.style.display='flex';
 });
 homeMenu.addEventListener('click',()=>{ 
   navLinks.classList.remove('open'); 
@@ -227,51 +231,53 @@ homeMenu.addEventListener('click',()=>{
   showHome(); 
 });
 
-// --- SHOP NOW BUTTON ---
-shopBtn.addEventListener('click', ()=> {
-  categoryPopup.style.display = 'flex';
-});
-
 // --- DOM CONTENT LOADED ---
-document.addEventListener('DOMContentLoaded', ()=>{
+document.addEventListener('DOMContentLoaded',()=>{
 
-  // --- LOAD LAST CATEGORY OR SHOW HOMEPAGE ---
-  if(currentCategory){ // if there is a saved category
-    showShop();
-    loadCategory(currentCategory);
-  } else {
-    showHome(); // default to homepage
+  document.body.classList.add('no-scroll');
+
+  // --- FLOATING MESSENGER BUTTON ---
+  if(!document.querySelector('.messenger-btn')){
+    const floatMessenger = document.createElement('a');
+    floatMessenger.href = "https://m.me/ExoTropicAquarium";
+    floatMessenger.target = "_blank";
+    floatMessenger.className = "messenger-btn";
+    floatMessenger.textContent = "Buy via Messenger";
+    document.body.appendChild(floatMessenger);
   }
 
-  // --- SWIPE / DRAG SUPPORT FOR MAIN CAROUSEL ---
-  let isDragging = false;
-  let startPos = 0;
+  // --- RESTORE LAST CATEGORY ONLY IF SHOP SECTION WAS OPEN ---
+  const lastCategory = localStorage.getItem('lastCategory');
+  if(lastCategory && sessionStorage.getItem('shopOpen') === 'true'){
+    currentCategory = lastCategory;
+    let filtered = [];
+    if(currentCategory==='fish') filtered = defaultProducts;
+    else filtered=[{ name: capitalize(currentCategory), comingSoon:true, images:[] }];
 
-  popupImages.addEventListener('mousedown', dragStart);
-  popupImages.addEventListener('touchstart', dragStart);
+    showShop();
+    categoryProducts = filtered;
+    loadProducts(filtered);
+    shopTitle.textContent = `🛒 Our Products – ${capitalize(currentCategory)}`;
+  }
 
-  popupImages.addEventListener('mouseup', dragEnd);
-  popupImages.addEventListener('touchend', dragEnd);
-  popupImages.addEventListener('mouseleave', dragEnd);
-  popupImages.addEventListener('mousemove', dragMove);
-  popupImages.addEventListener('touchmove', dragMove);
-
-  // --- THUMBNAIL SWIPE SUPPORT ---
-  let isThumbDragging = false;
-  let thumbStartX = 0;
-  let scrollStart = 0;
-
-  thumbnailGallery.addEventListener('mousedown', thumbDragStart);
-  thumbnailGallery.addEventListener('touchstart', thumbDragStart);
-  thumbnailGallery.addEventListener('mouseup', thumbDragEnd);
-  thumbnailGallery.addEventListener('touchend', thumbDragEnd);
-  thumbnailGallery.addEventListener('mouseleave', thumbDragEnd);
-  thumbnailGallery.addEventListener('mousemove', thumbDragMove);
-  thumbnailGallery.addEventListener('touchmove', thumbDragMove);
-
+  // --- MARK SHOP AS OPEN IF REFRESH IN SHOP ---
+  shopBtn.addEventListener('click',()=> sessionStorage.setItem('shopOpen','true'));
+  shopMenu.addEventListener('click',()=> sessionStorage.setItem('shopOpen','true'));
 });
 
-// --- DRAG FUNCTIONS ---
+// --- UTILITY ---
+function capitalize(str){ return str.charAt(0).toUpperCase() + str.slice(1); }
+
+// --- DRAG / SWIPE SUPPORT FOR CAROUSEL ---
+let isDragging = false, startPos = 0;
+popupImages.addEventListener('mousedown', dragStart);
+popupImages.addEventListener('touchstart', dragStart);
+popupImages.addEventListener('mouseup', dragEnd);
+popupImages.addEventListener('touchend', dragEnd);
+popupImages.addEventListener('mouseleave', dragEnd);
+popupImages.addEventListener('mousemove', dragMove);
+popupImages.addEventListener('touchmove', dragMove);
+
 function dragStart(e){
   isDragging = true;
   startPos = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
@@ -301,7 +307,16 @@ function dragEnd(e){
   updateThumbnails();
 }
 
-// --- THUMBNAIL DRAG FUNCTIONS ---
+// --- THUMBNAIL DRAG SUPPORT ---
+let isThumbDragging = false, thumbStartX = 0, scrollStart = 0;
+thumbnailGallery.addEventListener('mousedown', thumbDragStart);
+thumbnailGallery.addEventListener('touchstart', thumbDragStart);
+thumbnailGallery.addEventListener('mouseup', thumbDragEnd);
+thumbnailGallery.addEventListener('touchend', thumbDragEnd);
+thumbnailGallery.addEventListener('mouseleave', thumbDragEnd);
+thumbnailGallery.addEventListener('mousemove', thumbDragMove);
+thumbnailGallery.addEventListener('touchmove', thumbDragMove);
+
 function thumbDragStart(e){
   isThumbDragging = true;
   thumbStartX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
@@ -315,9 +330,4 @@ function thumbDragMove(e){
 }
 function thumbDragEnd(){
   isThumbDragging = false;
-}
-
-// --- HELPER ---
-function capitalize(str){
-  return str.charAt(0).toUpperCase() + str.slice(1);
 }
