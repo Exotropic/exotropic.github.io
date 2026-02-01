@@ -60,7 +60,7 @@ const defaultProducts = [
 // --- CURRENT CATEGORY & DISPLAYED PRODUCTS ---
 let categoryProducts = [];
 let displayedProducts = [];
-let currentCategory = 'fish'; // default category
+let currentCategory = 'fish'; // default
 
 // --- RENDER PRODUCTS ---
 function renderProduct(product,index){
@@ -171,7 +171,7 @@ prevBtn.addEventListener('click',()=>{
 popupClose.addEventListener('click',()=>popup.style.display='none');
 popup.addEventListener('click',e=>{ if(e.target===popup) popup.style.display='none'; });
 
-// --- CATEGORY POPUP ---
+// --- CATEGORY HANDLER ---
 function loadCategory(category){
   currentCategory = category;
   let filtered = [];
@@ -186,12 +186,12 @@ function loadCategory(category){
 }
 
 categoryBtns.forEach(btn=>{
-  btn.addEventListener('click', ()=>{
+  btn.addEventListener('click',()=>{
     loadCategory(btn.dataset.category);
   });
 });
 
-// --- SEARCH ---
+// --- SEARCH FUNCTIONALITY ---
 searchInput.addEventListener('input', ()=>{
   const query = searchInput.value.toLowerCase();
   if(query === ''){
@@ -229,25 +229,29 @@ homeMenu.addEventListener('click',()=>{
 // --- DOM CONTENT LOADED ---
 document.addEventListener('DOMContentLoaded',()=>{
 
-  // Load last/current category if Shop visible
+  // Load current category on refresh
   if(shopSection.classList.contains('visible')){
     loadCategory(currentCategory);
   }
 
-  // --- SWIPE / DRAG SUPPORT ---
+  // --- SWIPE / DRAG SUPPORT FOR MAIN CAROUSEL ---
   let isDragging = false;
   let startPos = 0;
+
   popupImages.addEventListener('mousedown', dragStart);
   popupImages.addEventListener('touchstart', dragStart);
+
   popupImages.addEventListener('mouseup', dragEnd);
   popupImages.addEventListener('touchend', dragEnd);
   popupImages.addEventListener('mouseleave', dragEnd);
   popupImages.addEventListener('mousemove', dragMove);
   popupImages.addEventListener('touchmove', dragMove);
 
+  // --- THUMBNAIL SWIPE SUPPORT ---
   let isThumbDragging = false;
   let thumbStartX = 0;
   let scrollStart = 0;
+
   thumbnailGallery.addEventListener('mousedown', thumbDragStart);
   thumbnailGallery.addEventListener('touchstart', thumbDragStart);
   thumbnailGallery.addEventListener('mouseup', thumbDragEnd);
@@ -255,15 +259,55 @@ document.addEventListener('DOMContentLoaded',()=>{
   thumbnailGallery.addEventListener('mouseleave', thumbDragEnd);
   thumbnailGallery.addEventListener('mousemove', thumbDragMove);
   thumbnailGallery.addEventListener('touchmove', thumbDragMove);
+
 });
 
 // --- DRAG FUNCTIONS ---
-function dragStart(e){ isDragging = true; startPos = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX; popupImages.style.transition = 'none'; popupImages.style.cursor = 'grabbing'; }
-function dragMove(e){ if(!isDragging) return; const currentPosition = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX; const delta = currentPosition - startPos; const slideWidth = popupImages.querySelector('img') ? popupImages.querySelector('img').clientWidth : 0; popupImages.style.transform = `translateX(${-currentIndex * slideWidth + delta}px)`; }
-function dragEnd(e){ if(!isDragging) return; isDragging = false; const endPos = e.type.includes('mouse') ? e.pageX : e.changedTouches[0].clientX; const delta = endPos - startPos; const slideWidth = popupImages.querySelector('img') ? popupImages.querySelector('img').clientWidth : 0; if(delta < -50) currentIndex = (currentIndex+1) % imagesArray.length; else if(delta > 50) currentIndex = (currentIndex-1 + imagesArray.length) % imagesArray.length; popupImages.style.transition = 'transform 0.3s ease'; popupImages.style.transform = `translateX(${-currentIndex * slideWidth}px)`; popupImages.style.cursor = 'grab'; updateThumbnails(); }
+function dragStart(e){
+  isDragging = true;
+  startPos = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+  popupImages.style.transition = 'none';
+  popupImages.style.cursor = 'grabbing';
+}
+function dragMove(e){
+  if(!isDragging) return;
+  const currentPosition = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+  const delta = currentPosition - startPos;
+  const slideWidth = popupImages.querySelector('img') ? popupImages.querySelector('img').clientWidth : 0;
+  popupImages.style.transform = `translateX(${-currentIndex * slideWidth + delta}px)`;
+}
+function dragEnd(e){
+  if(!isDragging) return;
+  isDragging = false;
+  const endPos = e.type.includes('mouse') ? e.pageX : e.changedTouches[0].clientX;
+  const delta = endPos - startPos;
+  const slideWidth = popupImages.querySelector('img') ? popupImages.querySelector('img').clientWidth : 0;
 
-function thumbDragStart(e){ isThumbDragging = true; thumbStartX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX; scrollStart = thumbnailGallery.scrollLeft; }
-function thumbDragMove(e){ if(!isThumbDragging) return; const currentX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX; const delta = thumbStartX - currentX; thumbnailGallery.scrollLeft = scrollStart + delta; }
-function thumbDragEnd(){ isThumbDragging = false; }
+  if(delta < -50) currentIndex = (currentIndex+1) % imagesArray.length;
+  else if(delta > 50) currentIndex = (currentIndex-1 + imagesArray.length) % imagesArray.length;
 
-function capitalize(str){ return str.charAt(0).toUpperCase() + str.slice(1); }
+  popupImages.style.transition = 'transform 0.3s ease';
+  popupImages.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
+  popupImages.style.cursor = 'grab';
+  updateThumbnails();
+}
+
+// --- THUMBNAIL DRAG FUNCTIONS ---
+function thumbDragStart(e){
+  isThumbDragging = true;
+  thumbStartX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+  scrollStart = thumbnailGallery.scrollLeft;
+}
+function thumbDragMove(e){
+  if(!isThumbDragging) return;
+  const currentX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+  const delta = thumbStartX - currentX;
+  thumbnailGallery.scrollLeft = scrollStart + delta;
+}
+function thumbDragEnd(){
+  isThumbDragging = false;
+}
+
+function capitalize(str){
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
