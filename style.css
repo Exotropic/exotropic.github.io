@@ -70,25 +70,22 @@ body.no-scroll{ overflow:hidden; }
 #popupPrice{ top:60px; font-size:24px; }
 
 /* ================= THUMBNAILS ================= */
-.thumbnail-gallery {
-  display: flex;
-  justify-content: center;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  margin-top: 10px;
-  gap: 8px;
-  padding: 0 10px;
+.thumbnail-container{
+  display:flex;
+  overflow-x:auto;
+  padding:10px 5px;
+  gap:8px;
+  width:90%;
+  max-width:700px;
+  margin-top:10px;
 }
-.thumbnail-gallery img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  cursor: pointer;
-  border: 2px solid #fff;
-  border-radius: 6px;
-  transition: transform 0.2s, border 0.2s;
+.thumbnail-container img{
+  height:70px;
+  border-radius:5px;
+  cursor:pointer;
+  border:2px solid transparent;
+  transition:0.3s;
 }
-.thumbnail-gallery img:hover {
-  transform: scale(1.05);
-  border-color: #26C6DA;
+.thumbnail-container img.active{
+  border:2px solid #00FFE0;
 }
