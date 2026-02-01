@@ -62,18 +62,23 @@ const defaultProducts = [
     "images/product2.jpg","images/product2.jpg","images/product2.jpg"
   ]},
   { name:"Betta", price:"₱700", category:"fish", images:[
-    "images/product3.jpg","images/product3.jpg",
-    "images/product3.jpg"
+    "images/product3.jpg","images/product3.jpg"
   ]},
   { name:"Guppy", price:"₱800", category:"fish", images:[
-    "images/product4.jpg","images/product4.jpg",
     "images/product4.jpg","images/product4.jpg"
   ]},
   { name:"Goldfish", price:"₱900", category:"fish", images:[
-    "images/product5.jpg","images/product5.jpg",
     "images/product5.jpg","images/product5.jpg"
   ]}
 ];
+
+// --- ENSURE 6 IMAGES PER PRODUCT ---
+defaultProducts.forEach(product => {
+  while (product.images.length < 6) {
+    product.images.push(...product.images); // repeat images
+    if (product.images.length > 6) product.images = product.images.slice(0,6); // trim to exactly 6
+  }
+});
 
 // --- CURRENT CATEGORY & DISPLAYED PRODUCTS ---
 let categoryProducts = [];
