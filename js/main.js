@@ -43,7 +43,7 @@ contactToggle.addEventListener('click', () => {
 const defaultProducts = [
   { name:"Clownfish", price:"₱500", category:"fish", images:["images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg"] },
   { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"] },
-  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
+  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
   { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
   { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
 ];
@@ -204,14 +204,4 @@ homeMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overl
 // --- INITIAL SETUP ---
 document.addEventListener('DOMContentLoaded',()=>{
   document.body.classList.add('no-scroll');
-
-  // --- FLOATING MESSENGER BUTTON ---
-  if(!document.querySelector('.messenger-btn')){
-    const floatMessenger = document.createElement('a');
-    floatMessenger.href = "https://m.me/ExoTropicAquarium";
-    floatMessenger.target = "_blank";
-    floatMessenger.className = "messenger-btn";
-    floatMessenger.textContent = "Buy via Messenger";
-    document.body.appendChild(floatMessenger);
-  }
 });
