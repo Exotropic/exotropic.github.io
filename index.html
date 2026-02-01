@@ -8,17 +8,14 @@
 </head>
 <body>
 
-  <!-- Background -->
   <div class="background"></div>
 
-  <!-- Hamburger Menu -->
+  <!-- Hamburger -->
   <div class="hamburger" id="hamburger">
-    <span></span>
-    <span></span>
-    <span></span>
+    <span></span><span></span><span></span>
   </div>
 
-  <!-- Sliding Menu -->
+  <!-- Menu -->
   <nav class="nav-links" id="nav-links">
     <div class="menu-content">
       <div class="menu-header">MENU</div>
@@ -28,10 +25,9 @@
       <div class="menu-item" id="contact-toggle">
         <span id="contact-label">Contact ▼</span>
         <div class="menu-contact" id="contact-info">
-          <a href="tel:16132554540">📞 Phone: 613-255-4540</a>
-          <a href="mailto:Exotropic1@gmail.com">📧 Email: Exotropic1@gmail.com</a>
-          <a href="https://www.google.com/maps/place/Ottawa,+Ontario" target="_blank">📍 Location: Ottawa, Ontario</a>
-          <a href="https://www.facebook.com/share/1ANqkqmvcR/" target="_blank">📘 Facebook Page: Exo Tropic</a>
+          <a href="tel:16132554540">📞 613-255-4540</a>
+          <a href="mailto:Exotropic1@gmail.com">📧 Exotropic1@gmail.com</a>
+          <a href="https://www.facebook.com/share/1ANqkqmvcR/" target="_blank">📘 Facebook</a>
         </div>
       </div>
 
@@ -39,21 +35,20 @@
     </div>
   </nav>
 
-  <!-- Overlay -->
   <div id="overlay"></div>
 
-  <!-- Hero Section -->
+  <!-- HERO -->
   <main>
     <header id="home" class="hero visible">
-      <img src="images/exotropic-logo.png" alt="Exotropic Logo" class="hero-logo">
+      <img src="images/exotropic-logo.png" class="hero-logo">
       <h1>EXOTROPIC AQUARIUM</h1>
-      <button id="shopBtn" class="buy-btn" type="button">Shop Now</button>
+      <button id="shopBtn" class="buy-btn">Shop Now</button>
     </header>
 
-    <!-- Shop Section -->
+    <!-- SHOP -->
     <section class="shop" id="shop">
-      <img src="images/exotropic-logo.png" alt="Exotropic Logo" class="shop-logo">
-      <button id="backBtn" class="buy-btn" type="button">Back to Home</button>
+      <img src="images/exotropic-logo.png" class="shop-logo">
+      <button id="backBtn" class="buy-btn">Back to Home</button>
       <h2 class="section-title">🛒 Our Products</h2>
       <div class="shop-grid" id="shopGrid">
         <p id="loadingText">Loading products...</p>
@@ -61,25 +56,31 @@
     </section>
   </main>
 
-  <!-- Popup Modal -->
+  <!-- PRODUCT POPUP -->
   <div class="product-popup" id="productPopup">
     <div class="popup-content">
-      <!-- ✅ GitHub-safe close button -->
+
       <button class="close-btn" id="popupClose">✕</button>
       <h2 id="popupTitle"></h2>
       <h3 id="popupPrice"></h3>
-      <div class="carousel">
+
+      <!-- SWIPE AREA -->
+      <div class="carousel" id="swipeArea">
         <span class="prev">&#10094;</span>
+
         <div class="carousel-images" id="popupImages"></div>
+
         <span class="next">&#10095;</span>
       </div>
+
+      <!-- THUMBNAILS -->
+      <div class="thumbnail-gallery" id="thumbnailGallery"></div>
+
     </div>
   </div>
 
-  <!-- Footer -->
   <footer class="site-credits">© 2026 EXOTROPIC AQUARIUM SHOP</footer>
 
-  <!-- Messenger Button -->
   <a href="https://m.me/ExoTropicAquarium" target="_blank" class="messenger-btn">
     Buy via Messenger
   </a>
