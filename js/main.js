@@ -15,7 +15,6 @@ const homeSection = document.getElementById('home');
 
 const shopMenu = document.getElementById('shopMenu');
 const homeMenu = document.getElementById('homeMenu');
-const reviewMenu = document.getElementById('reviewMenu');
 const shopTitle = document.getElementById('shopTitle');
 
 const categoryPopup = document.getElementById('categoryPopup');
@@ -23,9 +22,6 @@ const categoryClose = document.getElementById('categoryClose');
 const categoryBtns = document.querySelectorAll('.category-btn');
 
 const searchInput = document.getElementById('searchInput');
-
-const reviewSection = document.getElementById('review');
-const backBtnReview = document.getElementById('backBtnReview');
 
 // --- HAMBURGER MENU ---
 hamburger.addEventListener('click', () => { 
@@ -49,7 +45,7 @@ const defaultProducts = [
   { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"] },
   { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
   { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
-  { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
+  { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
 ];
 
 // --- CURRENT CATEGORY & DISPLAYED PRODUCTS ---
@@ -212,18 +208,15 @@ searchInput.addEventListener('input', ()=>{
 function showShop(){ 
   homeSection.classList.remove('visible'); 
   shopSection.classList.add('visible'); 
-  reviewSection.classList.remove('visible');
   document.body.classList.remove('no-scroll'); 
 }
 function showHome(){ 
   shopSection.classList.remove('visible'); 
-  reviewSection.classList.remove('visible');
   homeSection.classList.add('visible'); 
   document.body.classList.add('no-scroll'); 
   window.scrollTo(0,0); 
 }
 
-// --- SHOP & HOME MENU ---
 backBtn.addEventListener('click',showHome);
 shopMenu.addEventListener('click',()=>{ 
   navLinks.classList.remove('open'); 
@@ -237,18 +230,6 @@ homeMenu.addEventListener('click',()=>{
   overlay.classList.remove('active'); 
   showHome(); 
 });
-
-// --- REVIEW PAGE MENU & BACK BUTTON ---
-reviewMenu.addEventListener('click', () => {
-  navLinks.classList.remove('open');
-  overlay.classList.remove('active');
-  homeSection.classList.remove('visible');
-  shopSection.classList.remove('visible');
-  reviewSection.classList.add('visible');
-  document.body.classList.add('no-scroll');
-  window.scrollTo(0,0);
-});
-backBtnReview.addEventListener('click', showHome);
 
 // --- INITIAL SETUP ---
 document.addEventListener('DOMContentLoaded',()=>{
