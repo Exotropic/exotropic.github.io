@@ -45,7 +45,7 @@ const defaultProducts = [
   { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"] },
   { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
   { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
-  { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
+  { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
 ];
 
 // --- CURRENT DISPLAYED PRODUCTS ---
@@ -137,7 +137,7 @@ function openPopup(product){
   popup.style.display='flex';
 }
 
-// --- CAROUSEL SWIPE FIX ---
+// --- CAROUSEL NAVIGATION ---
 function updateCarousel(){ 
   popupImages.style.transform = `translateX(${-currentIndex*100}%)`;
   updateThumbnails();
@@ -204,4 +204,57 @@ homeMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overl
 // --- INITIAL SETUP ---
 document.addEventListener('DOMContentLoaded',()=>{
   document.body.classList.add('no-scroll');
+
+  // --- FLOATING MESSENGER BUTTON ---
+  if(!document.querySelector('.messenger-btn')){
+    const floatMessenger = document.createElement('a');
+    floatMessenger.href = "https://m.me/ExoTropicAquarium";
+    floatMessenger.target = "_blank";
+    floatMessenger.className = "messenger-btn";
+    floatMessenger.textContent = "Buy via Messenger";
+    document.body.appendChild(floatMessenger);
+  }
 });
+
+// --- SWIPE / DRAG SUPPORT FOR CAROUSEL ---
+let isDragging = false;
+let startPos = 0;
+let currentTranslate = 0;
+let prevTranslate = 0;
+
+popupImages.addEventListener('mousedown', dragStart);
+popupImages.addEventListener('touchstart', dragStart);
+
+popupImages.addEventListener('mouseup', dragEnd);
+popupImages.addEventListener('touchend', dragEnd);
+
+popupImages.addEventListener('mouseleave', dragEnd);
+popupImages.addEventListener('mousemove', dragMove);
+popupImages.addEventListener('touchmove', dragMove);
+
+function dragStart(e){
+  isDragging = true;
+  startPos = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+  popupImages.style.cursor = 'grabbing';
+}
+
+function dragMove(e){
+  if(!isDragging) return;
+  const currentPosition = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+  currentTranslate = prevTranslate + currentPosition - startPos;
+  popupImages.style.transform = `translateX(${currentTranslate - currentIndex*popupImages.offsetWidth}px)`;
+}
+
+function dragEnd(){
+  if(!isDragging) return;
+  isDragging = false;
+  const movedBy = currentTranslate - prevTranslate;
+
+  if(movedBy < -50 && currentIndex < imagesArray.length - 1) currentIndex += 1;
+  if(movedBy > 50 && currentIndex > 0) currentIndex -= 1;
+
+  updateCarousel();
+  currentTranslate = 0;
+  prevTranslate = 0;
+  popupImages.style.cursor = 'grab';
+}
