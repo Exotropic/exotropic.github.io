@@ -43,14 +43,14 @@ contactToggle.addEventListener('click', () => {
 const defaultProducts = [
   { name:"Clownfish", price:"₱500", category:"fish", images:["images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg"] },
   { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"] },
-  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
-  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
+  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
+  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
   { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
 ];
 
 // --- CURRENT CATEGORY & DISPLAYED PRODUCTS ---
-let categoryProducts = []; // products in current category
-let displayedProducts = []; // currently displayed in shop grid
+let categoryProducts = [];
+let displayedProducts = [];
 
 // --- RENDER PRODUCTS ---
 function renderProduct(product,index){
@@ -67,7 +67,6 @@ function renderProduct(product,index){
       <button class="buy-btn">Buy via Messenger</button>
     `;
     div.querySelector('img').addEventListener('click', ()=>openPopup(product));
-
     div.querySelector('.buy-btn').addEventListener('click', e=>{
       e.stopPropagation();
       window.open("https://m.me/ExoTropicAquarium","_blank");
@@ -115,7 +114,7 @@ function openPopup(product){
   popupPrice.textContent = product.price;
   imagesArray = product.images;
 
-  // --- MAIN IMAGE CAROUSEL (iOS fix) ---
+  // --- MAIN IMAGE CAROUSEL (iOS fix applied) ---
   popupImages.innerHTML='';
   let imagesLoaded = 0;
   imagesArray.forEach(src=>{
@@ -124,9 +123,8 @@ function openPopup(product){
     img.onload = () => {
       imagesLoaded++;
       if(imagesLoaded === imagesArray.length){
-        requestAnimationFrame(()=>{
-          updateCarousel(); // iOS layout recalculation fix
-        });
+        // Force iOS Safari to recalc layout
+        requestAnimationFrame(()=>updateCarousel());
       }
     }
     popupImages.appendChild(img);
@@ -187,7 +185,7 @@ categoryBtns.forEach(btn=>{
 
     categoryPopup.style.display='none';
     showShop();
-    categoryProducts = filtered; // keep full category list for search
+    categoryProducts = filtered;
     setTimeout(()=>loadProducts(filtered),50);
     shopTitle.textContent = `🛒 Our Products – ${btn.textContent}`;
   });
@@ -198,7 +196,7 @@ searchInput.addEventListener('input', ()=>{
   const query = searchInput.value.toLowerCase();
 
   if(query === ''){
-    loadProducts(categoryProducts); // restore all products in current category
+    loadProducts(categoryProducts);
     return;
   }
 
@@ -237,7 +235,6 @@ homeMenu.addEventListener('click',()=>{
 document.addEventListener('DOMContentLoaded',()=>{
   document.body.classList.add('no-scroll');
 
-  // --- FLOATING MESSENGER BUTTON ---
   if(!document.querySelector('.messenger-btn')){
     const floatMessenger = document.createElement('a');
     floatMessenger.href = "https://m.me/ExoTropicAquarium";
@@ -263,8 +260,10 @@ popupImages.addEventListener('mousemove', dragMove);
 popupImages.addEventListener('touchmove', dragMove);
 
 function dragStart(e){
+  if (!popupImages.querySelector('img')) return;
   isDragging = true;
   startPos = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+  popupImages.querySelector('img').getBoundingClientRect(); // force layout recalculation
   popupImages.style.transition = 'none';
   popupImages.style.cursor = 'grabbing';
 }
@@ -290,7 +289,6 @@ function dragEnd(e){
   popupImages.style.transition = 'transform 0.3s ease';
   popupImages.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
   popupImages.style.cursor = 'grab';
-
   updateThumbnails();
 }
 
