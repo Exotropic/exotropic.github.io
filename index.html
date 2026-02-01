@@ -52,11 +52,16 @@
 
     <!-- Shop Section -->
     <section class="shop" id="shop">
-      <div class="shop-header">
-        <button id="backBtn" class="buy-btn back-btn" type="button">Back to Home</button>
-        <input type="text" id="shopSearch" placeholder="Search products..." class="shop-search">
-      </div>
       <img src="images/exotropic-logo.png" alt="Exotropic Logo" class="shop-logo">
+
+      <!-- Back button top-right -->
+      <button id="backBtn" class="buy-btn" type="button">Back to Home</button>
+
+      <!-- Search bar -->
+      <div class="shop-search">
+        <input type="text" id="searchInput" placeholder="Search products...">
+      </div>
+
       <h2 class="section-title">🛒 Our Products</h2>
       <div class="shop-grid" id="shopGrid">
         <p id="loadingText">Loading products...</p>
@@ -75,7 +80,8 @@
         <div class="carousel-images" id="popupImages"></div>
         <span class="next">&#10095;</span>
       </div>
-      <div id="thumbnailGallery" class="thumbnail-gallery"></div>
+      <!-- Thumbnail gallery -->
+      <div class="thumbnail-gallery" id="thumbnailGallery"></div>
     </div>
   </div>
 
