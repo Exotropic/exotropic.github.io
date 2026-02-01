@@ -51,7 +51,7 @@ contactToggle.addEventListener('click', () => {
   contactLabel.textContent = isVisible ? "Contact ▲" : "Contact ▼";
 });
 
-// --- PRODUCT DATA (CLOUDINARY IMAGES) ---
+// --- PRODUCT DATA ---
 const defaultProducts = [
   { name:"Clownfish", price:"₱500", category:"fish", images:[
     "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769465638/products/ztzlggvdaml34g5u3one.jpg"
@@ -99,13 +99,12 @@ function renderProduct(product,index){
     `;
     div.querySelector('img').addEventListener('click', ()=>openPopup(product));
     
-    // --- BUY BUTTON (NEW FEATURE) ---
+    // --- BUY BUTTON: sends product name + image URL ---
     div.querySelector('.buy-btn').addEventListener('click', e=>{
       e.stopPropagation();
-      const messengerLink = `https://m.me/ExoTropicAquarium?ref=${encodeURIComponent(
-        `Hi! I want to buy: ${product.name}\nImage: ${product.images[0]}`
-      )}`;
-      window.open(messengerLink,"_blank");
+      const messengerMessage = `Hi! I want to buy: ${product.name}. Image: ${product.images[0]}`;
+      const messengerLink = `https://m.me/ExoTropicAquarium?ref=${encodeURIComponent(messengerMessage)}`;
+      window.open(messengerLink, "_blank");
     });
   }
 
@@ -274,7 +273,6 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   document.body.classList.add('no-scroll');
 
-  // Restore last section and category
   const lastSection = localStorage.getItem('lastSection');
   const lastCategory = localStorage.getItem('lastCategory');
 
@@ -328,7 +326,6 @@ function thumbDragEnd(){ isThumbDragging=false; }
 const reviewForm = document.getElementById('reviewForm');
 const reviewList = document.getElementById('reviewList');
 
-// Load saved reviews from localStorage
 const savedReviews = JSON.parse(localStorage.getItem('reviews')) || [];
 savedReviews.forEach(r => {
   const card = document.createElement('div');
@@ -354,11 +351,9 @@ if (reviewForm && reviewList) {
     card.innerHTML = `<strong>${name}</strong><p>${message}</p>`;
     reviewList.prepend(card);
 
-    // Save to localStorage
     savedReviews.unshift({ name, message });
     localStorage.setItem('reviews', JSON.stringify(savedReviews));
 
-    // Clear form
     nameInput.value = '';
     messageInput.value = '';
   });
