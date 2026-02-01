@@ -1,3 +1,5 @@
+NEW MAIN JS TRIAL
+
 // --- ELEMENTS ---
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('nav-links');
@@ -54,21 +56,44 @@ contactToggle.addEventListener('click', () => {
 // --- PRODUCT DATA ---
 const defaultProducts = [
   { name:"Clownfish", price:"₱500", category:"fish", images:[
-    "images/product1.jpg","images/product1.jpg","images/product1.jpg",
-    "images/product1.jpg","images/product1.jpg","images/product1.jpg"
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769465638/products/ztzlggvdaml34g5u3one.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769465638/products/ztzlggvdaml34g5u3one.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769465638/products/ztzlggvdaml34g5u3one.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769465638/products/ztzlggvdaml34g5u3one.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769465638/products/ztzlggvdaml34g5u3one.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769465638/products/ztzlggvdaml34g5u3one.jpg"
   ]},
   { name:"Angelfish", price:"₱600", category:"fish", images:[
-    "images/product2.jpg","images/product2.jpg",
-    "images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449352/zfndhypfmvsr7u7gjbdf.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449352/zfndhypfmvsr7u7gjbdf.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449352/zfndhypfmvsr7u7gjbdf.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449352/zfndhypfmvsr7u7gjbdf.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449352/zfndhypfmvsr7u7gjbdf.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449352/zfndhypfmvsr7u7gjbdf.jpg"
   ]},
   { name:"Betta", price:"₱700", category:"fish", images:[
-    "images/product3.jpg","images/product3.jpg"
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769458298/products/rovezwl9opia0hi2ux7h.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769458298/products/rovezwl9opia0hi2ux7h.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769458298/products/rovezwl9opia0hi2ux7h.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769458298/products/rovezwl9opia0hi2ux7h.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769458298/products/rovezwl9opia0hi2ux7h.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769458298/products/rovezwl9opia0hi2ux7h.jpg"
   ]},
   { name:"Guppy", price:"₱800", category:"fish", images:[
-    "images/product4.jpg","images/product4.jpg"
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449385/nomumjmwxipfh0ril8oc.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449385/nomumjmwxipfh0ril8oc.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449385/nomumjmwxipfh0ril8oc.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449385/nomumjmwxipfh0ril8oc.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449385/nomumjmwxipfh0ril8oc.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449385/nomumjmwxipfh0ril8oc.jpg"
   ]},
   { name:"Goldfish", price:"₱900", category:"fish", images:[
-    "images/product5.jpg","images/product5.jpg"
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449399/jtwtzk0egjizvomclm1w.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449399/jtwtzk0egjizvomclm1w.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449399/jtwtzk0egjizvomclm1w.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449399/jtwtzk0egjizvomclm1w.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449399/jtwtzk0egjizvomclm1w.jpg",
+    "https://res.cloudinary.com/dgmg1cubi/image/upload/v1769449399/jtwtzk0egjizvomclm1w.jpg"
   ]}
 ];
 
@@ -105,7 +130,7 @@ function renderProduct(product,index){
     div.querySelector('.buy-btn').addEventListener('click', e=>{
       e.stopPropagation();
       const messengerLink = `https://m.me/ExoTropicAquarium?ref=${encodeURIComponent(
-        `Hi! I want to buy: ${product.name}\nImage: ${window.location.origin}/${product.images[0]}`
+        `Hi! I want to buy: ${product.name}\nImage: ${product.images[0]}`
       )}`;
       window.open(messengerLink,"_blank");
     });
@@ -273,10 +298,7 @@ reviewsMenu.addEventListener('click',()=>{
 
 // --- DOM CONTENT LOADED ---
 document.addEventListener('DOMContentLoaded',()=>{
-
   document.body.classList.add('no-scroll');
-
-  // Restore last section and category
   const lastSection = localStorage.getItem('lastSection');
   const lastCategory = localStorage.getItem('lastCategory');
 
