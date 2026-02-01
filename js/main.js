@@ -21,6 +21,8 @@ const categoryPopup = document.getElementById('categoryPopup');
 const categoryClose = document.getElementById('categoryClose');
 const categoryBtns = document.querySelectorAll('.category-btn');
 
+const searchInput = document.getElementById('searchInput');
+
 // --- HAMBURGER MENU ---
 hamburger.addEventListener('click', () => { 
   navLinks.classList.toggle('open'); 
@@ -40,7 +42,10 @@ contactToggle.addEventListener('click', () => {
 // --- PRODUCT DATA ---
 const defaultProducts = [
   { name:"Clownfish", price:"₱500", category:"fish", images:["images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg"] },
-  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] }
+  { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"] },
+  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
+  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
+  { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
 ];
 
 // --- RENDER PRODUCTS ---
@@ -50,8 +55,11 @@ function renderProduct(product,index){
   div.style.transitionDelay=`${index*0.15}s`;
 
   if(product.comingSoon){
-    div.innerHTML = `<div style="padding:20px; text-align:center; font-weight:bold;">${product.name}<br>Coming Soon</div>`;
+    // Coming Soon card
+    div.innerHTML = `<div style="padding:20px; text-align:center; font-weight:bold; font-size:18px;">${product.name}<br>Coming Soon</div>`;
+    div.style.cursor='default';
   } else {
+    // Actual product card
     div.innerHTML = `
       <img src="${product.images[0]}" alt="${product.name}" loading="lazy">
       <div class="buy-btn">Buy via Messenger</div>
@@ -150,16 +158,15 @@ popup.addEventListener('click',e=>{ if(e.target===popup) popup.style.display='no
 shopBtn.addEventListener('click',()=>{ categoryPopup.style.display='flex'; });
 categoryClose.addEventListener('click',()=>{ categoryPopup.style.display='none'; });
 
-// Category buttons
 categoryBtns.forEach(btn=>{
   btn.addEventListener('click',()=>{
     const selected = btn.dataset.category;
     let filtered = [];
 
     if(selected==='fish'){
-      filtered = defaultProducts;
+      filtered = defaultProducts; // show all fish products
     } else {
-      filtered = [{ name: btn.textContent, comingSoon:true }];
+      filtered = [{ name: btn.textContent, comingSoon:true, images:[] }]; // Coming Soon card
     }
 
     loadProducts(filtered);
@@ -187,7 +194,6 @@ shopMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overl
 homeMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overlay.classList.remove('active'); showHome(); });
 
 // --- SEARCH FUNCTIONALITY ---
-const searchInput = document.getElementById('searchInput');
 searchInput.addEventListener('input', ()=>{
   const query = searchInput.value.toLowerCase();
   const filtered = defaultProducts.filter(p=>p.name.toLowerCase().includes(query));
