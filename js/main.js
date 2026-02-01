@@ -32,6 +32,15 @@ const prevBtn = popup.querySelector('.prev');
 const nextBtn = popup.querySelector('.next');
 const thumbnailGallery = document.getElementById('thumbnailGallery');
 
+// --- REVIEWS ELEMENTS ---
+const reviewsSection = document.getElementById('reviews');
+const reviewsMenu = document.getElementById('reviewsMenu');
+const backReviewsBtn = document.getElementById('backReviewsBtn');
+const reviewName = document.getElementById('reviewName');
+const reviewText = document.getElementById('reviewText');
+const submitReview = document.getElementById('submitReview');
+const reviewList = document.getElementById('reviewList');
+
 // --- HAMBURGER MENU ---
 hamburger.addEventListener('click', () => { 
   navLinks.classList.toggle('open'); 
@@ -214,14 +223,23 @@ searchInput.addEventListener('input', ()=>{
 // --- SECTION TOGGLE ---
 function showShop(){ 
   homeSection.classList.remove('visible'); 
+  reviewsSection.classList.remove('visible');
   shopSection.classList.add('visible'); 
   document.body.classList.remove('no-scroll'); 
 }
 function showHome(){ 
   shopSection.classList.remove('visible'); 
+  reviewsSection.classList.remove('visible');
   homeSection.classList.add('visible'); 
   document.body.classList.add('no-scroll'); 
   window.scrollTo(0,0); 
+}
+function showReviews() {
+  homeSection.classList.remove('visible');
+  shopSection.classList.remove('visible');
+  reviewsSection.classList.add('visible');
+  document.body.classList.remove('no-scroll');
+  window.scrollTo(0,0);
 }
 
 // --- MENU BUTTONS ---
@@ -236,6 +254,12 @@ homeMenu.addEventListener('click',()=>{
   overlay.classList.remove('active'); 
   showHome(); 
 });
+reviewsMenu.addEventListener('click',()=>{
+  navLinks.classList.remove('open'); 
+  overlay.classList.remove('active'); 
+  showReviews();
+});
+backReviewsBtn.addEventListener('click', showHome);
 
 // --- DOM CONTENT LOADED ---
 document.addEventListener('DOMContentLoaded',()=>{
@@ -255,6 +279,10 @@ document.addEventListener('DOMContentLoaded',()=>{
     loadProducts(filtered);
     shopTitle.textContent = `🛒 Our Products – ${capitalize(currentCategory)}`;
   }
+
+  // Load reviews from localStorage
+  const savedReviews = JSON.parse(localStorage.getItem('reviews')) || [];
+  savedReviews.forEach(r => addReviewCard(r.name, r.text));
 });
 
 // --- UTILITY ---
@@ -285,3 +313,28 @@ thumbnailGallery.addEventListener('touchmove', thumbDragMove);
 function thumbDragStart(e){ isThumbDragging=true; thumbStartX=e.type.includes('mouse')?e.pageX:e.touches[0].clientX; scrollStart=thumbnailGallery.scrollLeft; }
 function thumbDragMove(e){ if(!isThumbDragging) return; const currentX=e.type.includes('mouse')?e.pageX:e.touches[0].clientX; const delta=thumbStartX-currentX; thumbnailGallery.scrollLeft=scrollStart+delta; }
 function thumbDragEnd(){ isThumbDragging=false; }
+
+// --- REVIEW FORM SUBMISSION ---
+submitReview.addEventListener('click', () => {
+  const name = reviewName.value.trim();
+  const text = reviewText.value.trim();
+  if(!name || !text) return alert("Please enter your name and review.");
+
+  addReviewCard(name, text);
+
+  // Save to localStorage
+  const savedReviews = JSON.parse(localStorage.getItem('reviews')) || [];
+  savedReviews.unshift({ name, text });
+  localStorage.setItem('reviews', JSON.stringify(savedReviews));
+
+  // Clear form
+  reviewName.value = '';
+  reviewText.value = '';
+});
+
+function addReviewCard(name, text){
+  const card = document.createElement('div');
+  card.className = 'review-card';
+  card.innerHTML = `<strong>${name}</strong><p>${text}</p>`;
+  reviewList.prepend(card);
+}
