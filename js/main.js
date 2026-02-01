@@ -322,8 +322,8 @@ function thumbDragMove(e){ if(!isThumbDragging) return; const currentX=e.type.in
 function thumbDragEnd(){ isThumbDragging=false; }
 
 // --- REVIEW FORM SUBMISSION WITH PERSISTENCE ---
-const reviewForm = document.querySelector('.review-form');
-const reviewList = document.querySelector('.review-list');
+const reviewForm = document.getElementById('reviewForm');
+const reviewList = document.getElementById('reviewList');
 
 // Load saved reviews from localStorage
 const savedReviews = JSON.parse(localStorage.getItem('reviews')) || [];
