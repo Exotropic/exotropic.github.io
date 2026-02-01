@@ -44,13 +44,13 @@ const defaultProducts = [
   { name:"Clownfish", price:"₱500", category:"fish", images:["images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg"] },
   { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"] },
   { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
-  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
+  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
   { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
 ];
 
 // --- CURRENT CATEGORY & DISPLAYED PRODUCTS ---
-let categoryProducts = []; // products in current category
-let displayedProducts = []; // currently displayed in shop grid
+let categoryProducts = [];
+let displayedProducts = [];
 
 // --- RENDER PRODUCTS ---
 function renderProduct(product,index){
@@ -230,96 +230,3 @@ homeMenu.addEventListener('click',()=>{
   overlay.classList.remove('active'); 
   showHome(); 
 });
-
-// --- INITIAL SETUP ---
-document.addEventListener('DOMContentLoaded',()=>{
-  document.body.classList.add('no-scroll');
-
-  // --- FLOATING MESSENGER BUTTON ---
-  if(!document.querySelector('.messenger-btn')){
-    const floatMessenger = document.createElement('a');
-    floatMessenger.href = "https://m.me/ExoTropicAquarium";
-    floatMessenger.target = "_blank";
-    floatMessenger.className = "messenger-btn";
-    floatMessenger.textContent = "Buy via Messenger";
-    document.body.appendChild(floatMessenger);
-  }
-});
-
-// --- SWIPE / DRAG SUPPORT FOR MAIN CAROUSEL (iOS fixed) ---
-let isDragging = false;
-let startPos = 0;
-
-popupImages.addEventListener('mousedown', dragStart);
-popupImages.addEventListener('touchstart', dragStart);
-
-popupImages.addEventListener('mouseup', dragEnd);
-popupImages.addEventListener('touchend', dragEnd);
-
-popupImages.addEventListener('mouseleave', dragEnd);
-popupImages.addEventListener('mousemove', dragMove);
-popupImages.addEventListener('touchmove', dragMove);
-
-function dragStart(e){
-  isDragging = true;
-  startPos = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-  popupImages.style.transition = 'none';
-  popupImages.style.cursor = 'grabbing';
-}
-
-function dragMove(e){
-  if(!isDragging) return;
-  const currentPosition = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-  const delta = currentPosition - startPos;
-  const slideWidth = popupImages.querySelector('img') ? popupImages.querySelector('img').clientWidth : 0;
-  popupImages.style.transform = `translateX(${-currentIndex * slideWidth + delta}px)`;
-}
-
-function dragEnd(e){
-  if(!isDragging) return;
-  isDragging = false;
-  const endPos = e.type.includes('mouse') ? e.pageX : e.changedTouches[0].clientX;
-  const delta = endPos - startPos;
-  const slideWidth = popupImages.querySelector('img') ? popupImages.querySelector('img').clientWidth : 0;
-
-  if(delta < -50) currentIndex = (currentIndex+1) % imagesArray.length;
-  else if(delta > 50) currentIndex = (currentIndex-1 + imagesArray.length) % imagesArray.length;
-
-  popupImages.style.transition = 'transform 0.3s ease';
-  popupImages.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
-  popupImages.style.cursor = 'grab';
-
-  updateThumbnails();
-}
-
-// --- SWIPE SUPPORT FOR THUMBNAILS ---
-let isThumbDragging = false;
-let thumbStartX = 0;
-let scrollStart = 0;
-
-thumbnailGallery.addEventListener('mousedown', thumbDragStart);
-thumbnailGallery.addEventListener('touchstart', thumbDragStart);
-
-thumbnailGallery.addEventListener('mouseup', thumbDragEnd);
-thumbnailGallery.addEventListener('touchend', thumbDragEnd);
-
-thumbnailGallery.addEventListener('mouseleave', thumbDragEnd);
-thumbnailGallery.addEventListener('mousemove', thumbDragMove);
-thumbnailGallery.addEventListener('touchmove', thumbDragMove);
-
-function thumbDragStart(e){
-  isThumbDragging = true;
-  thumbStartX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-  scrollStart = thumbnailGallery.scrollLeft;
-}
-
-function thumbDragMove(e){
-  if(!isThumbDragging) return;
-  const currentX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-  const delta = thumbStartX - currentX;
-  thumbnailGallery.scrollLeft = scrollStart + delta;
-}
-
-function thumbDragEnd(){
-  isThumbDragging = false;
-}
