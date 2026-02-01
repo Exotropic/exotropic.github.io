@@ -42,7 +42,7 @@ contactToggle.addEventListener('click', () => {
 // --- PRODUCT DATA ---
 const defaultProducts = [
   { name:"Clownfish", price:"₱500", category:"fish", images:["images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg"] },
-  { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"] },
+  { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"] },
   { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
   { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
   { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
@@ -69,7 +69,7 @@ function renderProduct(product,index){
 
     // Buy via Messenger click
     div.querySelector('.buy-btn').addEventListener('click', e=>{
-      e.stopPropagation();
+      e.stopPropagation(); // prevent opening popup
       window.open("https://m.me/ExoTropicAquarium","_blank");
     });
   }
@@ -205,10 +205,12 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.body.classList.add('no-scroll');
 
   // --- FLOATING MESSENGER BUTTON ---
-  const floatMessenger = document.createElement('a');
-  floatMessenger.href = "https://m.me/ExoTropicAquarium";
-  floatMessenger.target = "_blank";
-  floatMessenger.className = "floating-messenger";
-  floatMessenger.textContent = "Buy via Messenger";
-  document.body.appendChild(floatMessenger);
+  if(!document.querySelector('.messenger-btn')){
+    const floatMessenger = document.createElement('a');
+    floatMessenger.href = "https://m.me/ExoTropicAquarium";
+    floatMessenger.target = "_blank";
+    floatMessenger.className = "messenger-btn";
+    floatMessenger.textContent = "Buy via Messenger";
+    document.body.appendChild(floatMessenger);
+  }
 });
