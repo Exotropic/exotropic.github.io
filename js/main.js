@@ -43,9 +43,9 @@ contactToggle.addEventListener('click', () => {
 const defaultProducts = [
   { name:"Clownfish", price:"₱500", category:"fish", images:["images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg"] },
   { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"] },
-  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
-  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
-  { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
+  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
+  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
+  { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
 ];
 
 // --- CURRENT CATEGORY & DISPLAYED PRODUCTS ---
@@ -115,7 +115,7 @@ function openPopup(product){
   popupPrice.textContent = product.price;
   imagesArray = product.images;
 
-  // --- MAIN IMAGE CAROUSEL ---
+  // --- MAIN IMAGE CAROUSEL (iOS fix) ---
   popupImages.innerHTML='';
   let imagesLoaded = 0;
   imagesArray.forEach(src=>{
@@ -124,7 +124,9 @@ function openPopup(product){
     img.onload = () => {
       imagesLoaded++;
       if(imagesLoaded === imagesArray.length){
-        updateCarousel(); // set correct initial position
+        requestAnimationFrame(()=>{
+          updateCarousel(); // iOS layout recalculation fix
+        });
       }
     }
     popupImages.appendChild(img);
@@ -162,11 +164,11 @@ function updateThumbnails(){
 
 // --- NEXT/PREV BUTTONS ---
 nextBtn.addEventListener('click',()=>{ 
-  currentIndex = (currentIndex+1) % imagesArray.length; 
+  currentIndex = Math.min(currentIndex+1, imagesArray.length-1); 
   updateCarousel(); 
 });
 prevBtn.addEventListener('click',()=>{ 
-  currentIndex = (currentIndex-1 + imagesArray.length) % imagesArray.length; 
+  currentIndex = Math.max(currentIndex-1, 0); 
   updateCarousel(); 
 });
 popupClose.addEventListener('click',()=>popup.style.display='none');
@@ -282,8 +284,8 @@ function dragEnd(e){
   const delta = endPos - startPos;
   const slideWidth = popupImages.querySelector('img') ? popupImages.querySelector('img').clientWidth : 0;
 
-  if(delta < -50) currentIndex = (currentIndex+1) % imagesArray.length;
-  else if(delta > 50) currentIndex = (currentIndex-1 + imagesArray.length) % imagesArray.length;
+  if(delta < -50) currentIndex = Math.min(currentIndex+1, imagesArray.length-1);
+  else if(delta > 50) currentIndex = Math.max(currentIndex-1, 0);
 
   popupImages.style.transition = 'transform 0.3s ease';
   popupImages.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
