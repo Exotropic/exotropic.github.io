@@ -43,7 +43,7 @@ contactToggle.addEventListener('click', () => {
 const defaultProducts = [
   { name:"Clownfish", price:"₱500", category:"fish", images:["images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg"] },
   { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"] },
-  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
+  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
   { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
   { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
 ];
@@ -171,14 +171,12 @@ categoryBtns.forEach(btn=>{
       filtered = [{ name: btn.textContent, comingSoon:true, images:[] }];
     }
 
-    // Show shop section
-    homeSection.classList.remove('visible');
-    shopSection.classList.add('visible');
-
-    // Load products and update title
-    loadProducts(filtered);
-    shopTitle.textContent = `🛒 Our Products – ${btn.textContent}`;
+    // Show shop section **after small delay** to ensure DOM renders
     categoryPopup.style.display='none';
+    showShop();
+    setTimeout(()=>{ loadProducts(filtered); }, 50);
+
+    shopTitle.textContent = `🛒 Our Products – ${btn.textContent}`;
   });
 });
 
@@ -193,7 +191,6 @@ searchInput.addEventListener('input', ()=>{
 function showShop(){ 
   homeSection.classList.remove('visible'); 
   shopSection.classList.add('visible'); 
-  loadProducts(defaultProducts); 
   document.body.classList.remove('no-scroll'); 
 }
 function showHome(){ 
@@ -204,7 +201,7 @@ function showHome(){
 }
 
 backBtn.addEventListener('click',showHome);
-shopMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overlay.classList.remove('active'); showShop(); });
+shopMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overlay.classList.remove('active'); showShop(); loadProducts(defaultProducts); });
 homeMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overlay.classList.remove('active'); showHome(); });
 
 // --- INITIAL SETUP ---
