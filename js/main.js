@@ -53,8 +53,8 @@ const defaultProducts = [
   { name:"Clownfish", price:"₱500", category:"fish", images:["images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg"] },
   { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"] },
   { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
-  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
-  { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
+  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
+  { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
 ];
 
 // --- CURRENT CATEGORY & DISPLAYED PRODUCTS ---
@@ -233,12 +233,14 @@ shopBtn.addEventListener('click', ()=> {
 });
 
 // --- DOM CONTENT LOADED ---
-document.addEventListener('DOMContentLoaded',()=>{
+document.addEventListener('DOMContentLoaded', ()=>{
 
-  // Load last selected category if Shop is visible
-  if(shopSection.classList.contains('visible')){
-    if(currentCategory) loadCategory(currentCategory);
-    else categoryPopup.style.display='flex'; // show popup if no previous category
+  // --- LOAD LAST CATEGORY OR SHOW HOMEPAGE ---
+  if(currentCategory){ // if there is a saved category
+    showShop();
+    loadCategory(currentCategory);
+  } else {
+    showHome(); // default to homepage
   }
 
   // --- SWIPE / DRAG SUPPORT FOR MAIN CAROUSEL ---
@@ -315,6 +317,7 @@ function thumbDragEnd(){
   isThumbDragging = false;
 }
 
+// --- HELPER ---
 function capitalize(str){
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
