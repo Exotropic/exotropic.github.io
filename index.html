@@ -23,6 +23,7 @@
       <div class="menu-header">MENU</div>
       <a href="#home" id="homeMenu">Home</a>
       <a href="#shop" id="shopMenu">Shop</a>
+      <a href="#reviews" id="reviewsMenu">Reviews</a>
       <div class="menu-item" id="contact-toggle">
         <span id="contact-label">Contact ▼</span>
         <div class="menu-contact" id="contact-info">
@@ -58,6 +59,20 @@
       <h2 class="section-title" id="shopTitle">🛒 Our Products</h2>
       <div class="shop-grid" id="shopGrid">
         <p id="loadingText">Loading products...</p>
+      </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="reviews" id="reviews">
+      <button class="buy-btn" id="backReviewsBtn">Back to Home</button>
+      <h2 class="section-title">💬 Customer Reviews</h2>
+      <div class="review-form">
+        <input type="text" id="reviewName" placeholder="Your Name">
+        <textarea id="reviewText" placeholder="Your Review"></textarea>
+        <button id="submitReview" class="buy-btn">Submit Review</button>
+      </div>
+      <div class="review-list" id="reviewList">
+        <!-- Reviews will appear here -->
       </div>
     </section>
   </main>
