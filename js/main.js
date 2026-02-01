@@ -99,12 +99,13 @@ function renderProduct(product,index){
     `;
     div.querySelector('img').addEventListener('click', ()=>openPopup(product));
     
-    // --- BUY BUTTON: sends product name + image URL ---
+    // --- UPDATED BUY BUTTON ---
     div.querySelector('.buy-btn').addEventListener('click', e=>{
       e.stopPropagation();
-      const messengerMessage = `Hi! I want to buy: ${product.name}. Image: ${product.images[0]}`;
-      const messengerLink = `https://m.me/ExoTropicAquarium?ref=${encodeURIComponent(messengerMessage)}`;
-      window.open(messengerLink, "_blank");
+      const messengerLink = `https://m.me/ExoTropicAquarium?text=${encodeURIComponent(
+        `Hi! I want to buy: ${product.name}\nImage: ${product.images[0]}`
+      )}`;
+      window.open(messengerLink,"_blank");
     });
   }
 
