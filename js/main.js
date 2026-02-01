@@ -63,7 +63,7 @@ const defaultProducts = [
   ]},
   { name:"Betta", price:"₱700", category:"fish", images:[
     "images/product3.jpg","images/product3.jpg",
-    "images/product3.jpg","images/product3.jpg"
+    "images/product3.jpg"
   ]},
   { name:"Guppy", price:"₱800", category:"fish", images:[
     "images/product4.jpg","images/product4.jpg",
@@ -313,5 +313,45 @@ thumbnailGallery.addEventListener('mouseleave', thumbDragEnd);
 thumbnailGallery.addEventListener('mousemove', thumbDragMove);
 thumbnailGallery.addEventListener('touchmove', thumbDragMove);
 function thumbDragStart(e){ isThumbDragging=true; thumbStartX=e.type.includes('mouse')?e.pageX:e.touches[0].clientX; scrollStart=thumbnailGallery.scrollLeft; }
-function thumbDragMove(e){ if(!isThumbDragging) return; const currentX=e.type.includes('mouse')?e.pageX:e.touches[0].clientX; const delta=thumbStartX-currentX; thumbnailGallery.scrollLeft=scrollStart+delta; }
+function thumbDragMove(e){ if(!isThumbDragging) return; const currentX=e.type.includes('mouse')? e.pageX:e.touches[0].clientX; const delta=thumbStartX-currentX; thumbnailGallery.scrollLeft=scrollStart+delta; }
 function thumbDragEnd(){ isThumbDragging=false; }
+
+// --- REVIEW FORM SUBMISSION WITH PERSISTENCE ---
+const reviewForm = document.querySelector('.review-form');
+const reviewList = document.querySelector('.review-list');
+
+// Load saved reviews from localStorage
+const savedReviews = JSON.parse(localStorage.getItem('reviews')) || [];
+savedReviews.forEach(r => {
+  const card = document.createElement('div');
+  card.className = 'review-card';
+  card.innerHTML = `<strong>${r.name}</strong><p>${r.message}</p>`;
+  reviewList.appendChild(card);
+});
+
+if (reviewForm && reviewList) {
+  reviewForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const nameInput = reviewForm.querySelector('input[name="name"]');
+    const messageInput = reviewForm.querySelector('textarea[name="message"]');
+
+    const name = nameInput.value.trim();
+    const message = messageInput.value.trim();
+
+    if (!name || !message) return;
+
+    const card = document.createElement('div');
+    card.className = 'review-card';
+    card.innerHTML = `<strong>${name}</strong><p>${message}</p>`;
+    reviewList.prepend(card);
+
+    // Save to localStorage
+    savedReviews.unshift({ name, message });
+    localStorage.setItem('reviews', JSON.stringify(savedReviews));
+
+    // Clear form
+    nameInput.value = '';
+    messageInput.value = '';
+  });
+}
