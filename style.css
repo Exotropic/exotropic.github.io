@@ -22,7 +22,7 @@ body.no-scroll{ overflow:hidden; }
 .section-title{ text-align:center; font-size:28px; margin-bottom:30px; }
 
 /* ================= SHOP NOW & BACK BUTTON ================= */
-#shopBtn, #backBtn {
+#shopBtn, #backBtn, #backReviewsBtn {
   display:block;
   width:auto;
   padding:12px 24px;
@@ -36,7 +36,7 @@ body.no-scroll{ overflow:hidden; }
   cursor:pointer;
   transition:0.3s ease;
 }
-#shopBtn:hover, #backBtn:hover{
+#shopBtn:hover, #backBtn:hover, #backReviewsBtn:hover{
   transform: scale(1.05);
   color:#fff;
 }
@@ -151,3 +151,22 @@ body.no-scroll{ overflow:hidden; }
 .category-popup .category-content{ background:#003040; color:#E0F7FA; padding:30px; border-radius:12px; text-align:center; min-width:250px; }
 .category-popup .category-btn{ display:block; margin:10px auto; padding:12px 20px; font-weight:bold; border:none; border-radius:10px; cursor:pointer; background:linear-gradient(135deg,#00FFE0,#26C6DA); color:#003040; }
 .category-popup .close-btn{ margin-top:15px; background:rgba(0,0,0,0.5); color:#fff; border-radius:50%; width:45px; height:45px; text-align:center; line-height:45px; font-size:28px; border:none; cursor:pointer; }
+
+/* ================= REVIEWS ================= */
+.reviews{ padding:60px 20px; color:#E0F7FA; position:absolute; top:0; left:0; width:100%; transition:opacity 0.5s ease; opacity:0; visibility:hidden; position:relative;}
+.reviews.visible{ opacity:1; visibility:visible; }
+.review-form{ max-width:500px; margin:0 auto 30px; display:flex; flex-direction:column; gap:12px; }
+.review-form input, .review-form textarea{
+  padding:12px 15px;
+  border-radius:12px;
+  border:1px solid #B2EBF2;
+  font-size:16px;
+  outline:none;
+  background: rgba(0,40,70,0.6);
+  color:#E0F7FA;
+  resize:none;
+}
+.review-form textarea{ min-height:80px; }
+.review-list{ display:grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap:20px; }
+.review-card{ background: rgba(0,40,70,0.65); border:1px solid #B2EBF2; border-radius:10px; padding:15px; color:#D0F0FD; }
+.review-card p{ margin-top:8px; font-size:14px; }
