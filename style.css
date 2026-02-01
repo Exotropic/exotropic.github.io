@@ -75,7 +75,7 @@ body.no-scroll{ overflow:hidden; }
 /* ================= RESPONSIVE ================= */
 @media(max-width:480px){ .hero h1{font-size:36px;} .hero-logo,.shop-logo{width:180px;} }
 
-/* ================= POPUP FULLSCREEN ================= */
+/* ================= PRODUCT POPUP ================= */
 .product-popup{ display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); justify-content:center; align-items:center; z-index:1000; }
 .product-popup .popup-content{ background:none; padding:0; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; position:relative; }
 .product-popup .close-btn{ position:absolute; top:15px; right:20px; font-size:32px; color:#fff; z-index:1010; background: rgba(0,0,0,0.5); border-radius:50%; width:45px; height:45px; text-align:center; line-height:45px; cursor:pointer; }
@@ -93,3 +93,49 @@ body.no-scroll{ overflow:hidden; }
 .thumbnail-gallery{ display:flex; justify-content:center; gap:10px; margin-top:10px; flex-wrap:wrap; }
 .thumbnail-gallery img{ width:60px; height:60px; object-fit:cover; cursor:pointer; border:2px solid transparent; border-radius:8px; transition:0.3s; }
 .thumbnail-gallery img.active{ border-color:#00FFE0; }
+
+/* ================= CATEGORY POPUP ================= */
+.category-popup{
+  display:none; /* hidden by default */
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  z-index:1000;
+}
+.category-popup .category-content{
+  background:#003040;
+  color:#E0F7FA;
+  padding:30px;
+  border-radius:12px;
+  text-align:center;
+  min-width:250px;
+}
+.category-popup .category-btn{
+  display:block;
+  margin:10px auto;
+  padding:12px 20px;
+  font-weight:bold;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  background:linear-gradient(135deg,#00FFE0,#26C6DA);
+  color:#003040;
+}
+.category-popup .close-btn{
+  margin-top:15px;
+  background:rgba(0,0,0,0.5);
+  color:#fff;
+  border-radius:50%;
+  width:45px;
+  height:45px;
+  text-align:center;
+  line-height:45px;
+  font-size:28px;
+  border:none;
+  cursor:pointer;
+}
