@@ -65,7 +65,16 @@ function renderProduct(product,index){
       <img src="${product.images[0]}" alt="${product.name}" loading="lazy">
       <div class="buy-btn">Buy via Messenger</div>
     `;
+
+    // Open product popup on image click
     div.querySelector('img').addEventListener('click', ()=>openPopup(product));
+
+    // --- BUY VIA MESSENGER BUTTON ---
+    div.querySelector('.buy-btn').addEventListener('click', ()=>{
+      // Keep your actual EXOTROPIC Messenger link
+      const messengerLink = "https://m.me/EXOTROPIC";
+      window.open(messengerLink, '_blank');
+    });
   }
 
   shopGrid.appendChild(div);
@@ -206,3 +215,13 @@ homeMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overl
 
 // --- INITIAL SETUP ---
 document.addEventListener('DOMContentLoaded',()=>{ document.body.classList.add('no-scroll'); });
+
+// --- FLOATING MESSENGER BUTTON ---
+(function createFloatingMessenger(){
+  const a = document.createElement('a');
+  a.href = "https://m.me/EXOTROPIC"; // <-- keep your real EXOTROPIC Messenger link
+  a.className = 'floating-messenger';
+  a.target = '_blank';
+  a.innerHTML = `<img src="images/messenger-icon.png" alt="Messenger" />`;
+  document.body.appendChild(a);
+})();
