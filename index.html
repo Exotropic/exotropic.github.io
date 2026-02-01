@@ -66,11 +66,14 @@
     <section class="reviews" id="reviews">
       <button class="buy-btn" id="backReviewsBtn">Back to Home</button>
       <h2 class="section-title">💬 Customer Reviews</h2>
-      <div class="review-form">
-        <input type="text" id="reviewName" placeholder="Your Name">
-        <textarea id="reviewText" placeholder="Your Review"></textarea>
-        <button id="submitReview" class="buy-btn">Submit Review</button>
-      </div>
+
+      <!-- Fixed: changed to form with proper name attributes -->
+      <form class="review-form" id="reviewForm">
+        <input type="text" id="reviewName" name="name" placeholder="Your Name">
+        <textarea id="reviewText" name="message" placeholder="Your Review"></textarea>
+        <button type="submit" id="submitReview" class="buy-btn">Submit Review</button>
+      </form>
+
       <div class="review-list" id="reviewList">
         <!-- Reviews will appear here -->
       </div>
