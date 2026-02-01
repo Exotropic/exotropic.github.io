@@ -48,6 +48,9 @@ const defaultProducts = [
   { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
 ];
 
+// --- CURRENT DISPLAYED PRODUCTS ---
+let currentProducts = []; // keeps track of currently shown products
+
 // --- RENDER PRODUCTS ---
 function renderProduct(product,index){
   const div = document.createElement('div');
@@ -55,27 +58,25 @@ function renderProduct(product,index){
   div.style.transitionDelay=`${index*0.15}s`;
 
   if(product.comingSoon){
-    // Coming Soon card
     div.innerHTML = `<div style="padding:20px; text-align:center; font-weight:bold; font-size:18px;">${product.name}<br>Coming Soon</div>`;
     div.style.cursor='default';
   } else {
-    // Actual product card
     div.innerHTML = `
       <img src="${product.images[0]}" alt="${product.name}" loading="lazy">
       <div class="buy-btn">Buy via Messenger</div>
     `;
-    div.addEventListener('click',()=>openPopup(product));
+    div.querySelector('img').addEventListener('click', ()=>openPopup(product));
   }
 
   shopGrid.appendChild(div);
 }
 
 // --- LOAD PRODUCTS ---
-function loadProducts(filtered=[]){
+function loadProducts(products){
   shopGrid.innerHTML='';
   loadingText.textContent='Loading products...';
-  const productsToShow = filtered.length ? filtered : defaultProducts;
-  productsToShow.forEach((prod,i)=>renderProduct(prod,i));
+  currentProducts = products;
+  products.forEach((prod,i)=>renderProduct(prod,i));
   loadingText.textContent='';
   fadeInProducts();
 }
@@ -104,6 +105,7 @@ let imagesArray=[];
 
 // --- OPEN POPUP ---
 function openPopup(product){
+  if(!product.images || !product.images.length) return;
   popupTitle.textContent = product.name;
   popupPrice.textContent = product.price;
   imagesArray = product.images;
@@ -164,15 +166,22 @@ categoryBtns.forEach(btn=>{
     let filtered = [];
 
     if(selected==='fish'){
-      filtered = defaultProducts; // show all fish products
+      filtered = defaultProducts;
     } else {
-      filtered = [{ name: btn.textContent, comingSoon:true, images:[] }]; // Coming Soon card
+      filtered = [{ name: btn.textContent, comingSoon:true, images:[] }];
     }
 
     loadProducts(filtered);
     shopTitle.textContent = `🛒 Our Products – ${btn.textContent}`;
     categoryPopup.style.display='none';
   });
+});
+
+// --- SEARCH FUNCTIONALITY (only searches current displayed products) ---
+searchInput.addEventListener('input', ()=>{
+  const query = searchInput.value.toLowerCase();
+  const filtered = currentProducts.filter(p=>!p.comingSoon && p.name.toLowerCase().includes(query));
+  loadProducts(filtered);
 });
 
 // --- SECTION TOGGLE ---
@@ -192,13 +201,6 @@ function showHome(){
 backBtn.addEventListener('click',showHome);
 shopMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overlay.classList.remove('active'); showShop(); });
 homeMenu.addEventListener('click',()=>{ navLinks.classList.remove('open'); overlay.classList.remove('active'); showHome(); });
-
-// --- SEARCH FUNCTIONALITY ---
-searchInput.addEventListener('input', ()=>{
-  const query = searchInput.value.toLowerCase();
-  const filtered = defaultProducts.filter(p=>p.name.toLowerCase().includes(query));
-  loadProducts(filtered);
-});
 
 // --- INITIAL SETUP ---
 document.addEventListener('DOMContentLoaded',()=>{ document.body.classList.add('no-scroll'); });
