@@ -43,8 +43,8 @@ contactToggle.addEventListener('click', () => {
 const defaultProducts = [
   { name:"Clownfish", price:"₱500", category:"fish", images:["images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg"] },
   { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"] },
-  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
-  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
+  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
+  { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
   { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
 ];
 
@@ -71,8 +71,7 @@ function renderProduct(product,index){
 
     // --- BUY VIA MESSENGER BUTTON ---
     div.querySelector('.buy-btn').addEventListener('click', ()=>{
-      // Keep your actual EXOTROPIC Messenger link
-      const messengerLink = "https://m.me/EXOTROPIC";
+      const messengerLink = "https://m.me/ExoTropicAquarium";
       window.open(messengerLink, '_blank');
     });
   }
@@ -219,7 +218,7 @@ document.addEventListener('DOMContentLoaded',()=>{ document.body.classList.add('
 // --- FLOATING MESSENGER BUTTON ---
 (function createFloatingMessenger(){
   const a = document.createElement('a');
-  a.href = "https://m.me/EXOTROPIC"; // <-- keep your real EXOTROPIC Messenger link
+  a.href = "https://m.me/ExoTropicAquarium"; // <-- your real Messenger link
   a.className = 'floating-messenger';
   a.target = '_blank';
   a.innerHTML = `<img src="images/messenger-icon.png" alt="Messenger" />`;
