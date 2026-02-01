@@ -316,20 +316,23 @@ function thumbDragStart(e){ isThumbDragging=true; thumbStartX=e.type.includes('m
 function thumbDragMove(e){ if(!isThumbDragging) return; const currentX=e.type.includes('mouse')? e.pageX:e.touches[0].clientX; const delta=thumbStartX-currentX; thumbnailGallery.scrollLeft=scrollStart+delta; }
 function thumbDragEnd(){ isThumbDragging=false; }
 
-// --- REVIEW FORM SUBMISSION WITH PERSISTENCE ---
-const reviewForm = document.querySelector('.review-form');
-const reviewList = document.querySelector('.review-list');
+// --- REVIEW FORM SUBMISSION WITH PERSISTENCE FIXED ---
+document.addEventListener('DOMContentLoaded', () => {
+  const reviewForm = document.querySelector('.review-form');
+  const reviewList = document.querySelector('.review-list');
 
-// Load saved reviews from localStorage
-const savedReviews = JSON.parse(localStorage.getItem('reviews')) || [];
-savedReviews.forEach(r => {
-  const card = document.createElement('div');
-  card.className = 'review-card';
-  card.innerHTML = `<strong>${r.name}</strong><p>${r.message}</p>`;
-  reviewList.appendChild(card);
-});
+  if (!reviewForm || !reviewList) return;
 
-if (reviewForm && reviewList) {
+  // Load saved reviews from localStorage
+  const savedReviews = JSON.parse(localStorage.getItem('reviews')) || [];
+  savedReviews.forEach(r => {
+    const card = document.createElement('div');
+    card.className = 'review-card';
+    card.innerHTML = `<strong>${r.name}</strong><p>${r.message}</p>`;
+    reviewList.appendChild(card);
+  });
+
+  // Add submit listener
   reviewForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -354,4 +357,4 @@ if (reviewForm && reviewList) {
     nameInput.value = '';
     messageInput.value = '';
   });
-}
+});
