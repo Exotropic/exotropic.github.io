@@ -8,16 +8,14 @@ const contactLabel = document.getElementById('contact-label');
 
 const shopBtn = document.getElementById('shopBtn');
 const backBtn = document.getElementById('backBtn');
-const backBtnReview = document.getElementById('backBtnReview'); // Review back button
 const shopSection = document.getElementById('shop');
-const reviewSection = document.getElementById('review');
 const shopGrid = document.getElementById('shopGrid');
 const loadingText = document.getElementById('loadingText');
 const homeSection = document.getElementById('home');
 
 const shopMenu = document.getElementById('shopMenu');
 const homeMenu = document.getElementById('homeMenu');
-const reviewMenu = document.getElementById('reviewMenu'); // Review link in hamburger
+const reviewMenu = document.getElementById('reviewMenu');
 const shopTitle = document.getElementById('shopTitle');
 
 const categoryPopup = document.getElementById('categoryPopup');
@@ -25,6 +23,9 @@ const categoryClose = document.getElementById('categoryClose');
 const categoryBtns = document.querySelectorAll('.category-btn');
 
 const searchInput = document.getElementById('searchInput');
+
+const reviewSection = document.getElementById('review');
+const backBtnReview = document.getElementById('backBtnReview');
 
 // --- HAMBURGER MENU ---
 hamburger.addEventListener('click', () => { 
@@ -46,14 +47,14 @@ contactToggle.addEventListener('click', () => {
 const defaultProducts = [
   { name:"Clownfish", price:"₱500", category:"fish", images:["images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg","images/product1.jpg"] },
   { name:"Angelfish", price:"₱600", category:"fish", images:["images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg","images/product2.jpg"] },
-  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
+  { name:"Betta", price:"₱700", category:"fish", images:["images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg","images/product3.jpg"] },
   { name:"Guppy", price:"₱800", category:"fish", images:["images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg","images/product4.jpg"] },
-  { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
+  { name:"Goldfish", price:"₱900", category:"fish", images:["images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg","images/product5.jpg"] }
 ];
 
 // --- CURRENT CATEGORY & DISPLAYED PRODUCTS ---
-let categoryProducts = [];
-let displayedProducts = [];
+let categoryProducts = []; // products in current category
+let displayedProducts = []; // currently displayed in shop grid
 
 // --- RENDER PRODUCTS ---
 function renderProduct(product,index){
@@ -70,6 +71,7 @@ function renderProduct(product,index){
       <button class="buy-btn">Buy via Messenger</button>
     `;
     div.querySelector('img').addEventListener('click', ()=>openPopup(product));
+
     div.querySelector('.buy-btn').addEventListener('click', e=>{
       e.stopPropagation();
       window.open("https://m.me/ExoTropicAquarium","_blank");
@@ -117,7 +119,7 @@ function openPopup(product){
   popupPrice.textContent = product.price;
   imagesArray = product.images;
 
-  // MAIN IMAGE CAROUSEL
+  // --- MAIN IMAGE CAROUSEL ---
   popupImages.innerHTML='';
   let imagesLoaded = 0;
   imagesArray.forEach(src=>{
@@ -126,14 +128,14 @@ function openPopup(product){
     img.onload = () => {
       imagesLoaded++;
       if(imagesLoaded === imagesArray.length){
-        updateCarousel();
+        updateCarousel(); // set correct initial position
       }
     }
     popupImages.appendChild(img);
   });
   currentIndex = 0;
 
-  // THUMBNAILS
+  // --- THUMBNAILS ---
   thumbnailGallery.innerHTML='';
   imagesArray.forEach((src,i)=>{
     const thumb=document.createElement('img');
@@ -184,9 +186,10 @@ categoryBtns.forEach(btn=>{
     let filtered=[];
     if(selected==='fish') filtered = defaultProducts;
     else filtered=[{ name: btn.textContent, comingSoon:true, images:[] }];
+
     categoryPopup.style.display='none';
     showShop();
-    categoryProducts = filtered;
+    categoryProducts = filtered; // keep full category list for search
     setTimeout(()=>loadProducts(filtered),50);
     shopTitle.textContent = `🛒 Our Products – ${btn.textContent}`;
   });
@@ -195,10 +198,12 @@ categoryBtns.forEach(btn=>{
 // --- SEARCH ---
 searchInput.addEventListener('input', ()=>{
   const query = searchInput.value.toLowerCase();
+
   if(query === ''){
-    loadProducts(categoryProducts);
+    loadProducts(categoryProducts); // restore all products in current category
     return;
   }
+
   const filtered = categoryProducts.filter(p => !p.comingSoon && p.name.toLowerCase().includes(query));
   loadProducts(filtered);
 });
@@ -206,8 +211,8 @@ searchInput.addEventListener('input', ()=>{
 // --- SECTION TOGGLE ---
 function showShop(){ 
   homeSection.classList.remove('visible'); 
-  reviewSection.classList.remove('visible'); 
   shopSection.classList.add('visible'); 
+  reviewSection.classList.remove('visible');
   document.body.classList.remove('no-scroll'); 
 }
 function showHome(){ 
@@ -217,15 +222,9 @@ function showHome(){
   document.body.classList.add('no-scroll'); 
   window.scrollTo(0,0); 
 }
-function showReview(){ 
-  shopSection.classList.remove('visible'); 
-  homeSection.classList.remove('visible'); 
-  reviewSection.classList.add('visible'); 
-}
 
-// --- MENU CLICKS ---
+// --- SHOP & HOME MENU ---
 backBtn.addEventListener('click',showHome);
-backBtnReview.addEventListener('click',showHome); // Back from review
 shopMenu.addEventListener('click',()=>{ 
   navLinks.classList.remove('open'); 
   overlay.classList.remove('active'); 
@@ -238,15 +237,24 @@ homeMenu.addEventListener('click',()=>{
   overlay.classList.remove('active'); 
   showHome(); 
 });
-reviewMenu.addEventListener('click',()=>{ 
-  navLinks.classList.remove('open'); 
-  overlay.classList.remove('active'); 
-  showReview(); 
+
+// --- REVIEW PAGE MENU & BACK BUTTON ---
+reviewMenu.addEventListener('click', () => {
+  navLinks.classList.remove('open');
+  overlay.classList.remove('active');
+  homeSection.classList.remove('visible');
+  shopSection.classList.remove('visible');
+  reviewSection.classList.add('visible');
+  document.body.classList.add('no-scroll');
+  window.scrollTo(0,0);
 });
+backBtnReview.addEventListener('click', showHome);
 
 // --- INITIAL SETUP ---
 document.addEventListener('DOMContentLoaded',()=>{
   document.body.classList.add('no-scroll');
+
+  // --- FLOATING MESSENGER BUTTON ---
   if(!document.querySelector('.messenger-btn')){
     const floatMessenger = document.createElement('a');
     floatMessenger.href = "https://m.me/ExoTropicAquarium";
@@ -257,5 +265,80 @@ document.addEventListener('DOMContentLoaded',()=>{
   }
 });
 
-// --- SWIPE / DRAG SUPPORT ---
-// (All existing swipe/drag code intact, not touched)
+// --- SWIPE / DRAG SUPPORT FOR MAIN CAROUSEL (iOS fixed) ---
+let isDragging = false;
+let startPos = 0;
+
+popupImages.addEventListener('mousedown', dragStart);
+popupImages.addEventListener('touchstart', dragStart);
+
+popupImages.addEventListener('mouseup', dragEnd);
+popupImages.addEventListener('touchend', dragEnd);
+
+popupImages.addEventListener('mouseleave', dragEnd);
+popupImages.addEventListener('mousemove', dragMove);
+popupImages.addEventListener('touchmove', dragMove);
+
+function dragStart(e){
+  isDragging = true;
+  startPos = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+  popupImages.style.transition = 'none';
+  popupImages.style.cursor = 'grabbing';
+}
+
+function dragMove(e){
+  if(!isDragging) return;
+  const currentPosition = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+  const delta = currentPosition - startPos;
+  const slideWidth = popupImages.querySelector('img') ? popupImages.querySelector('img').clientWidth : 0;
+  popupImages.style.transform = `translateX(${-currentIndex * slideWidth + delta}px)`;
+}
+
+function dragEnd(e){
+  if(!isDragging) return;
+  isDragging = false;
+  const endPos = e.type.includes('mouse') ? e.pageX : e.changedTouches[0].clientX;
+  const delta = endPos - startPos;
+  const slideWidth = popupImages.querySelector('img') ? popupImages.querySelector('img').clientWidth : 0;
+
+  if(delta < -50) currentIndex = (currentIndex+1) % imagesArray.length;
+  else if(delta > 50) currentIndex = (currentIndex-1 + imagesArray.length) % imagesArray.length;
+
+  popupImages.style.transition = 'transform 0.3s ease';
+  popupImages.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
+  popupImages.style.cursor = 'grab';
+
+  updateThumbnails();
+}
+
+// --- SWIPE SUPPORT FOR THUMBNAILS ---
+let isThumbDragging = false;
+let thumbStartX = 0;
+let scrollStart = 0;
+
+thumbnailGallery.addEventListener('mousedown', thumbDragStart);
+thumbnailGallery.addEventListener('touchstart', thumbDragStart);
+
+thumbnailGallery.addEventListener('mouseup', thumbDragEnd);
+thumbnailGallery.addEventListener('touchend', thumbDragEnd);
+
+thumbnailGallery.addEventListener('mouseleave', thumbDragEnd);
+thumbnailGallery.addEventListener('mousemove', thumbDragMove);
+thumbnailGallery.addEventListener('touchmove', thumbDragMove);
+
+function thumbDragStart(e){
+  isThumbDragging = true;
+  thumbStartX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+  scrollStart = thumbnailGallery.scrollLeft;
+}
+
+function thumbDragMove(e){
+  if(!isThumbDragging) return;
+  const currentX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+  const delta = thumbStartX - currentX;
+  thumbnailGallery.scrollLeft = scrollStart + delta;
+}
+
+function thumbDragEnd(){
+  isThumbDragging = false;
+}
