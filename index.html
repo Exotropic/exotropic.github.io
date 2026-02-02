@@ -67,16 +67,13 @@
       <button class="buy-btn" id="backReviewsBtn">Back to Home</button>
       <h2 class="section-title">💬 Customer Reviews</h2>
 
-      <!-- Fixed: changed to form with proper name attributes -->
       <form class="review-form" id="reviewForm">
         <input type="text" id="reviewName" name="name" placeholder="Your Name">
         <textarea id="reviewText" name="message" placeholder="Your Review"></textarea>
         <button type="submit" id="submitReview" class="buy-btn">Submit Review</button>
       </form>
 
-      <div class="review-list" id="reviewList">
-        <!-- Reviews will appear here -->
-      </div>
+      <div class="review-list" id="reviewList"></div>
     </section>
   </main>
 
@@ -113,6 +110,19 @@
 
   <!-- Footer -->
   <footer class="site-credits">© 2026 EXOTROPIC AQUARIUM SHOP</footer>
+
+  <!-- Facebook Messenger SDK for prefilled messages -->
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : 'YOUR_FACEBOOK_APP_ID', // optional
+        xfbml      : true,
+        version    : 'v17.0'
+      });
+    };
+  </script>
 
   <!-- Script -->
   <script src="js/main.js"></script>
